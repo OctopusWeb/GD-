@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>高德交通</title>
+  <script src="src/assets/libs/jquery/jquery-2.1.1.min.js"></script>
+  <script src="src/assets/libs/jQuery.md5.js"></script>
+  
+  <script src="src/assets/js/com/zoolon/core/Core.js"></script>
+  <script src="src/assets/js/com/zoolon/core/Config.js"></script>
+  <script src="src/assets/js/com/zoolon/core/Server.js"></script>
+  
+  <script>
+  	$(document).ready(function(){
+  		$at.Server.getTrafficFpData("110000",function(data){
+  			println(data);
+  		});
+  	});
+  </script>
+</head>
+<body>
+</body>
+</html>

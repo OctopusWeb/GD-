@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>高德交通-运营分析</title>
+  <link rel="stylesheet" href="src/assets/css/all.css" />
+  <link rel="stylesheet" href="src/assets/css/topBar.css" />
+  <link rel="stylesheet" href="src/assets/css/operationAnalysis.css" />
+  <link rel="stylesheet" href="src/assets/libs/Cesium-1.12/Build/Cesium/Widgets/widgets.css" />
+  
+  <script src="src/assets/libs/Cesium-1.12/Build/Cesium/Cesium.js"></script>
+  <script src="src/assets/libs/jquery/jquery-2.1.1.min.js"></script>
+  <script src="src/assets/libs/greensock-v12-js/src/minified/TweenMax.min.js" ></script>
+  <script src="src/assets/libs/greensock-v12-js/src/minified/jquery.gsap.min.js"></script>
+  <script src="src/assets/libs/greensock-v12-js/src/minified/plugins/CSSPlugin.min.js"></script>
+  <script src="src/assets/libs/greensock-v12-js/src/minified/plugins/EndArrayPlugin.min.js"></script>
+  <script src/assets/libs/greensock-v12-js/src/minified/easing/EasePack.min.js"></script>
+  <script src="src/assets/js/com/zoolon/core/Core.js"></script>
+  <script src="src/assets/js/com/zoolon/core/Config.js"></script>
+  <script src="src/assets/js/com/zoolon/core/Server.js"></script>
+  <script src="src/assets/js/com/zoolon/core/GeneralManager.js"></script>
+  
+  <script src="src/assets/libs/spinjs/spin.min.js"></script>
+  <script src="src/assets/js/com/zoolon/components/AppPreloader.js"></script>
+  
+  <script src="src/assets/js/com/zoolon/controllers/TopBarController.js"></script>
+  <script src="src/assets/js/com/zoolon/controllers/OperationAnalysisMapController.js"></script>
+  <script src="src/assets/js/com/zoolon/controllers/OperationAnalysisChartController.js"></script>
+  <script src="src/assets/js/com/zoolon/controllers/OperationAnalysisTimelinePlayerController.js"></script>
+  <script src="src/assets/js/com/zoolon/controllers/MenuController.js"></script>
+  <script src="src/assets/js/com/zoolon/views/resize.js"></script>
+  <script src="src/assets/js/com/zoolon/views/operationAnalysis.js"></script>
+  <script src="src/assets/js/com/zoolon/other/OperationAnalysisExternalCall.js"></script>
+</head>
+<body>
+	<div class="app">
+		<div id="cesiumContainer"></div>
+		<div id="chartContainer">
+			<div id="chart"></div>
+			<div id="menuBt0" class="menuBt">导航</div>
+			<div id="menu0" class="menu">
+				<div class="menuItem">播报</div>
+				<div class="menuItem">导航</div>
+				<div class="menuItem">路线规划</div>
+				<div class="menuItem">重新规划</div>
+				<div class="menuItem">躲避拥堵</div>
+			</div>
+			<div id="menuBt1" class="menuBt">用户数</div>
+			<div id="menu1" class="menu">
+				<div class="menuItem">用户数</div>
+				<div class="menuItem">访问次数</div>
+			</div>
+			<div id="timelinePlayer">
+				<div id="preBt"></div>
+				<div id="playBt"></div>
+				<div id="nextBt"></div>
+				<div id="info"></div>
+			</div>
+			<div id="pointer"></div>
+		</div>
+		<div id="infoBox">
+			<div class="header">
+				<div class="title">北京</div>
+				<div class="closeBt"></div>
+			</div>
+			<div class="body"></div>
+		</div>
+		<div id="topBar">
+			<div id="logo">运营分析</div>
+			<div id="preBt"></div>
+			<div id="nextBt"></div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿html,body
+{
+    width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;background-color: #000000;
+}
+.app
+{
+	width:1920px;
+	height:1080px;
+	background-color: #000000;
+	overflow:hidden;
+	
+	/*缩放到0.5*/
+	/*transform: matrix(0.5, 0, 0, 0.5, -480, -270);*/
+	/*放大2倍*/
+	/*transform: matrix(2, 0, 0, 2, 960, 540);*/
+}
+
+/*chrome浏览器滚动条*/
+::-webkit-scrollbar{ width:12px; height:12px; }
+::-webkit-scrollbar-track-piece{ background-color:#497fa4; margin:-2px; }
+/*::-webkit-scrollbar-button{ background-color:#0f598c; }*/
+::-webkit-scrollbar-corner{ background-color:#0f598c; }
+::-webkit-scrollbar-thumb{ background:#002040; /*min-height:150px; min-width:150px;*/ border-radius:10px; }
+::-webkit-scrollbar-thumb:vertical:hover{ background:#002d59 }
+::-webkit-scrollbar-thumb:horizontal:hover{ background:#002d59 }
