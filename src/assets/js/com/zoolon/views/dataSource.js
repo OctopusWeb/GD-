@@ -62,7 +62,6 @@ $(document).ready(function(){
 		show();
 		//console.log("load")
 		redraw();
-		
 	});	
 })
 

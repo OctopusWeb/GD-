@@ -800,6 +800,7 @@ define("CesiumController",function(exporter){
 				viewer.dataSources.remove(this.czmlDataSource,true);
 			}
 		}
+		controllerArea(viewer);
 	}
 	
 	function toISO8601Date(str)
@@ -812,6 +813,5 @@ define("CesiumController",function(exporter){
 		var ss = str.substr(12,2);
 		return YYYY+"-"+MM+"-"+DD+"T"+HH+":"+mm+":"+ss+"Z";
 	}
-	
 	return CesiumController;
 });
