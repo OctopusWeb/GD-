@@ -2,35 +2,41 @@ function controllerArea(viewer){
 	var scene = viewer.scene;
 	var handler;
 	var selected = null;
+	var provinceCenter=[];
 	var cityCenter=[];
+	var mapArea=false;
+	var layers = viewer.imageryLayers;
+	$.ajaxSetup({
+	  async: false
+	});
 	var cityArray=["110000","120000","130000","140000","150000","210000","220000","230000","310000","320000","330000","340000","350000","360000","370000"
 	,"410000","420000","430000","440000","450000","460000","500000","510000","520000","530000","540000","610000","620000","630000","640000","650000"];
 	
-	drawAreaJson1("src/assets/data/chinas.json",Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.WHITE.withAlpha(1)));
+	drawAreaJson1("src/assets/data/chinas.json");
 	
 	for(var i=0;i<cityArray.length;i++){
-			var dataurl = "src/assets/data/"+cityArray[i]+".json";
-			drawAreaJson2(dataurl,Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.WHITE.withAlpha(1)));
+		var dataurl = "src/assets/data/"+cityArray[i]+".json";
+		drawAreaJson2(dataurl);
 	}
 	mouseEvent();
-	function drawAreaJson1(url,linecolors){
+	function drawAreaJson1(url){
 		$.getJSON(url,function(datas){
 			for(var m=0;m<datas.childs.length;m++){
-				cityCenter.push(datas.childs[m].center)
+				provinceCenter.push(datas.childs[m].center)
 				var data = datas.childs[m];
-				drawArea1(data,linecolors,m);
+				drawArea1(data,m);
 			}
 		})
 	}
-	function drawAreaJson2(url,linecolors){
+	function drawAreaJson2(url){
 		$.getJSON(url,function(datas){
 			for(var m=0;m<datas.childs.length;m++){
 				var data = datas.childs[m];
-				drawArea2(data,linecolors);
+				drawArea2(data);
 			}
 		})
 	}
-	function drawArea1(data,linecolors,num){
+	function drawArea1(data,num){
 		var boundaries = data.boundaries;
         var geometryInstances = [];
         for (var i = 0; i < boundaries.length; i++) {
@@ -63,7 +69,7 @@ function controllerArea(viewer){
         }));
 
 	}
-	function drawArea2(data,linecolors){
+	function drawArea2(data){
 		var boundaries = data.boundaries;
         var geometryInstances = [];
         for (var i = 0; i < boundaries.length; i++) {
@@ -107,14 +113,35 @@ function controllerArea(viewer){
 //	        
 //	    }, Cesium.ScreenSpaceEventType.WHEEL);
 	    handler.setInputAction(function (movement) {
-	    	var pickedObject = scene.pick(movement.position);
-	   		if (Cesium.defined(pickedObject)) {
-	   			var pickID=pickedObject.id;
-	   			pickID = pickID.substr(pickID.indexOf('-')+1,pickID.length);
-		        viewer.camera.flyTo({
-			        destination : Cesium.Cartesian3.fromDegrees(cityCenter[pickID][1], cityCenter[pickID][0], 2000000.0)
-			    });
-		    }
+	    	var pickedObject = scene.drillPick(movement.position);
+	    	var cartesian = viewer.camera.pickEllipsoid(movement.position, scene.globe.ellipsoid);
+	    	if (pickedObject.length > 0) {
+	    		for (var i = 0; i < pickedObject.length; ++i) {
+	    			var pickID = pickedObject[i].id;
+	    			if (viewer.camera.getMagnitude() >= 1000001) {
+				        if(pickID.substr(0,1)=="p"){
+				        	pickID = pickID.substr(pickID.indexOf('-')+1,pickID.length);
+					        viewer.camera.flyTo({
+						        destination : Cesium.Cartesian3.fromDegrees(provinceCenter[pickID][1], provinceCenter[pickID][0], 1000000.0)
+						    });
+				        }
+				    }else{
+				    	if(pickID.substr(0,1)=="c"){
+				        	if (cartesian) {
+					            var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+					            var longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(2);
+					            var latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(2);
+					            console.log('(' + longitudeString + ', ' + latitudeString + ')')
+					            viewer.camera.flyTo({
+							        destination : Cesium.Cartesian3.fromDegrees(longitudeString, latitudeString, 200000.0)
+							    });
+					        }
+				        }
+				    }
+	    		}
+	    	}
+	    	
+	        
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
 	}
     	
@@ -124,18 +151,17 @@ function controllerArea(viewer){
 	        try {	            
             	for (var i = 0; i < pickedObject.length; ++i) {
 	                var id = pickedObject[i].id;
-	                	if (viewer.camera.getMagnitude() >= 2000000) {
+	                	if (viewer.camera.getMagnitude() >= 1000001) {
 					        if(id.substr(0,1)=="p"){
 					        	var primitive = pickedObject[i].primitive;
                 				select(primitive);
 					        }
-					    }else{
+					    }else if(viewer.camera.getMagnitude() <= 1000000 && viewer.camera.getMagnitude() > 200001){
 					    	if(id.substr(0,1)=="c"){
 					        	var primitive = pickedObject[i].primitive;
                 				select(primitive);
 					        }
-					    }
-		                
+					    }  
 		        }     
 	        }
 	        catch (e) {
@@ -154,8 +180,7 @@ function controllerArea(viewer){
 	            continue;
 	        }
 	        var attributes = primitive.getGeometryInstanceAttributes(id);
-	
-	        attributes.color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.WHITE.withAlpha(1));
+	        attributes.color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.WHITE.withAlpha(0.3));
 	    }
 	}
 	
@@ -171,5 +196,32 @@ function controllerArea(viewer){
 	            attributes.color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.WHITE.withAlpha(0.01));
 	        }
 	    }
+	}
+	
+	$("#addMap").click(function(){
+		changeMap();
+	})
+	function changeMap(){
+		if(mapArea){
+			layers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({
+			    url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        layer : 'USGSShadedReliefOnly',
+		        style : 'default',
+		        format : 'image/jpeg',
+		        tileMatrixSetID : 'default028mm',
+		        maximumLevel: 19,
+		        credit : new Cesium.Credit('U. S. Geological Survey')
+			}));
+		}else{
+			layers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({
+			    url: " http://mt2.google.cn/vt/imgtp=png32&lyrs=s&hl=zh-CN&gl=cn&x={TileCol}&y={TileRow}&z={TileMatrix}",
+			     layer: 'USGSShadedReliefOnly',
+			     style: 'default',
+			     format: 'image/jpeg',
+			     tileMatrixSetID: 'default028mm',
+			     maximumLevel: 20,
+			}));
+		}
+		mapArea=!mapArea;
 	}
 }

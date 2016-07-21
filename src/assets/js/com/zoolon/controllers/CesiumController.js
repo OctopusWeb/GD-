@@ -13,10 +13,11 @@ define("CesiumController",function(exporter){
 			sceneMode:Cesium.SceneMode.COLUMBUS_VIEW
 		};
 		Cesium.BingMapsApi.defaultKey = "AknGwyGtxa9zlcMazOG8GVPwpFATmyYf5GQOSwOMqTd-JTKe8h4Qwdu0WJRgQvfi";
-		if(!exporter.Config.debugMode)
-		{
+//		if(!exporter.Config.debugMode)
+//		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',
@@ -24,7 +25,7 @@ define("CesiumController",function(exporter){
 		        maximumLevel: 19,
 		        credit : new Cesium.Credit('U. S. Geological Survey')
 		    });
-		}
+//		}
 		var viewer = new Cesium.Viewer(divId,option);
 		this.cesiumViewer = viewer;
 		var DataType = {
