@@ -1,0 +1,459 @@
+[
+	{
+		"rank": 2836521,
+		"value": 2378,
+		"label": "青岛广电",
+		"type": 0,
+		"pinyin": "qing dao guang dian"
+	}, {
+		"rank": 49953422,
+		"value": 41,
+		"label": "amapAndroid",
+		"type": 1,
+		"pinyin": "amap android"
+	}, {
+		"rank": 1396727,
+		"value": 78,
+		"label": "amap导航SDKAndroid",
+		"type": 1,
+		"pinyin": "amap dao hang sdk android"
+	}, {
+		"rank": 6527,
+		"value": 2342,
+		"label": "amap导航SDKIOS",
+		"type": 1,
+		"pinyin": "amap dao hang sdk ios"
+	}, {
+		"rank": 43524608,
+		"value": 3,
+		"label": "amapIOS",
+		"type": 1,
+		"pinyin": "amap ios"
+	}, {
+		"rank": 112750,
+		"value": 2340,
+		"label": "amapWP8",
+		"type": 1,
+		"pinyin": "amapwp8"
+	}, {
+		"rank": 644446,
+		"value": 2390,
+		"label": "安徽联合星通",
+		"type": 0,
+		"pinyin": "an hui lian he xing tong"
+	}, {
+		"rank": 4184450,
+		"value": 768,
+		"label": "aNavAndroid",
+		"type": 1,
+		"pinyin": "anav android"
+	}, {
+		"rank": 38885,
+		"value": 1673,
+		"label": "aNav步步高Android",
+		"type": 1,
+		"pinyin": "anav bu bu gao android"
+	}, {
+		"rank": 30506,
+		"value": 971,
+		"label": "aNavHTCAndroid",
+		"type": 1,
+		"pinyin": "anav htc android"
+	}, {
+		"rank": 6193407,
+		"value": 2,
+		"label": "aNavIOS",
+		"type": 1,
+		"pinyin": "anav ios"
+	}, {
+		"rank": 4579,
+		"value": 1058,
+		"label": "aNavOPPOAndroid",
+		"type": 1,
+		"pinyin": "anav oppo android"
+	}, {
+		"rank": 39165,
+		"value": 797,
+		"label": "aNavWP8",
+		"type": 1,
+		"pinyin": "anav wp8"
+	}, {
+		"rank": 8617,
+		"value": 2336,
+		"label": "aNav中兴Android",
+		"type": 1,
+		"pinyin": "anav zhong xing android"
+	}, {
+		"rank": 3186743,
+		"value": 5,
+		"label": "北京金银建",
+		"type": 0,
+		"pinyin": "bei jing jin yin jian"
+	}, {
+		"rank": 571487,
+		"value": 16,
+		"label": "北京雷腾高精",
+		"type": 0,
+		"pinyin": "bei jing lei teng gao jing"
+	}, {
+		"rank": 6478703,
+		"value": 4,
+		"label": "北京奇华",
+		"type": 0,
+		"pinyin": "bei jing qi hua"
+	}, {
+		"rank": 2941116,
+		"value": 20,
+		"label": "长春寰旗",
+		"type": 0,
+		"pinyin": "chang chun huan qi"
+	}, {
+		"rank": 3054755,
+		"value": 108,
+		"label": "长沙赛格",
+		"type": 0,
+		"pinyin": "chang sha sai ge"
+	}, {
+		"rank": 28,
+		"value": 1888,
+		"label": "车生活Android",
+		"type": 1,
+		"pinyin": "che sheng huo android"
+	}, {
+		"rank": 2264299,
+		"value": 107,
+		"label": "成都交委",
+		"type": 0,
+		"pinyin": "cheng dong jiao wei"
+	}, {
+		"rank": 228266,
+		"value": 1824,
+		"label": "东莞车客云狗",
+		"type": 1,
+		"pinyin": "dong guan che ke yun gou"
+	}, {
+		"rank": 2613827,
+		"value": 25,
+		"label": "东莞华盈光达",
+		"type": 0,
+		"pinyin": "dong guan hua ying guang da"
+	}, {
+		"rank": 8457,
+		"value": 2345,
+		"label": "飞鹿快旧版Android",
+		"type": 1,
+		"pinyin": "fei lu kuai jiu ban android"
+	}, {
+		"rank": 4318558,
+		"value": 72,
+		"label": "福建福信富通物流",
+		"type": 0,
+		"pinyin": "fu jian fu xin fu tong wu liu"
+	}, {
+		"rank": 3986,
+		"value": 1731,
+		"label": "福特SYNC",
+		"type": 1,
+		"pinyin": "fu te sync"
+	}, {
+		"rank": 36925,
+		"value": 2351,
+		"label": "福信富通福吉星云狗",
+		"type": 1,
+		"pinyin": "fu xin fu tong fu ji xing yun gou"
+	}, {
+		"rank": 5528770,
+		"value": 23,
+		"label": "福信富通",
+		"type": 0,
+		"pinyin": "fu zhou fu xin fu tong"
+	}, {
+		"rank": 81608614,
+		"value": 2357,
+		"label": "谷米科技",
+		"type": 0,
+		"pinyin": "gu mi ke ji"
+	}, {
+		"rank": 404868,
+		"value": 2403,
+		"label": "广东车联网",
+		"type": 0,
+		"pinyin": "guang dong che lian wang"
+	}, {
+		"rank": 598025,
+		"value": 337,
+		"label": "广东慧视通物流",
+		"type": 0,
+		"pinyin": "guang dong hui shi tong wu liu"
+	}, {
+		"rank": 512969,
+		"value": 17,
+		"label": "广东兴诺物流",
+		"type": 0,
+		"pinyin": "guang dong xing nuo wu liu"
+	}, {
+		"rank": 5847078,
+		"value": 2394,
+		"label": "广州交委",
+		"type": 0,
+		"pinyin": "guang zhou jiao wei"
+	}, {
+		"rank": 7033,
+		"value": 90,
+		"label": "广州兴诺高频",
+		"type": 0,
+		"pinyin": "guang zhou xing nuo gao pin"
+	}, {
+		"rank": 8013,
+		"value": 2388,
+		"label": "海马M6",
+		"type": 1,
+		"pinyin": "hai ma m6"
+	}, {
+		"rank": 1699123,
+		"value": 10,
+		"label": "杭州交卫",
+		"type": 0,
+		"pinyin": "hang zhou jiao wei"
+	}, {
+		"rank": 4412966,
+		"value": 87,
+		"label": "河北城际物流",
+		"type": 0,
+		"pinyin": "he bei cheng ji wu liu"
+	}, {
+		"rank": 379384,
+		"value": 1232,
+		"label": "和地图Android",
+		"type": 1,
+		"pinyin": "he di tu android"
+	}, {
+		"rank": 1236,
+		"value": 1259,
+		"label": "和地图IOS",
+		"type": 1,
+		"pinyin": "he di tu ios"
+	}, {
+		"rank": 2986552,
+		"value": 7,
+		"label": "慧视通",
+		"type": 0,
+		"pinyin": "hui shi tong"
+	}, {
+		"rank": 497,
+		"value": 2339,
+		"label": "交通雷达付费账号",
+		"type": 1,
+		"pinyin": "jiao tong lei da fu fei zhang hao"
+	}, {
+		"rank": 498,
+		"value": 2402,
+		"label": "捷豹路虎英国",
+		"type": 1,
+		"pinyin": "jie bao lu hu ying guo"
+	}, {
+		"rank": 26631,
+		"value": 2352,
+		"label": "深圳京华数码云狗",
+		"type": 1,
+		"pinyin": "jing hua shu ma yun gou"
+	}, {
+		"rank": 23070133,
+		"value": 2304,
+		"label": "快的Android",
+		"type": 0,
+		"pinyin": "kuai di android"
+	}, {
+		"rank": 1697916,
+		"value": 2208,
+		"label": "快的IOS",
+		"type": 0,
+		"pinyin": "kuai di ios"
+	}, {
+		"rank": 2,
+		"value": 2409,
+		"label": "雷腾凯迪拉克",
+		"type": 1,
+		"pinyin": "lei teng kai di la ke"
+	}, {
+		"rank": 2477496,
+		"value": 202,
+		"label": "南京天泽",
+		"type": 0,
+		"pinyin": "nan jing tian ze"
+	}, {
+		"rank": 1733834,
+		"value": 396,
+		"label": "宁波信电",
+		"type": 0,
+		"pinyin": "ning bo xin dian"
+	}, {
+		"rank": 253734,
+		"value": 2338,
+		"label": "OnStar",
+		"type": 1,
+		"pinyin": "onstar"
+	}, {
+		"rank": 216508,
+		"value": 2398,
+		"label": "PSA-TPEG-CAPSA",
+		"type": 1,
+		"pinyin": "psa tpeg capsa"
+	}, {
+		"rank": 107640,
+		"value": 2395,
+		"label": "PSA-TPEG-DPCA",
+		"type": 1,
+		"pinyin": "psa tpeg dpca"
+	}, {
+		"rank": 55444,
+		"value": 2354,
+		"label": "奇华出租车项目",
+		"type": 0,
+		"pinyin": "qi hua chu zu che xiang mu"
+	}, {
+		"rank": 5960,
+		"value": 338,
+		"label": "三星导航Android",
+		"type": 1,
+		"pinyin": "san xing dao hang android"
+	}, {
+		"rank": 23,
+		"value": 2376,
+		"label": "SGM",
+		"type": 0,
+		"pinyin": "sgm"
+	}, {
+		"rank": 3210902,
+		"value": 12,
+		"label": "上海大众交通",
+		"type": 0,
+		"pinyin": "shang hai da zhong jiao tong"
+	}, {
+		"rank": 4710670,
+		"value": 6,
+		"label": "上海强生",
+		"type": 0,
+		"pinyin": "shang hai qiang sheng"
+	}, {
+		"rank": 3946018,
+		"value": 27,
+		"label": "沈阳交委",
+		"type": 0,
+		"pinyin": "shen yang jiao wei"
+	}, {
+		"rank": 110623,
+		"value": 40,
+		"label": "深圳雷腾高频",
+		"type": 0,
+		"pinyin": "shen zhen lei teng gao pin"
+	}, {
+		"rank": 33494,
+		"value": 2383,
+		"label": "深圳众创伟业",
+		"type": 0,
+		"pinyin": "shen zhen zhong chuang wei ye"
+	}, {
+		"rank": 397115,
+		"value": 372,
+		"label": "苏州智能交通",
+		"type": 0,
+		"pinyin": "su zhou zhi neng jiao tong"
+	}, {
+		"rank": 630637,
+		"value": 14,
+		"label": "天津中环",
+		"type": 0,
+		"pinyin": "tian jin zhong huan"
+	}, {
+		"rank": 2398,
+		"value": 1648,
+		"label": "天翼导航IOS",
+		"type": 1,
+		"pinyin": "tian yi dao hang ios"
+	}, {
+		"rank": 575,
+		"value": 740,
+		"label": "听说交通",
+		"type": 1,
+		"pinyin": "ting shuo jiao tong"
+	}, {
+		"rank": 1268,
+		"value": 2344,
+		"label": "听说交通旧版",
+		"type": 1,
+		"pinyin": "ting shuo jiao tong jiu ban"
+	}, {
+		"rank": 15107,
+		"value": 2404,
+		"label": "通用D2SB",
+		"type": 1,
+		"pinyin": "tong yong d2sb"
+	}, {
+		"rank": 4465,
+		"value": 2405,
+		"label": "通用新凯迪拉克",
+		"type": 1,
+		"pinyin": "tong yong xin kai di la ke"
+	}, {
+		"rank": 13670,
+		"value": 2347,
+		"label": "途景随行Android",
+		"type": 1,
+		"pinyin": "tu jing sui xing android"
+	}, {
+		"rank": 50534754,
+		"value": 1952,
+		"label": "拓途云狗",
+		"type": 1,
+		"pinyin": "tuo tu yun gou"
+	}, {
+		"rank": 3962230,
+		"value": 26,
+		"label": "武汉交委",
+		"type": 0,
+		"pinyin": "wu han jiao wei"
+	}, {
+		"rank": 1551187,
+		"value": 13,
+		"label": "无锡飞田",
+		"type": 0,
+		"pinyin": "wu xi fei tian"
+	}, {
+		"rank": 338502,
+		"value": 76,
+		"label": "兴诺科技",
+		"type": 0,
+		"pinyin": "xing nuo ke ji"
+	}, {
+		"rank": 283019,
+		"value": 79,
+		"label": "镇江联宇",
+		"type": 0,
+		"pinyin": "zhen jiang lian yu"
+	}, {
+		"rank": 2458,
+		"value": 725,
+		"label": "质量评测高频",
+		"type": 0,
+		"pinyin": "zhi liang ping ce gao pin"
+	}, {
+		"rank": 5201229,
+		"value": 106,
+		"label": "重庆索美",
+		"type": 0,
+		"pinyin": "zhong qing suo mei"
+	}, {
+		"rank": 674205,
+		"value": 77,
+		"label": "中山长宝科技",
+		"type": 0,
+		"pinyin": "zhong shan chang bao ke ji"
+	}, {
+		"rank": 1327395,
+		"value": 24,
+		"label": "珠海励勤网络",
+		"type": 0,
+		"pinyin": "zhu hai li qin wang luo"
+	}
+]

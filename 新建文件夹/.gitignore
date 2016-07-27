@@ -1,0 +1,5 @@
+.settings/
+.project
+*.zip
+src/assets/video/
+.idea/

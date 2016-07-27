@@ -1,11 +1,9 @@
-
-
 $(document).ready(function(){
 	var app = $(".app");
 	var topBar = $("#topBar");
 	var widgets = $("#widgets").children();
+	var addMap = $("#addMap");
 	var topBarController = new $at.TopBarController();
-	
 	
 	//$("#cesiumContainer").prependTo("body");	
 	$("#cesiumContainer").css("position","absolute");
@@ -56,13 +54,20 @@ $(document).ready(function(){
 		});
 		TweenLite.to(topBar,1,{y:-90,ease:Expo.easeInOut});
 	}
-	
 	var preloader = new $at.AppPreloader(app);
 	preloader.load(function(){
 		show();
 		//console.log("load")
 		redraw();
-	});	
+	});
+		
+	var controllerArea = new $at.controllerArea(controller.cesiumController);
+	controllerArea.drawAreaJson1("src/assets/data/chinas.json");
+	controllerArea.drawAreaJson2();
+	controllerArea.mouseEvent();
+	$("#addMap").click(function(){
+		controllerArea.changeMap();
+	})
 })
 
 

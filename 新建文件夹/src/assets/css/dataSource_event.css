@@ -1,0 +1,126 @@
+#eventSource 
+{
+	position: absolute;
+	left:1316px;
+	top:102px;
+	width: 566px;
+	height: 129px;
+	
+}
+
+#eventSource #es0
+{
+	position: absolute;
+	
+	width: 50%;
+	/*background-color: #bbf12f;*/
+	background-color: #00CC99;
+	height: 100%;
+}
+
+.eventSource_lable
+{
+	position: absolute;
+	left: 8px;
+	top: 4px;
+	font-size: 30px;
+	font-weight: bold;
+	font-family: "微软雅黑";
+	color: #000000;
+}
+.eventSource_text
+{
+	position: absolute;
+	left: 8px;
+	top: 42px;
+	font-size: 24px;
+	font-weight: bold;
+	font-family: "微软雅黑";
+	color: #FFFFFF;
+}
+.eventSource_text2
+{
+	position: absolute;
+	left: 8px;
+	top: 84px;
+	font-size: 24px;
+	font-weight: bold;
+	font-family: "微软雅黑";
+	color: #FFFFFF;
+}
+#eventSource #es1
+{
+	position: absolute;
+	left:50%;
+	width: 50%;
+	background-color: #009FE8;
+	height: 100%;
+}
+
+
+#eventSource #es2
+{
+	position: absolute;
+	left:50%;
+	width: 50%;
+	background-color: #009FE8;
+	
+	height: 100%;
+}
+
+
+#eventType
+{
+	position: absolute;
+	top:150px;
+	height:700px;
+	width:200px;
+	left:100px;
+	/*border: solid 2px;*/
+	display: none;
+}
+/*------------------------------------------------------------------------------------*/
+#infoBox
+{
+	position: absolute;
+	width: 400px;
+	height: auto;
+	border: solid 1px #497FA4;
+	background-color: #044074;
+	left:1920px;
+	top:240px;
+	display: none;
+}
+
+#infoBox .header
+{
+	padding: 5px;
+}
+
+#infoBox .header .title
+{
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 20px;
+	float: left;
+}
+
+#infoBox .header .closeBt
+{
+	background-image: url(../images/dataSource/closeIcon.png);
+	width: 15px;
+	height: 15px;
+	float: right;
+	background-size: contain;
+	margin: 5px;
+	cursor: pointer;
+}
+
+#infoBox .body
+{
+	background-color:#002D59;
+	height: auto;
+	margin-top: 25px;
+	padding: 5px;
+	color: #B5DDF9;
+}

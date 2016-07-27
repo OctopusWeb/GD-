@@ -1,0 +1,82 @@
+﻿#bg
+{
+	background-image: url(../images/index/bg.png);
+	width: 1920px;
+	height: 1080px;
+	position: absolute;
+}
+
+#logo
+{
+	width: 243px;
+	height: 68px;
+	background-image: url(../images/index/logo.png);
+	position: absolute;
+	left: 40px;
+	top: 39px;
+}
+
+#slogan
+{
+	position: absolute;
+	width: 370px;
+	height: 61px;
+	background-image: url(../images/index/slogan.png);
+	left:1510px;
+	top: 40px;
+}
+
+#bts
+{
+	position: absolute;
+}
+
+#bts div
+{
+	position: absolute;
+	width: 274px;
+	height: 315px;
+	cursor: pointer;
+}
+
+#bts #b0
+{
+	left: 311px;
+	top: 256px;
+	background-image: url(../images/index/0.png);
+}
+
+#bts #b1
+{
+	left: 457px;
+	top: 509px;
+	background-image: url(../images/index/1.png);
+}
+
+#bts #b2
+{
+	left: 750px;
+	top: 509px;
+	background-image: url(../images/index/2.png);
+}
+
+#bts #b3
+{
+	left: 896px;
+	top: 256px;
+	background-image: url(../images/index/3.png);
+}
+
+#bts #b4
+{
+	left: 1189px;
+	top: 256px;
+	background-image: url(../images/index/4.png);
+}
+
+#bts #b5
+{
+	left: 1335px;
+	top: 509px;
+	background-image: url(../images/index/5.png);
+}

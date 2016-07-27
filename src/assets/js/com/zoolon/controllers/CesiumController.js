@@ -801,7 +801,6 @@ define("CesiumController",function(exporter){
 				viewer.dataSources.remove(this.czmlDataSource,true);
 			}
 		}
-		controllerArea(viewer);
 	}
 	
 	function toISO8601Date(str)
