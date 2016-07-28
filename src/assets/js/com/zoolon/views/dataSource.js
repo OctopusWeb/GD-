@@ -57,16 +57,18 @@ $(document).ready(function(){
 	var preloader = new $at.AppPreloader(app);
 	preloader.load(function(){
 		show();
-		//console.log("load")
 		redraw();
 	});
 		
-	var controllerArea = new $at.controllerArea(controller.cesiumController);
-	controllerArea.drawAreaJson1("src/assets/data/chinas.json");
-	controllerArea.drawAreaJson2();
+	var controllerArea = new $at.controllerArea(controller.cesiumController,controller.widgetsController);
+	controllerArea.drawAreaJson1("src/assets/data/proArea.json");
+	controllerArea.drawAreaJson2("src/assets/data/cityArea.json");
 	controllerArea.mouseEvent();
 	$("#addMap").click(function(){
 		controllerArea.changeMap();
+	});
+	$("#trafficEvent").click(function(){
+		controllerArea.trafficEvent();
 	})
 })
 

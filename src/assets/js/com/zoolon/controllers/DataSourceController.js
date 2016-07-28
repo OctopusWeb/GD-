@@ -5,6 +5,7 @@ define("DataSourceController",function(exporter){
 		var cesiumController = new exporter.CesiumController("cesiumContainer");
 		this.cesiumController = cesiumController;
 		var widgetsController = new exporter.DataSourceWidgetsController();
+		this.widgetsController = widgetsController;
 		var eventController = new exporter.EventController(cesiumController.cesiumViewer);
 
 		function init()
