@@ -18,7 +18,8 @@ define("controllerArea",function(exporter){
 		eventController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
 		
 		this.drawAreaJson1 = function(url){
-			$.getJSON(url,function(datas){
+			//$.getJSON(url,function(datas){
+			$at.get(url,undefined,function(datas){
 				for(var m=0;m<datas.features.length;m++){
 					var data = datas.features[m];
 					var center = [data.properties.X_CENTER,data.properties.Y_CENTER];
@@ -28,7 +29,7 @@ define("controllerArea",function(exporter){
 			})
 		}
 		this.drawAreaJson2 = function(url){
-			$.getJSON(url,function(datas){
+			$at.get(url,undefined,function(datas){
 				for(var m=0;m<datas.features.length;m++){
 					var data = datas.features[m];
 					var center = [data.properties.X_CENTER,data.properties.Y_CENTER];
