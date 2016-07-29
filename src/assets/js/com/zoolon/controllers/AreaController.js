@@ -74,6 +74,17 @@ define("controllerArea",function(exporter){
 		}
 		function drawArea1(data,areaType,num){
 			var boundaries = data.geometry.coordinates;
+			typeof(boundaries[0][0][0]) == "number" ?boundaries=boundaries : boundaries=boundaries[0];
+			if(boundaries.length ==1){
+				boundaries=boundaries
+			}else{
+				var boundarie=[];
+				for (var i=0;i<boundaries.length;i++) {
+					boundarie = boundarie.concat(boundaries[i])
+				}
+				boundaries=[];
+				boundaries.push(boundarie)
+			}
 	        var geometryInstances = [];
 	        for (var i = 0; i < boundaries.length; i++) {
 	            var degreesArray = [];
@@ -109,7 +120,7 @@ define("controllerArea",function(exporter){
 		    if (pickedObject.length > 0) {
             	for (var i = 0; i < pickedObject.length; i++) {
 	                var id = pickedObject[i].id;
-	                
+
 	                if(!id){return}
                 	if (viewer.camera.getMagnitude() >= 1000001 && id.substr(0,1)=="p") {
                 		
@@ -137,8 +148,8 @@ define("controllerArea",function(exporter){
 					        destination : Cesium.Cartesian3.fromDegrees(provinceCenter[center][0], provinceCenter[center][1], 900000.0)
 					    });
 				    }else if(viewer.camera.getMagnitude() < 1000000 && pickID.substr(0,1)=="c"){
-				    	var dataCode = pickID.substr(1,2);
-				    	dataCode = dataCode+"0000";
+				    	var dataCode = pickID.substr(1,6);
+				    	dataCode == "110100" ? dataCode="110000":dataCode=dataCode;
 						loadDataSource(dataCode);
 				    }
 	    		}
@@ -172,7 +183,7 @@ define("controllerArea",function(exporter){
 		    }
 		}
 		function loadDataSource(cityCode)
-		{			
+		{
 			cur_cityCode = cityCode;
 			CesiumController.cityCode = cityCode;
 			widgetsController.loadDataSource(cityCode);
