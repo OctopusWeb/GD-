@@ -18,7 +18,6 @@ define("controllerArea",function(exporter){
 		eventController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
 		
 		this.drawAreaJson1 = function(url){
-			//$.getJSON(url,function(datas){
 			$at.get(url,undefined,function(datas){
 				for(var m=0;m<datas.features.length;m++){
 					var data = datas.features[m];
@@ -50,6 +49,7 @@ define("controllerArea",function(exporter){
 			        tileMatrixSetID: 'default028mm',
 			        maximumLevel: 20,
 				}));
+				road.alpha = 0.5;
 			}
 			mapArea=!mapArea;
 		}
@@ -67,11 +67,27 @@ define("controllerArea",function(exporter){
 		this.mouseEvent = function(){
 			var handler = viewer.screenSpaceEventHandler;
 			handler.setInputAction(function (movement) {
+				if(viewer.camera.getMagnitude() <= 200000){
+				    	unselect();
+				    	return;
+				}
 		        moveEvent(movement);
 		    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 		    handler.setInputAction(function (movement) {
+		    	if(viewer.camera.getMagnitude() <= 200000){
+				    	unselect();
+				    	return;
+				}
 		    	ClickEvent(movement)
 		    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
+		    handler.setInputAction(function (movement) {
+		    	if(viewer.camera.getMagnitude() > 200000){
+		    		CesiumController.clear();
+		    		eventController.clear();
+					eventController.active = false;
+					trafficEvent = true;
+		    	}
+		    }, Cesium.ScreenSpaceEventType.WHEEL);
 		}
 		function drawArea1(data,areaType,num){
 			var boundaries = data.geometry.coordinates;
@@ -113,7 +129,6 @@ define("controllerArea",function(exporter){
 	            releaseGeometryInstances: false,
 	            geometryInstances: geometryInstances,
 	            appearance: new Cesium.PerInstanceColorAppearance({}),
-	
 	        }));
 		}
 		function moveEvent(movement){
@@ -121,17 +136,13 @@ define("controllerArea",function(exporter){
 		    if (pickedObject.length > 0) {
             	for (var i = 0; i < pickedObject.length; i++) {
 	                var id = pickedObject[i].id;
-
 	                if(!id){return}
                 	if (viewer.camera.getMagnitude() >= 1000001 && id.substr(0,1)=="p") {
-                		
 			        	var primitive = pickedObject[i].primitive;
         				select(primitive);
 				    }else if(viewer.camera.getMagnitude() <= 1000000 && viewer.camera.getMagnitude() > 200001 && id.substr(0,1)=="c"){
 			        	var primitive = pickedObject[i].primitive;
         				select(primitive);
-				    }else if(viewer.camera.getMagnitude() <= 200000){
-				    	unselect();
 				    }
 		        }     
 		    }else{
@@ -148,7 +159,7 @@ define("controllerArea",function(exporter){
 				        viewer.camera.flyTo({
 					        destination : Cesium.Cartesian3.fromDegrees(provinceCenter[center][0], provinceCenter[center][1], 900000.0)
 					    });
-				    }else if(viewer.camera.getMagnitude() < 1000000 && pickID.substr(0,1)=="c"){
+				    }else if(viewer.camera.getMagnitude() < 1000000 && viewer.camera.getMagnitude() > 200001 && pickID.substr(0,1)=="c"){
 				    	var dataCode = pickID.substr(1,6);
 				    	dataCode == "110100" ? dataCode="110000":dataCode=dataCode;
 						loadDataSource(dataCode);
@@ -198,12 +209,12 @@ define("controllerArea",function(exporter){
 			
 		}
 		
-		Array.prototype.S=String.fromCharCode(2);  
-		Array.prototype.in_array=function(e)  
-		{  
-		var r=new RegExp(this.S+e+this.S);  
-		return (r.test(this.S+this.join(this.S)+this.S));  
-		}
+//		Array.prototype.S=String.fromCharCode(2);  
+//		Array.prototype.in_array=function(e)  
+//		{
+//		var r=new RegExp(this.S+e+this.S);  
+//		return (r.test(this.S+this.join(this.S)+this.S));  
+//		}
 	}
 	return controllerArea;
 });

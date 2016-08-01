@@ -31,17 +31,20 @@
 			}
 			else
 			{
+				
 				if(city.name == "全国")
 				{
 					flyToViewAll(undefined,onComplete);
+				}else{
+					onComplete(city);
 				}
-				else
-				{
-					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
-						complete:onComplete
-					});
-				}
+//				else
+//				{
+//					viewer.camera.flyTo({
+//						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
+//						complete:onComplete
+//					});
+//				}
 			}
 		}
 			
@@ -226,6 +229,17 @@
 					var pinBuilder = new Cesium.PinBuilder();
 					var position = Cesium.Cartesian3.fromDegrees(cityInfo.lat,cityInfo.lng);
 					
+					var entity = {
+						name : sourceData[i].name,
+						position : position,
+						billboard : {
+							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.BLACK,
+									100).toDataURL(),
+
+							verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+
+						}
+					};
 					var cityPin = viewer.entities.add({
 						name : sourceData[i].name,
 						position : position,
@@ -237,6 +251,7 @@
 
 						}
 					});
+					
 					countEntities.push(cityPin);
 				}
 				
@@ -393,7 +408,7 @@
 					entitySources[eventObj.id] = eventObj.source;
 					if(eventObj.type==null || eventObj.type=="") continue;
 					var size = 30;
-					var height = 0;
+					var height = 1;
 					var url;
 					if(eventObj.pic){
 						size = 40;
@@ -421,7 +436,6 @@
 					//console.log(color);
 					if(lastTimeEntites[eventObj.id] == null){
 						var pos = (eventObj.lngLat).split(",");
-						
 						var eventPin = viewer.entities.add({
 								name : eventObj.id,
 								position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1],height),
@@ -476,81 +490,83 @@
 					viewer.scene.canvas);
 			selectPinHandler.setInputAction(function(movement) {
 				if(!self.active || cur_cityCode=="100000") return;
-				//console.log(movement.position);
-				var pickedObject = viewer.scene.pick(movement.position);
-				
-				if (Cesium.defined(pickedObject) && pickedObject.primitive instanceof Cesium.Billboard) {
-					var selectedPin = pickedObject.primitive;
-
-					selectedPin.id.billboard.scale = 2;
-					var timerPin;
-					timerPin = setTimeout(function(){
-						clearTimeout(timerPin);
-						selectedPin.id.billboard.scale = 1;
-					}, 1000 * 10 * 1)
-					
-					
-					//将经纬度转为pix
-					//var screenPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(scene, starBurstState.center);
-					var eventId = selectedPin.id.name;
-					var eventObj = eventMap[eventId];
-					
-					var pos = (eventObj.lngLat).split(",");
-					
-					var position = {};
-					position.lng=pos[0];
-					position.lat=pos[1];
-					flyToEvent(position,(function(id){
-						exporter.Server.queryEventByCityAndId(cur_cityCode,id, function(data) {
-							
-							if (data == "404") {
+//				var pickedObject = viewer.scene.pick(movement.position);
+				var pickedObjects = viewer.scene.drillPick(movement.position);
+	    		for (var i = 0; i < pickedObjects.length; i++) {
+	    			var pickedObject = pickedObjects[i];	    		
+					if (Cesium.defined(pickedObject) && pickedObject.primitive instanceof Cesium.Billboard) {
+						var selectedPin = pickedObject.primitive;
+	
+						selectedPin.id.billboard.scale = 2;
+						var timerPin;
+						timerPin = setTimeout(function(){
+							clearTimeout(timerPin);
+							selectedPin.id.billboard.scale = 1;
+						}, 1000 * 10 * 1)
+						
+						
+						//将经纬度转为pix
+						//var screenPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(scene, starBurstState.center);
+						var eventId = selectedPin.id.name;
+						var eventObj = eventMap[eventId];
+						
+						var pos = (eventObj.lngLat).split(",");
+						
+						var position = {};
+						position.lng=pos[0];
+						position.lat=pos[1];
+						flyToEvent(position,(function(id){
+							exporter.Server.queryEventByCityAndId(cur_cityCode,id, function(data) {
 								
-								return;
-							}
-							var sourceData = JSON.parse(data);
-							//console.log(sourceData);
-							
-							infoBoxController.updateInfo(sourceData);
-							infoBoxController.open();
-							//console.log("var: "+sourceData);
-							if(!sourceData.shape || sourceData.shape == null) return;
-							var shape = sourceData.shape;
-							
-							if(shape.length>0){
+								if (data == "404") {
+									
+									return;
+								}
+								var sourceData = JSON.parse(data);
+								//console.log(sourceData);
 								
-								var points = [];
-								points.push(shape[0].startPoint.longitude);
-								points.push(shape[0].startPoint.latitude);
+								infoBoxController.updateInfo(sourceData);
+								infoBoxController.open();
+								//console.log("var: "+sourceData);
+								if(!sourceData.shape || sourceData.shape == null) return;
+								var shape = sourceData.shape;
 								
-								for(var i=0; i<shape[0].points.length;i++){
-									points.push(shape[0].points[i].longitude);
-									points.push(shape[0].points[i].latitude);
+								if(shape.length>0){
+									
+									var points = [];
+									points.push(shape[0].startPoint.longitude);
+									points.push(shape[0].startPoint.latitude);
+									
+									for(var i=0; i<shape[0].points.length;i++){
+										points.push(shape[0].points[i].longitude);
+										points.push(shape[0].points[i].latitude);
+										
+									}
+									var lineEntity = viewer.entities.add({
+								           	name : '',
+								           	position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1]),
+								         	polyline : {
+								         		positions :  Cesium.Cartesian3.fromDegreesArray(points),
+								         		width : 5,
+								         		material : new Cesium.PolylineOutlineMaterialProperty({
+										            color : Cesium.Color.YELLOW,
+										            outlineWidth : 4,
+										            outlineColor : Cesium.Color.BLACK
+										        })
+								         	}
+							        });
+							        lineEntities = [];
+									lineEntities.push(lineEntity);
 									
 								}
-								var lineEntity = viewer.entities.add({
-							           	name : '',
-							           	position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1]),
-							         	polyline : {
-							         		positions :  Cesium.Cartesian3.fromDegreesArray(points),
-							         		width : 5,
-							         		material : new Cesium.PolylineOutlineMaterialProperty({
-									            color : Cesium.Color.YELLOW,
-									            outlineWidth : 4,
-									            outlineColor : Cesium.Color.BLACK
-									        })
-							         	}
-						        });
-						        lineEntities = [];
-								lineEntities.push(lineEntity);
 								
-							}
-							
-						});
-					})(eventId));
-				}else{
-					infoBoxController.close();
+							});
+						})(eventId));
+						return
+					}else{
+						infoBoxController.close();
+					}
 				}
-
 			}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 		}
@@ -639,7 +655,11 @@
 			this.close = function()
 			{
 				removeLine();
-				flyToCurrentCity(function(){});
+				flyToCurrentCity(function(city){
+					viewer.camera.flyTo({
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+					});
+				});
 				
 				this.view.css("display","none");
 				exporter.mouseChildren(this.view,false);

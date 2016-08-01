@@ -168,7 +168,7 @@ define("CesiumController",function(exporter){
 				if(customDataSource!=undefined)customDataSource.destroy();
 				customDataSource = new SnapshotDataSource(data);
 				clearTimeout(timer);
-				timer = setTimeout(loadSnapshotData,1000*30);
+				timer = setTimeout(loadSnapshotData,1000*120);
 			});
 		}
 		
@@ -342,6 +342,8 @@ define("CesiumController",function(exporter){
 			var _self = this;
 			var dataParser = new DataParser(data.data);
 			this.collection = viewer.scene.primitives.add(new Cesium.PointPrimitiveCollection());
+			//viewer.scene.primitives.raiseToTop(this.collection);
+			
 			var colorMap = new ColorMap();
 			
 			//画出所有的点
