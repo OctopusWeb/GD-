@@ -2,15 +2,23 @@
 define("BarController",function(exporter){
 	var BarController = function(controller)
 	{
+		var viewer = controller.cesiumController.cesiumViewer;
+		var entities = viewer.entities;
+		var proBox = entities.add(new Cesium.Entity());
+		var cityBox = entities.add(new Cesium.Entity());
 		this.drawBars= function(url,dataType){
 			$at.get(url,undefined,function(barData){
 				for(var i=0;i<barData.length;i++){
 					drawBar(barData[i],dataType).then(function(codeData,barData){
 						var barParse = new BarParse(codeData,barData)
-						var cityBar = new CityBar(barParse);
+						var cityBar = new CityBar(barParse,dataType);
 					})
 				}
 			})
+		}
+		this.clear = function(bol,bol1){
+			proBox.show = bol;
+			cityBox.show = bol1;
 		}
 		
 		function drawBar(barData,dataType){
@@ -33,22 +41,23 @@ define("BarController",function(exporter){
 			var codeDatas = codeData.features;
 			for (var i=0;i<codeDatas.length;i++) {
 				if(codeDatas[i].properties.AD_CODE == barData.cityCode){
-					console.log(codeDatas[i].properties.X_CENTER+"++++++"+codeDatas[i].properties.Y_CENTER)
 					cityCenter.push(codeDatas[i].properties.X_CENTER,codeDatas[i].properties.Y_CENTER,barData.dataNum)
 				};
 			}
 			return cityCenter;
 		}
 		
-		function CityBar(barParse){
-			var viewer = controller.cesiumController.cesiumViewer;
-			var blueBox = viewer.entities.add({
-			    position: Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/20),
-			    box : {
-			        dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/10),
-			        material : Cesium.Color.BLUE
-			    }
-			});
+		function CityBar(barParse,dataType){
+			 var Box;
+			 dataType == "pro" ? Box = proBox :Box = cityBox;
+			 entities.add({
+		        parent : Box,
+		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/20),
+		        box : {
+		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/10),
+		            material : Cesium.Color.fromRandom({alpha : 1.0})
+		        }
+		   });
 		}	
 	}
 	return BarController;

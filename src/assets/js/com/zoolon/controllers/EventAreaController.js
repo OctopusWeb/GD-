@@ -7,6 +7,11 @@ define("eventAreaController",function(exporter){
 		var CesiumController = controller.cesiumController;
 		var widgetsController = controller.widgetsController;
 		var viewer = controller.cesiumController.cesiumViewer;
+		var barController = new $at.BarController(controller);
+		
+		barController.drawBars("src/assets/data/proBar.json","pro");
+		barController.drawBars("src/assets/data/cityBar.json","city");
+		barController.clear(true,false);
 		
 		
 		
@@ -15,7 +20,7 @@ define("eventAreaController",function(exporter){
 		var mapArea = false;
 		var self = this;
 		var selected = null;
-		var traffiBol = true;
+		var traffiBol = false;
 		
 		CesiumController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
 		CesiumController.getDsList = widgetsController.controllers.widget0.dsSelector.getDsList;
@@ -39,15 +44,16 @@ define("eventAreaController",function(exporter){
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
 	    handler.setInputAction(function (movement) {
 	    	if(viewer.camera.getMagnitude() <= 1000000 && viewer.camera.getMagnitude() > 200000){
-//	    		$("#trafficEvent").removeClass("changeIcon");
-//	    		CesiumController.clear();
-//	    		eventController.clear();
-//				eventController.active = false;
+	    		CesiumController.clear();
+	    		eventController.clear();
+	    		barController.clear(true,false);
+				eventController.active = false;
 	    	}
 	    }, Cesium.ScreenSpaceEventType.WHEEL);
 		
 		function moveEvent(movement){
 			if(viewer.camera.getMagnitude() <= 200000){
+					barController.clear(false,false);
 			    	unselect();
 			    	return;
 			}
@@ -78,13 +84,25 @@ define("eventAreaController",function(exporter){
 	    		for (var i = 0; i < pickedObject.length; i++) {
 	    			var pickID = pickedObject[i].id;	
 	    			if (viewer.camera.getMagnitude() >= 1000001 && pickID.substr(0,1)=="p") {
+	    				barController.clear(false,true);
 			        	var center = pickID.substr(pickID.indexOf('-')+1,pickID.length);
 			        	var dataCode = pickID.substr(1,6);
 				        viewer.camera.flyTo({
 					        destination : Cesium.Cartesian3.fromDegrees(provinceCenter[center][0], provinceCenter[center][1], 900000.0)
 					    });
 				    }else if(viewer.camera.getMagnitude() < 1000000 && viewer.camera.getMagnitude() > 200001 && pickID.substr(0,1)=="c"){
+				    	barController.clear(false,false);
 				    	var dataCode = pickID.substr(1,6);
+				    	if(traffiBol){
+							cur_selectedIndex1=3
+							eventController.clear();
+							eventController.active = true;
+							eventController.loadEvent(this.cityCode);
+						}else{
+							cur_selectedIndex1=0;
+							eventController.clear();
+							eventController.active = false;
+						}
 				    	loadDataSource(dataCode);
 				    }
 	    		}
@@ -134,6 +152,7 @@ define("eventAreaController",function(exporter){
 			mapArea=!mapArea;
 		}
 		this.trafficEvent = function(){
+			traffiBol=!traffiBol;
 			if(traffiBol){
 				cur_selectedIndex1=3
 				eventController.clear();
@@ -144,7 +163,7 @@ define("eventAreaController",function(exporter){
 				eventController.clear();
 				eventController.active = false;
 			}
-			traffiBol=!traffiBol;
+			
 		}
 		function loadDataSource(cityCode)
 		{

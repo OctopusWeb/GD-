@@ -3,6 +3,7 @@
 		var self = this;
 		this.cesiumViewer = cesiumViewer;
 		var viewer = this.cesiumViewer;
+		var entityId = [];
 		
 		this.active = false;
 		
@@ -236,10 +237,11 @@
 					
 					var pinBuilder = new Cesium.PinBuilder();
 					var position = Cesium.Cartesian3.fromDegrees(cityInfo.lat,cityInfo.lng);
-					
+					var cityPinId = "cityPin"+i;
 					var cityPin = viewer.entities.add({
 						name : sourceData[i].name,
 						position : position,
+						id:cityPinId,
 						billboard : {
 							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.BLACK,
 									100).toDataURL(),
@@ -248,6 +250,7 @@
 
 						}
 					});
+					entityId.push(cityPinId);
 					countEntities.push(cityPin);
 				}
 				
@@ -439,16 +442,17 @@
 					//console.log(color);
 					if(lastTimeEntites[eventObj.id] == null){
 						var pos = (eventObj.lngLat).split(",");
-						
+						var eventPinId = "eventPin"+i;
 						var eventPin = viewer.entities.add({
 								name : eventObj.id,
+								id:eventPinId,
 								position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1],height),
 								billboard : {
 									image : pinBuilder.fromUrl(url,color, size),
 									verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 								}
 							});
-						
+						entityId.push(eventPinId);
 						lastTimeEntites[eventObj.id] = eventPin;
 						if(newEvent)tweenPin(eventPin);//新事件
 						
@@ -547,8 +551,10 @@
 										points.push(shape[0].points[i].latitude);
 										
 									}
+									var lineEntityId = "lineEntityId"+i;
 									var lineEntity = viewer.entities.add({
 								           	name : sourceData.eventDesc,
+								           	id:lineEntityId,
 								           	position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1]),
 								         	polyline : {
 								         		positions :  Cesium.Cartesian3.fromDegreesArray(points),
@@ -560,6 +566,7 @@
 										        })
 								         	}
 							        });
+							        entityId.push(lineEntityId);
 							        //lineEntities = [];
 									lineEntities.push(lineEntity);
 									
@@ -590,7 +597,10 @@
 			countEntities = [];
 			lastTimeEntites = {};
 			eventMap = {};
-        	viewer.entities.removeAll();
+			for (var i=0;i<entityId.length;i++) {
+				viewer.entities.removeById(entityId[i])
+			}
+			entityId=[];
 		}
         
         var getEventTypeName = function(type){

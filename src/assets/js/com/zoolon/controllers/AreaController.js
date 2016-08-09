@@ -35,7 +35,7 @@ define("controllerArea",function(exporter){
 		function ParseArea(datas,dataType){
 			var areaArray = [];
 			this.changeArray = function(BigArray){
-					if(BigArray.length != 1){
+				if(BigArray.length != 1){
 					var smallArray=[];
 					for (var i=0;i<BigArray.length;i++) {
 						smallArray = smallArray.concat(BigArray[i])
