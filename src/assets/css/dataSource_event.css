@@ -88,7 +88,7 @@
 	border: solid 1px #497FA4;
 	background-color: #044074;
 	left:1920px;
-	top:240px;
+	top:540px;
 	display: none;
 }
 
@@ -124,3 +124,8 @@
 	padding: 5px;
 	color: #B5DDF9;
 }
+.icon{position: absolute;width: 50px;height:40px;top: 965px;left: 1760px;background: #07558f;border: 1px #009fe8 solid;
+text-align: center;cursor: pointer;}
+.icon img{height: 20px;float: left;margin-top: 10px;margin-left: 15px;}
+#addMap{margin-left: 70px;}
+.changeIcon{background: #078f84;}

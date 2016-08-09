@@ -7,6 +7,7 @@ define("DataSourceController",function(exporter){
 		var widgetsController = new exporter.DataSourceWidgetsController();
 		this.widgetsController = widgetsController;
 		var eventController = new exporter.EventController(cesiumController.cesiumViewer);
+		this.eventController = eventController;
 
 		function init()
 		{
@@ -106,13 +107,19 @@ define("DataSourceController",function(exporter){
 			cur_cityCode = cityCode;
 			cesiumController.cityCode = cityCode;
 			widgetsController.loadDataSource(cityCode);
+			
 			if(cur_selectedIndex==3){
 				eventController.clear();
 				eventController.loadEvent(cur_cityCode);
 			}else{
-				
+				//如果点击了事件图层
+				if(cur_selectedIndex1==3){
+					eventController.clear();
+					eventController.loadEvent(cur_cityCode);
+				}
 				cesiumController.loadDataSource(cityCode);
 			}
+			
 			
 		}
 		

@@ -54,22 +54,30 @@ $(document).ready(function(){
 		});
 		TweenLite.to(topBar,1,{y:-90,ease:Expo.easeInOut});
 	}
+	
+	$(".icon").bind("click",function(e){
+		e.stopPropagation();
+		var claDom = $(this);
+		claDom.attr("class") == "icon" ? claDom.addClass("changeIcon"):claDom.removeClass("changeIcon");
+	})
+	
 	var preloader = new $at.AppPreloader(app);
 	preloader.load(function(){
 		show();
 		redraw();
 	});
 		
-	var controllerArea = new $at.controllerArea(controller.cesiumController,controller.widgetsController);
-	controllerArea.drawAreaJson1("src/assets/data/proArea.json");
-	controllerArea.drawAreaJson2("src/assets/data/cityArea.json");
-	controllerArea.mouseEvent();
-	$("#addMap").click(function(){
-		controllerArea.changeMap();
-	});
-	$("#trafficEvent").click(function(){
-		controllerArea.trafficEvent();
-	})
+		
+		
+	var controllerArea = new $at.controllerArea(controller);
+	controllerArea.init();
+	
+	var eventArea = new $at.eventAreaController(controller,controllerArea);
+	
+	var barController = new $at.BarController(controller);
+	barController.drawBars("src/assets/data/proBar.json","pro");
+	
+	
 })
 
 

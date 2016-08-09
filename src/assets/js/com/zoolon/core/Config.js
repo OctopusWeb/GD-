@@ -47,4 +47,5 @@ define("Config",function(exporter){
 });
 //用于数据源的全局变量
 var cur_selectedIndex = 0;
+var cur_selectedIndex1 = 0;
 var cur_cityCode = "100000";

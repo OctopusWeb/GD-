@@ -1,0 +1,22 @@
+   [
+    {
+        "cityCode": 100000,
+        "dataNum": 323175117,
+        "validMileage": 13919741
+    },
+    {
+        "cityCode": 110000,
+        "dataNum": 4841387,
+        "validMileage": 293166
+    },
+    {
+        "cityCode": 120000,
+        "dataNum": 17756413,
+        "validMileage": 942170
+    },
+    {
+        "cityCode": 130000,
+        "dataNum": 14029594,
+        "validMileage": 1044117
+    }
+]

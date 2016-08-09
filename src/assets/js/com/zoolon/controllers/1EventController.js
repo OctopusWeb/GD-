@@ -35,20 +35,16 @@
 				if(city.name == "全国")
 				{
 					flyToViewAll(undefined,onComplete);
+				}else{
+					onComplete(city);
 				}
-				else{
-					if(cur_selectedIndex1 == 3){
-						onComplete(city);
-					}else
-					{
-						viewer.camera.flyTo({
-							destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
-							complete:onComplete
-						});
-					}
-					
-				}
-				
+//				else
+//				{
+//					viewer.camera.flyTo({
+//						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
+//						complete:onComplete
+//					});
+//				}
 			}
 		}
 			
@@ -59,10 +55,6 @@
 			$(viewer.timeline.container).hide();
 			flyToCurrentCity(function(){
 				loadData();
-				if (cur_cityCode == "100000") {
-				}else{
-					addMouseHander();
-				}
 			});
 
 		}
@@ -85,8 +77,7 @@
 				
 				loadAllCountryEvents();
 			} else {
-				loadEventByCity();			
-				
+				loadCityEvents(cur_cityCode);
 			}
 			
 			clearTimeout(timer);
@@ -178,6 +169,7 @@
 		
 		var loadEventTypeCount = function() {
 			eventTypeLoader = exporter.Server.countEventByType(cur_cityCode, function(data) {
+				//console.log(data);
 				if (data == "404") {
 					loadEventTypeCount();
 					return;
@@ -189,9 +181,9 @@
 					"事故" : 0,
 					"施工类" : 0,
 					"管制类" : 0,
-					"路面" : 0,
+					"关闭类" : 0,
 					"其他" : 0,
-					"流量" : 0
+					"交通流量" : 0
 				};
 
 				for (var i = 0; i < sourceData.length; i++) {
@@ -199,10 +191,10 @@
 				}
 				$("#widgets #eventType #et1 #count").text(map["其他"]);
 				$("#widgets #eventType #et2 #count").text(map["事故"]);
-				$("#widgets #eventType #et3 #count").text(map["流量"]);
+				$("#widgets #eventType #et3 #count").text(map["交通流量"]);
 				$("#widgets #eventType #et4 #count").text(map["管制类"]);
 				$("#widgets #eventType #et5 #count").text(map["施工类"]);
-				$("#widgets #eventType #et6 #count").text(map["路面"]);
+				$("#widgets #eventType #et6 #count").text(map["关闭类"]);
 				
 			});
 		}
@@ -237,6 +229,17 @@
 					var pinBuilder = new Cesium.PinBuilder();
 					var position = Cesium.Cartesian3.fromDegrees(cityInfo.lat,cityInfo.lng);
 					
+					var entity = {
+						name : sourceData[i].name,
+						position : position,
+						billboard : {
+							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.BLACK,
+									100).toDataURL(),
+
+							verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+
+						}
+					};
 					var cityPin = viewer.entities.add({
 						name : sourceData[i].name,
 						position : position,
@@ -248,6 +251,7 @@
 
 						}
 					});
+					
 					countEntities.push(cityPin);
 				}
 				
@@ -270,24 +274,24 @@
 		var eventFlagPic = {
 				'1':'../../../../images/dataSource/pt2.png',
 				'2':'../../../../images/dataSource/pt5.png',
-				'8':'../../../../images/dataSource/pt4.png',
-				'3':'../../../../images/dataSource/pt6.png',
+				'3':'../../../../images/dataSource/pt4.png',
+				'4':'../../../../images/dataSource/pt6.png',
 				'5':'../../../../images/dataSource/pt1.png',
 				'6':'../../../../images/dataSource/pt0.png'
 		};
 		var eventFlagPicCamera = {
 				'1':'../../../../images/dataSource/ct2.png',
 				'2':'../../../../images/dataSource/ct5.png',
-				'8':'../../../../images/dataSource/ct4.png',
-				'3':'../../../../images/dataSource/ct6.png',
+				'3':'../../../../images/dataSource/ct4.png',
+				'4':'../../../../images/dataSource/ct6.png',
 				'5':'../../../../images/dataSource/ct1.png',
 				'6':'../../../../images/dataSource/ct0.png'
 		};
 		var eventFlagColor = {
 				'1':Cesium.Color.fromCssColorString('#e15049'),
 				'2':Cesium.Color.fromCssColorString('#d69465'),
-				'8':Cesium.Color.fromCssColorString('#3d93e9'),
-				'3':Cesium.Color.fromCssColorString('#f5c13d'),
+				'3':Cesium.Color.fromCssColorString('#3d93e9'),
+				'4':Cesium.Color.fromCssColorString('#f5c13d'),
 				'5':Cesium.Color.fromCssColorString('#8e6ac0'),
 				'6':Cesium.Color.fromCssColorString('#ff7046')
 			
@@ -369,17 +373,16 @@
 				var exist = false;
 				for(var i=0;i<eventsData.length;i++){
 					var eventObj = eventsData[i];
-					if(eventsData[i] == null){
+					if(lastTimeEntites[eventObj.id] == null){
 							
 					}else{
 						exist = true;
 					}
 				}
 				if(!exist){
-					
 					viewer.entities.remove(lastTimeEntites[obj]);
-					eventMap[obj]=undefined;
-					lastTimeEntites[obj]=undefined;  
+					eventMap.remove(lastTimeEntites[obj].id);
+					lastTimeEntites.remove(obj);
 				}
 				
 			}
@@ -399,14 +402,8 @@
 				checkViewEntity(eventsData);
 				entitySources = {};	
 				var pinBuilder = new Cesium.PinBuilder();
-
 				for(var i=0;i<eventsData.length;i++){
 					var eventObj = eventsData[i];
-					
-					if(!eventFlagPicCamera[eventObj.type] || !eventFlagPic[eventObj.type] || !eventFlagColor[eventObj.type]) {
-						continue;
-					}
-					
 					//console.log(eventObj.source);
 					entitySources[eventObj.id] = eventObj.source;
 					if(eventObj.type==null || eventObj.type=="") continue;
@@ -439,7 +436,6 @@
 					//console.log(color);
 					if(lastTimeEntites[eventObj.id] == null){
 						var pos = (eventObj.lngLat).split(",");
-						
 						var eventPin = viewer.entities.add({
 								name : eventObj.id,
 								position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1],height),
@@ -472,6 +468,7 @@
 		var infoBoxController = new InfoBoxController($("#infoBox"));
 		var lineEntities=[];
 		function removeLine(){
+			
 			for(var i=0; i< lineEntities.length;i++){
 				viewer.entities.remove(lineEntities[i]);
 			}
@@ -485,20 +482,18 @@
 			});
 		}
 		
-		
-		var addMouseHander = function() {
-			
+		var loadCityEvents = function(cityCode) {
+			loadEventByCity();			
 			
 			//鼠标点击事件响应
 			var selectPinHandler = new Cesium.ScreenSpaceEventHandler(
 					viewer.scene.canvas);
 			selectPinHandler.setInputAction(function(movement) {
 				if(!self.active || cur_cityCode=="100000") return;
-				removeLine();
-				//console.log(movement.position);
+//				var pickedObject = viewer.scene.pick(movement.position);
 				var pickedObjects = viewer.scene.drillPick(movement.position);
-				for (var i = 0; i < pickedObjects.length; i++) {
-	    			var pickedObject = pickedObjects[i];	    	
+	    		for (var i = 0; i < pickedObjects.length; i++) {
+	    			var pickedObject = pickedObjects[i];	    		
 					if (Cesium.defined(pickedObject) && pickedObject.primitive instanceof Cesium.Billboard) {
 						var selectedPin = pickedObject.primitive;
 	
@@ -548,7 +543,7 @@
 										
 									}
 									var lineEntity = viewer.entities.add({
-								           	name : sourceData.eventDesc,
+								           	name : '',
 								           	position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1]),
 								         	polyline : {
 								         		positions :  Cesium.Cartesian3.fromDegreesArray(points),
@@ -560,14 +555,14 @@
 										        })
 								         	}
 							        });
-							        //lineEntities = [];
+							        lineEntities = [];
 									lineEntities.push(lineEntity);
 									
 								}
 								
 							});
 						})(eventId));
-						return;
+						return
 					}else{
 						infoBoxController.close();
 					}
@@ -652,10 +647,9 @@
 			
 			this.open = function()
 			{
-				
 				this.view.css("display","block");
 				exporter.mouseChildren(this.view,true);
-				TweenLite.to(this.view,0.5,{left:540,ease:Expo.easeInOut});
+				TweenLite.to(this.view,0.5,{left:1480,ease:Expo.easeInOut});
 			}
 			
 			this.close = function()
