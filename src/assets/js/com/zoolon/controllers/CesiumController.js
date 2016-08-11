@@ -112,7 +112,11 @@ define("CesiumController",function(exporter){
 				else
 				{
 					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng-0.8, 100000.0),
+						orientation : {
+						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+						   },
 						complete:onComplete
 					});
 				}

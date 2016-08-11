@@ -46,14 +46,9 @@ define("controllerArea",function(exporter){
 				if(typeof(BigArray[0][0][0]) == "number"){
 					BigArray=BigArray
 				}else{
-					var smallArray=[];
-					for (var i=0;i<BigArray[0].length;i++) {
-						smallArray = smallArray.concat(BigArray[0][i])
-					}
-					BigArray=[];
-					BigArray.push(smallArray);
+					BigArray=BigArray[0];
 				}
-				return BigArray[0]
+				return BigArray
 			}
 			for(var m=0;m<datas.features.length;m++){
 				
@@ -71,27 +66,29 @@ define("controllerArea",function(exporter){
 		}
 	
 		function AreaController(areaType,parse,num){
-			var degreesArray=[];
 			var geometryInstances = [];
-			var boundaries = parse;
-	        for (var i = 0; i < boundaries.length; i++) {
-	            degreesArray.push(boundaries[i][0], boundaries[i][1]);
-	        }
-	        var geometryInstance = new Cesium.GeometryInstance({
-                geometry: new Cesium.PolygonGeometry({
-                    polygonHierarchy: new Cesium.PolygonHierarchy(
-                        Cesium.Cartesian3.fromDegreesArray(degreesArray)
-                    ),
-                    vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
-                    extrudedHeight: 0,
-                    height: 0,
-                }),
-                attributes: {
-                    color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.WHITE.withAlpha(0.01)),
-                },
-                id:areaType+"-"+num
-            });
-            geometryInstances.push(geometryInstance);
+			for(var n=0;n<parse.length;n++){
+				var degreesArray=[];
+				var boundaries = parse[n];
+		        for (var i = 0; i < boundaries.length; i++) {
+		            degreesArray.push(boundaries[i][0], boundaries[i][1]);
+		        }
+		        var geometryInstance = new Cesium.GeometryInstance({
+	                geometry: new Cesium.PolygonGeometry({
+	                    polygonHierarchy: new Cesium.PolygonHierarchy(
+	                        Cesium.Cartesian3.fromDegreesArray(degreesArray)
+	                    ),
+	                    vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT,
+	                    extrudedHeight: 0,
+	                    height: 0,
+	                }),
+	                attributes: {
+	                    color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.WHITE.withAlpha(0.01)),
+	                },
+	                id:areaType+"-"+num+n
+	            });
+	            geometryInstances.push(geometryInstance);
+			}
             var polygon = scene.primitives.add(new Cesium.Primitive({
 	            releaseGeometryInstances: false,
 	            geometryInstances: geometryInstances,

@@ -11,6 +11,18 @@ define("eventAreaController",function(exporter){
 		
 		barController.drawBars("src/assets/data/proBar.json","pro");
 		barController.drawBars("src/assets/data/cityBar.json","city");
+		
+//		function initBar(){
+//			barController.drawBars("http://localhost:8080/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
+//			var citys = [110000,120000,130100,140100,150100,210100,220100,230100,
+//					310000,320100,330100,340100,350100,360100,370100,410100,430100,
+//					440100,440300,450100,460100,500000,510100,520100,530100,
+//					540100,610100,620100,630100,640100,650100,420100]
+//			for (var i =0;i<citys.length;i++) {
+//				var cityUrl = "http://localhost:8080/portal/diagram/fp!getDayKpi.action?params.cityCodes="+citys[i]
+//				barController.drawBars(cityUrl,"city");
+//			}
+//		}
 		barController.clear(true,false);
 		
 		
@@ -62,13 +74,16 @@ define("eventAreaController",function(exporter){
             	for (var i = 0; i < pickedObject.length; i++) {
 	                var id = pickedObject[i].id;
 	                if(!id){return}
-                	if (viewer.camera.getMagnitude() >= 1000001 && id.substr(0,1)=="p") {
-			        	var primitive = pickedObject[i].primitive;
-        				select(primitive);
-				    }else if(viewer.camera.getMagnitude() <= 1000000 && viewer.camera.getMagnitude() > 200001 && id.substr(0,1)=="c"){
-			        	var primitive = pickedObject[i].primitive;
-        				select(primitive);
-				    }
+	                if(id.substr){
+	                	if (viewer.camera.getMagnitude() >= 1000001 && id.substr(0,1)=="p") {
+				        	var primitive = pickedObject[i].primitive;
+	        				select(primitive);
+					    }else if(viewer.camera.getMagnitude() <= 1000000 && viewer.camera.getMagnitude() > 200001 && id.substr(0,1)=="c"){
+				        	var primitive = pickedObject[i].primitive;
+	        				select(primitive);
+					    }
+	                }
+                	
 		        }     
 		    }else{
 		    	unselect();
@@ -82,13 +97,20 @@ define("eventAreaController",function(exporter){
 			var pickedObject = scene.drillPick(movement.position);
 	    	if (pickedObject.length > 0) {
 	    		for (var i = 0; i < pickedObject.length; i++) {
-	    			var pickID = pickedObject[i].id;	
+	    			var pickID = pickedObject[i].id;
+	    			if(pickID.substr){
 	    			if (viewer.camera.getMagnitude() >= 1000001 && pickID.substr(0,1)=="p") {
 	    				barController.clear(false,true);
 			        	var center = pickID.substr(pickID.indexOf('-')+1,pickID.length);
+			        	center =parseInt(center/10);
 			        	var dataCode = pickID.substr(1,6);
 				        viewer.camera.flyTo({
-					        destination : Cesium.Cartesian3.fromDegrees(provinceCenter[center][0], provinceCenter[center][1], 900000.0)
+					        destination : Cesium.Cartesian3.fromDegrees(provinceCenter[center][0], provinceCenter[center][1]-8, 900000.0),
+					        orientation : {
+						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+						    }
+					        
 					    });
 				    }else if(viewer.camera.getMagnitude() < 1000000 && viewer.camera.getMagnitude() > 200001 && pickID.substr(0,1)=="c"){
 				    	barController.clear(false,false);
@@ -104,6 +126,7 @@ define("eventAreaController",function(exporter){
 							eventController.active = false;
 						}
 				    	loadDataSource(dataCode);
+				    }
 				    }
 	    		}
 	    	}

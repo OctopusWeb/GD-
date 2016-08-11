@@ -43,7 +43,11 @@
 					}else
 					{
 						viewer.camera.flyTo({
-							destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
+							destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng-8, 100000.0),
+							orientation : {
+						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+						   },
 							complete:onComplete
 						});
 					}
@@ -136,7 +140,7 @@
 				}
 				var dayData = sourceData.dayCumulative;
 				var curData = sourceData.currEffective;
-				if (sourceData) {
+				if (sourceData && curData) {
 					
 					var s01 = curData[0].value;
 					var s11 = curData[1].value;
@@ -484,7 +488,11 @@
 		function flyToEvent(position,onComplete){
 			removeLine();
 			viewer.camera.flyTo({
-				destination : Cesium.Cartesian3.fromDegrees(position.lng-0.002, position.lat-0.001, 3000.0),
+				destination : Cesium.Cartesian3.fromDegrees(position.lng-0.002, position.lat-8.001, 3000.0),
+				orientation : {
+						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+						   },
 				complete:onComplete
 			});
 		}
@@ -673,7 +681,11 @@
 				removeLine();
 				flyToCurrentCity(function(city){
 					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng-8, 100000.0),
+						orientation : {
+						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+						    }
 					});
 				});
 				

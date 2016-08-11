@@ -41,7 +41,7 @@ define("BarController",function(exporter){
 			var codeDatas = codeData.features;
 			for (var i=0;i<codeDatas.length;i++) {
 				if(codeDatas[i].properties.AD_CODE == barData.cityCode){
-					cityCenter.push(codeDatas[i].properties.X_CENTER,codeDatas[i].properties.Y_CENTER,barData.dataNum)
+					cityCenter.push(codeDatas[i].properties.X_COORD,codeDatas[i].properties.Y_COORD,barData.dataNum)
 				};
 			}
 			return cityCenter;
