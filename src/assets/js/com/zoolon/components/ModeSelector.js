@@ -29,8 +29,8 @@ define("ModeSelector",function(exporter){
 		var self = this;
 		this.view = $("<div>");
 		this.view.attr("id","menu");
-		var colors = ["#669933","#ff0000","#009fe8","#e09fa5"];
-		var texts = ["实时数据","快照模式","历史数据","交通事件"];
+		var colors = ["#669933","#ff0000","#009fe8"];
+		var texts = ["实时数据","快照模式","历史数据"];
 		
 		this.view.bind("mousedown",function(e){
 			e.stopImmediatePropagation();

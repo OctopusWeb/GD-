@@ -63,6 +63,7 @@ define("CesiumController",function(exporter){
 			this.cityCode = cityCode;
 			this.dsCodes = dsCodes;
 			this.clear();
+			console.log(dsCodes)
 			flyToCurrentCity(function(){
 				switch(self.dataType)
 				{

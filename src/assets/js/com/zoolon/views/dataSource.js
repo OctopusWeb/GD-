@@ -74,10 +74,6 @@ $(document).ready(function(){
 	
 	var eventArea = new $at.eventAreaController(controller,controllerArea);
 	
-//	var barController = new $at.BarController(controller);
-//	barController.drawBars("src/assets/data/proBar.json","pro");
-	
-	
 })
 
 

@@ -8,24 +8,23 @@ define("eventAreaController",function(exporter){
 		var widgetsController = controller.widgetsController;
 		var viewer = controller.cesiumController.cesiumViewer;
 		var barController = new $at.BarController(controller);
+		$(document).bind("ExternalCall",externalCall);
 		
-		barController.drawBars("src/assets/data/proBar.json","pro");
-		barController.drawBars("src/assets/data/cityBar.json","city");
+//		barController.drawBars("src/assets/data/proBar.json","pro");
+//		barController.drawBars("src/assets/data/cityBar.json","city");
 		
 //		function initBar(){
 //			barController.drawBars("http://localhost:8080/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
-//			var citys = [110000,120000,130100,140100,150100,210100,220100,230100,
-//					310000,320100,330100,340100,350100,360100,370100,410100,430100,
-//					440100,440300,450100,460100,500000,510100,520100,530100,
-//					540100,610100,620100,630100,640100,650100,420100]
+//			var citys = [110000,120000,130000,140000,150000,210000,220000,230000,
+//						310000,320100,330100,340000,350000,360000,370000,410000,430000,
+//						420000,440000,450000,460000,500000,510000,520000,530000,
+//						540000,610000,620000,630000,640000,650000,710000, 810000, 820000]
 //			for (var i =0;i<citys.length;i++) {
 //				var cityUrl = "http://localhost:8080/portal/diagram/fp!getDayKpi.action?params.cityCodes="+citys[i]
 //				barController.drawBars(cityUrl,"city");
 //			}
 //		}
-		barController.clear(true,false);
-		
-		
+//		barController.clear(true,false);
 		
 		var scene = viewer.scene;
 		var layers = viewer.imageryLayers;
@@ -116,7 +115,7 @@ define("eventAreaController",function(exporter){
 				    	barController.clear(false,false);
 				    	var dataCode = pickID.substr(1,6);
 				    	if(traffiBol){
-							cur_selectedIndex1=3
+							cur_selectedIndex1=3;
 							eventController.clear();
 							eventController.active = true;
 							eventController.loadEvent(this.cityCode);
@@ -194,6 +193,64 @@ define("eventAreaController",function(exporter){
 			CesiumController.cityCode = cityCode;
 			widgetsController.loadDataSource(cityCode);
 			CesiumController.loadDataSource(cityCode);	
+		}
+		function externalCall(e,data){
+			var dataJson = JSON.parse(data);
+			var cmd = dataJson.cmd;
+			switch(cmd)
+			{
+				case "modolChoose":
+				modolChoose(dataJson)
+				break;
+				
+				case "cityChoose":
+				cityChoose(dataJson)
+				break;
+				
+				case "trafficEvent":
+				trafficEvents(dataJson);
+				break;
+				
+				case "roadConditions":
+				roadConditions(dataJson)
+				break;
+			}
+		}
+		
+		function roadConditions(dataJson){
+			var parameter = dataJson.parameter;
+			mapArea = !parameter;
+			self.changeMap();
+		}
+		function trafficEvents(dataJson){
+			var parameter = dataJson.parameter;
+			traffiBol = !parameter;
+			self.trafficEvent();
+		}
+		function modolChoose(dataJson){
+			var parameter = dataJson.parameter;
+			CesiumController.dataType = parameter;
+			CesiumController.loadDataSource(cur_cityCode,parameter)
+		}
+		function cityChoose(dataJson){
+			var dataType = dataJson.parameter;
+			var AdCode = dataJson.cityCode;
+			if(dataType == "pro"){
+				console.log(dataType)
+			}else if(dataType == "city"){
+				barController.clear(false,false);
+		    	if(traffiBol){
+					cur_selectedIndex1=3;
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(this.cityCode);
+				}else{
+					cur_selectedIndex1=0;
+					eventController.clear();
+					eventController.active = false;
+				}
+		    	loadDataSource(AdCode);
+			}
 		}
 	}
 	return eventAreaController;

@@ -488,7 +488,7 @@
 		function flyToEvent(position,onComplete){
 			removeLine();
 			viewer.camera.flyTo({
-				destination : Cesium.Cartesian3.fromDegrees(position.lng-0.002, position.lat-8.001, 3000.0),
+				destination : Cesium.Cartesian3.fromDegrees(position.lng-0.002, position.lat-0.021, 3000.0),
 				orientation : {
 						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
 						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
@@ -681,7 +681,7 @@
 				removeLine();
 				flyToCurrentCity(function(city){
 					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng-8, 100000.0),
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng-0.8, 100000.0),
 						orientation : {
 						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
 						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)

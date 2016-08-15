@@ -52,9 +52,9 @@ define("BarController",function(exporter){
 			 dataType == "pro" ? Box = proBox :Box = cityBox;
 			 entities.add({
 		        parent : Box,
-		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/20),
+		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/40),
 		        box : {
-		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/10),
+		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/20),
 		            material : Cesium.Color.fromRandom({alpha : 1.0})
 		        }
 		   });
