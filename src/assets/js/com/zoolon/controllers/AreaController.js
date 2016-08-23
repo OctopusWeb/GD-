@@ -5,6 +5,7 @@ define("controllerArea",function(exporter){
 		var self = this;
 		self.provinceCenter=[];
 		self.provinceCitycode = [];
+		self.provinceCityname = [];
 		self.cityCitycode=[];
 		this.init = function(){
 			loadData("src/assets/data/proArea.json").then(function(data){
@@ -54,8 +55,9 @@ define("controllerArea",function(exporter){
 				
 				var data = datas.features[m];
 				if(dataType == "p"){
-					self.provinceCenter.push([data.properties.X_CENTER,data.properties.Y_CENTER]);
+					self.provinceCenter.push([data.properties.X_COORD,data.properties.Y_COORD]);
         			self.provinceCitycode.push(data.properties.AD_CODE);
+        			self.provinceCityname.push(data.properties.NAME)
 				}else{
 					self.cityCitycode.push(data.properties.AD_CODE);
 				}

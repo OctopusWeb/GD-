@@ -40,6 +40,8 @@ define("DataSourceWidgetsController",function(exporter){
 			if(cityCode != "100000")
 			{
 				vars["params.cityCodes"] = cityCode;
+			}else{
+				vars["params.cityCodes"] = "100000";
 			}
 			vars["params.date"] = exporter.TimeUtil.getLastMonthDate();
 			loaders.push($at.get($at.Config.request.getDailyKpi,vars,function(json){
@@ -84,6 +86,8 @@ define("CustomLoadController",function(exporter){
 			if(dataSourceWidgetsController.cityCode != "100000")
 			{
 				vars["params.cityCodes"] = dataSourceWidgetsController.cityCode;
+			}else{
+				vars["params.cityCodes"] = "100000"
 			}
 			loader = $at.get($at.Config.request.getDayKpi,vars,function(json){
 				json != null ? onComplete(json) : onError();

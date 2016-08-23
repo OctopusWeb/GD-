@@ -67,12 +67,8 @@ $(document).ready(function(){
 		redraw();
 	});
 		
-		
-		
-	var controllerArea = new $at.controllerArea(controller);
-	controllerArea.init();
 	
-	var eventArea = new $at.eventAreaController(controller,controllerArea);
+	var eventArea = new $at.eventAreaController(controller);
 	
 })
 

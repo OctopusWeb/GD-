@@ -22,7 +22,7 @@ define("CesiumController",function(exporter){
 		        style : 'default',
 		        format : 'image/jpeg',
 		        tileMatrixSetID : 'default028mm',
-		        maximumLevel: 19,
+		        maximumLevel: 18,
 		        credit : new Cesium.Credit('U. S. Geological Survey')
 		    });
 //		}
@@ -63,7 +63,6 @@ define("CesiumController",function(exporter){
 			this.cityCode = cityCode;
 			this.dsCodes = dsCodes;
 			this.clear();
-			console.log(dsCodes)
 			flyToCurrentCity(function(){
 				switch(self.dataType)
 				{
@@ -113,11 +112,7 @@ define("CesiumController",function(exporter){
 				else
 				{
 					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng-0.8, 100000.0),
-						orientation : {
-						        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
-						        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
-						   },
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0),
 						complete:onComplete
 					});
 				}
@@ -405,7 +400,7 @@ define("CesiumController",function(exporter){
 				totalItem.view.appendTo(container);
 				
 				var tx = 1920 - container.outerWidth() - 45;
-				container.css("left",tx);
+				container.css("left","40px");
 				
 				for(var i=0;i<SnapshotDataSource.untoggledSources.length;i++)
 				{

@@ -1,0 +1,30 @@
+#widgets #w0{
+	left: 40px;
+	top: 402px;
+	display: none;
+}
+#widgets #w2{
+	display: none;
+}
+#widgets #w3{
+	display: none;
+}
+#widgets #w4{
+	display: none;
+}
+#widgets #w5{
+	visibility: hidden;
+}
+#widgets #w6{
+	visibility: hidden;
+}
+#eventType{
+	left: 1716px;
+	top: 200px;
+}
+#widgets #w7{
+	visibility: hidden;
+}
+#sourceColors{
+	margin-top: 100px;
+}
