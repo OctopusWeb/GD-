@@ -6,6 +6,55 @@ define("eventAreaController",function(exporter){
 		var viewer = controller.cesiumController.cesiumViewer;
 		var barController = new $at.BarController(controller);
 		
+		var layers = viewer.imageryLayers;
+		var mapArea = false;
+		var self = this;
+		var traffiBol = false;
+		var Floating = false;
+		var citySlected = false;
+		var proCenter=[];
+//		var cityCenter=[];
+		
+		eventInit();
+		function eventInit(){
+			$("#addMap").click(function(e){
+				e.stopPropagation();
+				self.changeMap();
+			});
+			$("#trafficEvent").click(function(e){
+				e.stopPropagation();
+				self.trafficEvent();
+			})
+			$("#trafficEvent1").click(function(e){
+				e.stopPropagation();
+				self.Floatingcar();
+			})
+			
+			$("#guo").click(function(){
+				$("#pro h1").html("请选择省份")
+				$("#cities h1").html("请选择城市")
+				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:"100000"}));
+				if(traffiBol){
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(this.cityCode);
+				}
+				
+			})
+			$("#pro").click(function(){
+				$("#pro ul").show();
+				citySlected = true;
+			})
+			$("#cities").click(function(e){
+				e.stopPropagation();
+				if(citySlected){
+					$("#cities ul").show();
+					$("#cities ul li").unbind("click")
+					bindCity($("#cities ul li"));
+				}
+			})
+			parseCityInfo();
+		}
 		
 		$(document).bind("ExternalCall",externalCall);
 //		setTimeout(initBar,100)
@@ -19,30 +68,103 @@ define("eventAreaController",function(exporter){
 //		}
 //		barController.clear(true,false);
 		
-		var scene = viewer.scene;
-		var layers = viewer.imageryLayers;
-		var mapArea = false;
-		var self = this;
-		var selected = null;
-		var traffiBol = false;
-		var Floating = false;
 		
-		CesiumController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
-		CesiumController.getDsList = widgetsController.controllers.widget0.dsSelector.getDsList;
-		eventController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
+		function parseCityInfo(){
+			initCityInfo("100000").then(function(data,citycode){
+				var cityParse =new CityParse(data,citycode);
+				var cityContorller = new CityContorller(cityParse);
+				cityContorller.append($("#pro ul"));
+				initCity($("#pro ul li"))
+			})
+		}
+		function initCity(dom){
+			dom.click(function(e){
+				e.stopPropagation()
+				var index = dom.index($(this));
+				dom.parent().hide();
+				dom.parent().parent().find("h1").html($(this).html());
+				var cityTxt = $(this).html();
+				cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length)
+				$("#city").html(cityTxt)
+				var cityCode = $(this).attr("class").toString();
+				viewer.camera.flyTo({
+					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1], 800000.0)
+				});
+				initCityInfo(cityCode).then(function(data,citycode){
+					var cityParse =new CityParse(data,citycode);
+					var cityContorller = new CityContorller(cityParse);
+					cityContorller.append($("#cities ul"));
+				})
+			})
+		}
+		function bindCity(dom){
+				dom.click(function(e){
+					e.stopPropagation()
+					dom.parent().hide();
+					dom.parent().parent().find("h1").html($(this).html())
+					var adCode = $(this).attr("class").toString();
+					cur_cityCode = adCode;
+					if(Floating){
+						ExternalCall(JSON.stringify({cmd:"goCity",cityCode:adCode}));
+					}else{
+						var CitySelector =  $at.CitySelector;						
+//						console.log(cityCenter)
+//						var CitySelector = new $at.CitySelector();
+//						console.log(cur_cityCode)
+//						var city = CitySelector.getInfoByCityCode(cur_cityCode);
+//						console.log(city)
+					}
+					if(traffiBol){
+						eventController.clear();
+						eventController.active = true;
+						eventController.loadEvent(this.cityCode);
+					}
+				})
+		}
+		function initCityInfo(cityCode){
+			var obj = {
+				then:function(Fun){
+					this.fun = Fun;
+				}
+			}
+			cityCode == "100000" ? areaUrl = "src/assets/data/proArea.json" : areaUrl = "src/assets/data/cityArea.json"
+			$.getJSON(areaUrl,function(data){
+				obj.fun(data,cityCode);
+			})
+			return obj;
+		}
 		
-		$("#addMap").click(function(e){
-			e.stopPropagation();
-			self.changeMap();
-		});
-		$("#trafficEvent").click(function(e){
-			e.stopPropagation();
-			self.trafficEvent();
-		})
-		$("#trafficEvent1").click(function(e){
-			e.stopPropagation();
-			self.Floatingcar();
-		})
+		function CityParse(data,cityCode){
+			var cityData = data.features;
+			var cityArray=[];
+//			cityCenter=[]
+			for (var i=0;i<cityData.length;i++) {
+				var cityInfo = cityData[i].properties;
+				if(parseInt(cityInfo.AD_CODE/10000) == parseInt(cityCode/10000) || cityCode == "100000"){
+					var cityInfoArray=[];
+					var proCentertime = [];
+					proCentertime.push(cityInfo.X_COORD,cityInfo.Y_COORD)
+					proCenter.push(proCentertime);
+					cityInfoArray.push(cityInfo.AD_CODE,cityInfo.NAME);
+					cityArray.push(cityInfoArray);
+				}else{
+//					var cityCentertime = [];
+//					cityCentertime.push(cityInfo.X_COORD,cityInfo.Y_COORD)
+//					cityCenter.push(proCentertime);
+				}
+			}
+			return cityArray;
+		}
+		function CityContorller(parse){
+			var index = "";
+			for(var i=0;i<parse.length;i++){
+				var index0 = "<li class = '"+parse[i][0]+"'>"+i+"."+parse[i][1]+"</li>";
+				index+=index0;
+			}
+			this.append=function(dom){
+				dom.html(index);
+			}
+		}		
 		
 		this.changeMap = function(){
 			if(mapArea){
@@ -107,7 +229,6 @@ define("eventAreaController",function(exporter){
 				
 				CesiumController.clear();
 			}
-			
 		}
 		
 		function loadDataSource(cityCode)
@@ -117,6 +238,7 @@ define("eventAreaController",function(exporter){
 			widgetsController.loadDataSource(cityCode);
 			CesiumController.loadDataSource(cityCode);	
 		}
+		
 		function externalCall(e,data){
 			var dataJson = JSON.parse(data);
 			var cmd = dataJson.cmd;
