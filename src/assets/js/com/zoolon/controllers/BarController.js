@@ -6,12 +6,12 @@ define("BarController",function(exporter){
 		var entities = viewer.entities;
 		var proBox = entities.add(new Cesium.Entity());
 		var cityBox = []
-		var citys = [110000,120000,130000,140000,150000,210000,220000,230000,
+		this.citys = [110000,120000,130000,140000,150000,210000,220000,230000,
 						310000,320100,330100,340000,350000,360000,370000,410000,430000,
 						420000,440000,450000,460000,500000,510000,520000,530000,
 						540000,610000,620000,630000,640000,650000,710000, 810000, 820000]
 		
-		for(var i=0;i<citys.length;i++){
+		for(var i=0;i<this.citys.length;i++){
 			var name = entities.add(new Cesium.Entity());
 			cityBox.push(name);
 		}
@@ -66,9 +66,9 @@ define("BarController",function(exporter){
 			 dataType == "pro" ? Box = proBox :Box = cityBox[dataType];
 			 entities.add({
 		        parent : Box,
-		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/800),
+		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/80),
 		        box : {
-		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/400),
+		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/40),
 		            material : Cesium.Color.fromRandom({alpha : 1.0})
 		        }
 		   });

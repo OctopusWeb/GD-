@@ -5,6 +5,8 @@ define("eventAreaController",function(exporter){
 		var widgetsController = controller.widgetsController;
 		var viewer = controller.cesiumController.cesiumViewer;
 		var barController = new $at.BarController(controller);
+		var borderController = new $at.BorderController(controller);
+		var provinceCitycode = barController.citys;
 		
 		var layers = viewer.imageryLayers;
 		var mapArea = false;
@@ -30,7 +32,16 @@ define("eventAreaController",function(exporter){
 				self.Floatingcar();
 			})
 			
-			$("#guo").click(function(){
+			$("body").click(function(e){
+				e.stopPropagation();
+				$("#pro ul").hide();
+				$("#cities ul").hide();
+			})
+			
+			$("#guo").click(function(e){
+				e.stopPropagation();
+				barController.clear(true,false);
+				borderController.show(false);
 				$("#pro h1").html("请选择省份")
 				$("#cities h1").html("请选择城市")
 				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:"100000"}));
@@ -41,7 +52,8 @@ define("eventAreaController",function(exporter){
 				}
 				
 			})
-			$("#pro").click(function(){
+			$("#pro").click(function(e){
+				e.stopPropagation();
 				$("#pro ul").show();
 				citySlected = true;
 			})
@@ -54,19 +66,23 @@ define("eventAreaController",function(exporter){
 				}
 			})
 			parseCityInfo();
+			borderController.show(false)
 		}
 		
 		$(document).bind("ExternalCall",externalCall);
-//		setTimeout(initBar,100)
-//		function initBar(){
-//			console.log(provinceCenter.length)
+		setTimeout(initBar,100)
+		function initBar(){
 //			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
 //			for (var i =0;i<provinceCitycode.length;i++) {
 //				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+provinceCitycode[i]
 //				barController.drawBars(cityUrl,i);
 //			}
-//		}
-//		barController.clear(true,false);
+			barController.drawBars("src/assets/data/proBar.json","pro");
+			for (var i =0;i<provinceCitycode.length;i++) {
+				barController.drawBars("src/assets/data/cityBar.json",i);
+			}
+		}
+		barController.clear(true,false);
 		
 		
 		function parseCityInfo(){
@@ -81,6 +97,8 @@ define("eventAreaController",function(exporter){
 			dom.click(function(e){
 				e.stopPropagation()
 				var index = dom.index($(this));
+				barController.clear(false,true,index);
+				borderController.show(true,index)
 				dom.parent().hide();
 				dom.parent().parent().find("h1").html($(this).html());
 				var cityTxt = $(this).html();
@@ -88,7 +106,11 @@ define("eventAreaController",function(exporter){
 				$("#city").html(cityTxt)
 				var cityCode = $(this).attr("class").toString();
 				viewer.camera.flyTo({
-					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1], 800000.0)
+					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
+					orientation : {
+				        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+				        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+				    }
 				});
 				initCityInfo(cityCode).then(function(data,citycode){
 					var cityParse =new CityParse(data,citycode);
@@ -99,6 +121,8 @@ define("eventAreaController",function(exporter){
 		}
 		function bindCity(dom){
 				dom.click(function(e){
+					barController.clear(false,false)
+					borderController.show(false)
 					e.stopPropagation()
 					dom.parent().hide();
 					dom.parent().parent().find("h1").html($(this).html())
@@ -107,12 +131,12 @@ define("eventAreaController",function(exporter){
 					if(Floating){
 						ExternalCall(JSON.stringify({cmd:"goCity",cityCode:adCode}));
 					}else{
-						var CitySelector =  $at.CitySelector;						
-//						console.log(cityCenter)
-//						var CitySelector = new $at.CitySelector();
-//						console.log(cur_cityCode)
-//						var city = CitySelector.getInfoByCityCode(cur_cityCode);
-//						console.log(city)
+						var city = CesiumController.getInfoByCityCode(cur_cityCode);
+						$("#city").html(city.name)
+						viewer.camera.flyTo({
+							destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+						});
+						
 					}
 					if(traffiBol){
 						eventController.clear();

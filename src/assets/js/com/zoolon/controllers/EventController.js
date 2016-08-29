@@ -4,6 +4,7 @@
 		this.cesiumViewer = cesiumViewer;
 		var viewer = this.cesiumViewer;
 		var entityId = [];
+		var city;
 		
 		this.active = false;
 		
@@ -24,7 +25,7 @@
 	    //飞到当前城市
 		function flyToCurrentCity(onComplete)
 		{
-			var city = self.getInfoByCityCode(cur_cityCode);
+			city = self.getInfoByCityCode(cur_cityCode);
 			$("#widgets #city").text(city.name);
 			if(city == undefined)
 			{
@@ -671,10 +672,12 @@
 			this.close = function()
 			{
 				removeLine();
-				flyToCurrentCity(function(city){
+				flyToCurrentCity(function(){
+					console.log(city)
+//					console.log(city)
 					viewer.camera.flyTo({
 						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
-					});
+					});	
 				});
 				
 				this.view.css("display","none");
