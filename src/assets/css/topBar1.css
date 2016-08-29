@@ -1,0 +1,45 @@
+﻿
+#topBar
+{
+	position: absolute;
+	width: 447px;
+	height: 58px;
+	margin-left: 735px;
+	background-image: url(../images/dataSource/titleBk.png);
+}
+
+#topBar #logo
+{
+	width: 447px;
+	height: 58px;
+	position: absolute;
+	text-align: center;
+	/* 文字 */
+	color: #FFFFFF;
+	font-size: 20px;
+	line-height: 50px;
+	font-family: "微软雅黑";
+	cursor: pointer;
+}
+
+#topBar #preBt
+{
+	width: 13px;
+	height: 23px;
+	left: 80px;
+	top: 15px;
+	position: absolute;
+	background-image: url(../images/dataSource/pre1.png);
+	cursor: pointer;
+}
+
+#topBar #nextBt
+{
+	width: 13px;
+	height: 23px;
+	top: 15px;
+	left: 350px;
+	position: absolute;
+	background-image: url(../images/dataSource/next1.png);
+	cursor: pointer;
+}

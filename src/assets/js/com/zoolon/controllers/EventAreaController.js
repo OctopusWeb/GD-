@@ -19,15 +19,15 @@ define("eventAreaController",function(exporter){
 		
 		eventInit();
 		function eventInit(){
-			$("#addMap").click(function(e){
+			$("#addMap div").eq(1).click(function(e){
 				e.stopPropagation();
 				self.changeMap();
 			});
-			$("#trafficEvent").click(function(e){
+			$(".controller").eq(1).click(function(e){
 				e.stopPropagation();
 				self.trafficEvent();
 			})
-			$("#trafficEvent1").click(function(e){
+			$(".controller").eq(0).click(function(e){
 				e.stopPropagation();
 				self.Floatingcar();
 			})
@@ -231,25 +231,27 @@ define("eventAreaController",function(exporter){
 		this.Floatingcar = function(){
 			Floating=!Floating;
 			if(Floating){
-				$("#sourceColors").show();
-				$("#w0").show();
-				
-				$("#w2").show();
-				$("#w3").show();
-				$("#w4").show();
-				$("#w5").show();
-				$("#w6").show();
+				$("#leftSource").show()
+//				$("#sourceColors").show();
+//				$("#w0").show();
+//				
+//				$("#w2").show();
+//				$("#w3").show();
+//				$("#w4").show();
+//				$("#w5").show();
+//				$("#w6").show();
 
 				CesiumController.loadDataSource(cur_cityCode);
 			}else{
-				$("#sourceColors").hide();
-				$("#w0").hide();
-				
-				$("#w2").hide();
-				$("#w3").hide();
-				$("#w4").hide();
-				$("#w5").hide();
-				$("#w6").hide();
+				$("#leftSource").hide()
+//				$("#sourceColors").hide();
+//				$("#w0").hide();
+//				
+//				$("#w2").hide();
+//				$("#w3").hide();
+//				$("#w4").hide();
+//				$("#w5").hide();
+//				$("#w6").hide();
 				
 				CesiumController.clear();
 			}
