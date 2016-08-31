@@ -25,6 +25,7 @@
   <script src="src/assets/js/com/zoolon/core/Config.js"></script>
   <script src="src/assets/js/com/zoolon/core/Server.js"></script>
   <script src="src/assets/js/com/zoolon/core/GeneralManager.js"></script>
+  <script type="text/javascript" src="src/assets/libs/echarts/echarts.min.js" ></script>
   
   <script src="src/assets/libs/spinjs/spin.min.js"></script>
   <script src="src/assets/js/com/zoolon/components/AppPreloader.js"></script>
@@ -55,6 +56,9 @@
 	<div class="app">
 		<div id="widgets">
 	<div id="leftSource">
+			<div class="leftEchart">
+				
+			</div>
 		  <h2>浮动车数据</h2>
 			<div id="city">全国</div>
 			<div id="sourceColors"></div>
@@ -170,7 +174,12 @@
 					<div id="container"></div>
 				</div>
 			</div>
-	</div>		
+	</div>
+	<div id="rightSource">
+			<div id="rightEchart">
+				
+			</div>
+			<h2>交通事件数据</h2>
 			<div id="eventSource">
 				<div id="es0">
 					<div class = "eventSource_lable" id="lable">官方</div>
@@ -185,35 +194,36 @@
 			</div>
 			
 			<div id="eventType">
-				<div id="title"  style="top:80px;position:absolute">
-					<div style="width:60px;position:absolute"><img src="src/assets/images/dataSource/etitle.png"></div>
-					<div style="left:8px;top:4px;width:140px;position:absolute;font-size:20px;color:#009FE8;font-family: '微软雅黑';">当前有效事件</div>
+				<div id="title" class="et">
+					<div></div>
+					<div>当前有效事件</div>
 				</div>
-				<div id="et2" style="top:160px;position:absolute">
-					<div style="width:60px;position:absolute"><img  src="src/assets/images/dataSource/t2.png" alt="事故"></div>
-					<div id="count" style="left:68px;top:18px;font-size:19px;position:absolute;font-family: '微软雅黑';">100</div>
+				<div id="et2" class="et">
+					<div>事故</div>
+					<div id="count" class="count">100</div>
 				</div>
-				<div id="et5" style="top:240px;position:absolute">
-					<div style="width:60px;position:absolute"><img src="src/assets/images/dataSource/t5.png" alt="施工类"></div>
-					<div id="count" style="left:68px;top:18px;font-size:19px;position:absolute;font-family: '微软雅黑'">100</div>
+				<div id="et5" class="et">
+					<div>施工类</div>
+					<div id="count" class="count">100</div>
 				</div>
-				<div id="et4" style="top:320px;position:absolute">
-					<div style="width:60px;position:absolute"><img src="src/assets/images/dataSource/t4.png" alt="管制类"></div>
-					<div id="count" style="left:68px;top:18px;font-size:19px;position:absolute;font-family: '微软雅黑'">100</div>
+				<div id="et4" class="et">
+					<div>管制类</div>
+					<div id="count" class="count">100</div>
 				</div>
-				<div id="et6" style="top:400px;position:absolute">
-					<div style="width:60px;position:absolute"><img src="src/assets/images/dataSource/t6.png" alt="关闭类"></div>
-					<div id="count" style="left:68px;top:18px;font-size:19px;position:absolute;font-family: '微软雅黑'">100</div>
+				<div id="et6" class="et">
+					<div>关闭类</div>
+					<div id="count" class="count">100</div>
 				</div>
-				<div id="et1" style="top:480px;position:absolute">
-					<div style="width:60px;position:absolute"><img src="src/assets/images/dataSource/t1.png"  alt="其他"></div>
-					<div id="count" style="left:68px;top:18px;font-size:19px;position:absolute;font-family: '微软雅黑'">100</div>
+				<div id="et1" class="et">
+					<div>其他</div>
+					<div id="count" class="count">100</div>
 				</div>
-				<div id="et3" style="top:560px;position:absolute">
-					<div style="width:60px;position:absolute"><img src="src/assets/images/dataSource/t0.png" alt="交通流量"></div>
-					<div id="count" style="left:68px;top:18px;font-size:19px;position:absolute;font-family: '微软雅黑'">100</div>
+				<div id="et3" class="et">
+					<div>交通流量</div>
+					<div id="count" class="count">100</div>
 				</div>
 			</div>
+	</div>
 			<div id="controllerBtn">
 				<div class="controller"><img src="src/assets/images/dataSource/sourceIcon1.png"/><p>浮动车</p></div>
 				<div class="controller"><img src="src/assets/images/dataSource/sourceIcon2.png"/><p>交通事件</p></div>
@@ -222,26 +232,25 @@
 			</div>
 			<div id="cityBtn">
 				<div class="quanguo unselected"><p>全国</p></div>
-				<div class="quanguoBox">
+				<div class="quanguoBox quanguoHide">
 					<div id="guo">
 						<span>全国</span>
 						<ul></ul>
 					</div>
 					<div id="pro">
-						<span>选择省</span>
+						<span>请选择省份</span>
 						<ul></ul>
 					</div>
 					<div id="cities">
-						<span>选择市</span>
+						<span>请选择城市</span>
 						<ul></ul>
 					</div>
 				</div>
 			</div>
 			<div id="addMap">
 				<div><img src="src/assets/images/dataSource/sourceIcon5.png" alt="" /><span>视频监控</span></div>
-				<div><img src="src/assets/images/dataSource/sourceIcon6.png" alt="" /><span>路况</span></div>
+				<div class=""><img src="src/assets/images/dataSource/sourceIcon6.png" alt="" /><span>路况</span></div>
 			</div>
-		
 		<div id="infoBox">
 			<div class="header">
 				<div class="title">北京</div>

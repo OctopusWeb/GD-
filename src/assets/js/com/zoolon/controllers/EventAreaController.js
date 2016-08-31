@@ -21,6 +21,7 @@ define("eventAreaController",function(exporter){
 		function eventInit(){
 			$("#addMap div").eq(1).click(function(e){
 				e.stopPropagation();
+				$(this).toggleClass("mapSelect")
 				self.changeMap();
 			});
 			$(".controller").eq(1).click(function(e){
@@ -37,13 +38,18 @@ define("eventAreaController",function(exporter){
 				$("#pro ul").hide();
 				$("#cities ul").hide();
 			})
+			$(".quanguo").click(function(){
+				$(".quanguoBox").toggleClass("quanguoHide");
+			})
 			
 			$("#guo").click(function(e){
 				e.stopPropagation();
 				barController.clear(true,false);
-				borderController.show(false);
-				$("#pro h1").html("请选择省份")
-				$("#cities h1").html("请选择城市")
+				borderController.show(true);
+				$(".quanguo p").html("全国");
+				$("#guo span").html("全国");
+				$("#pro span").html("请选择省份");
+				$("#cities span").html("请选择城市")
 				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:"100000"}));
 				if(traffiBol){
 					eventController.clear();
@@ -84,6 +90,7 @@ define("eventAreaController",function(exporter){
 		}
 		barController.clear(true,false);
 		
+		borderController.show(true)
 		
 		function parseCityInfo(){
 			initCityInfo("100000").then(function(data,citycode){
@@ -98,12 +105,15 @@ define("eventAreaController",function(exporter){
 				e.stopPropagation()
 				var index = dom.index($(this));
 				barController.clear(false,true,index);
-				borderController.show(true,index)
+				borderController.show(false)
 				dom.parent().hide();
 				dom.parent().parent().find("h1").html($(this).html());
 				var cityTxt = $(this).html();
 				cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length)
-				$("#city").html(cityTxt)
+				$("#city").html(cityTxt);
+				$(".quanguo  p").html(cityTxt);
+				$("#pro span").html(cityTxt);
+				$("#cities span").html("请选择城市");
 				var cityCode = $(this).attr("class").toString();
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
@@ -126,6 +136,10 @@ define("eventAreaController",function(exporter){
 					e.stopPropagation()
 					dom.parent().hide();
 					dom.parent().parent().find("h1").html($(this).html())
+					var cityTxt = $(this).html();
+					cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length);
+					$(".quanguo  p").html(cityTxt);
+					$("#cities span").html(cityTxt);
 					var adCode = $(this).attr("class").toString();
 					cur_cityCode = adCode;
 					if(Floating){
@@ -209,6 +223,7 @@ define("eventAreaController",function(exporter){
 		this.trafficEvent = function(){
 			traffiBol=!traffiBol;
 			if(traffiBol){
+				$("#rightSource").show()
 				$("#eventSource").show();
 				$("#eventType").show();
 				eventController.clear();
@@ -216,8 +231,9 @@ define("eventAreaController",function(exporter){
 				
 				eventController.loadEvent(this.cityCode);
 			}else{
-				$("#eventSource").hide();
-				$("#eventType").hide();
+				$("#rightSource").hide()
+//				$("#eventSource").hide();
+//				$("#eventType").hide();
 				eventController.clear();
 				eventController.active = false;
 				

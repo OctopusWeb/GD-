@@ -54,21 +54,27 @@ define("BorderController",function(exporter){
 				}
 				entities.add({
 			        parent : parents,
-			         polyline : {
+			        polyline : {
 				        positions : Cesium.Cartesian3.fromDegreesArray(positions),
 				        width : 1,
-				        material : Cesium.Color.WHITE
+				        material : Cesium.Color.fromCssColorString('#0c6bad')
 				    }
 			    });
 			}
 			
 		}
-		this.show = function(bol,num){
+//		this.show = function(bol,num){
+//			for(var i=0;i<proBorder.length;i++){
+//				proBorder[i].show = false;
+//			}
+//			if(num){
+//				proBorder[num].show = bol;
+//			}
+//		}
+
+		this.show = function(bol){
 			for(var i=0;i<proBorder.length;i++){
-				proBorder[i].show = false;
-			}
-			if(num){
-				proBorder[num].show = bol;
+				proBorder[i].show = bol;
 			}
 		}
 	}

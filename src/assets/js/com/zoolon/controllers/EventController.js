@@ -205,6 +205,52 @@
 				$("#widgets #eventType #et4 #count").text(map["管制类"]);
 				$("#widgets #eventType #et5 #count").text(map["施工类"]);
 				$("#widgets #eventType #et6 #count").text(map["路面"]);
+				a()
+				function a(){
+					var myChart = echarts.init(document.getElementById('rightEchart'));
+					var option = {
+			             tooltip: {
+					        trigger: 'item',
+					        formatter: "{a} <br/>{b}: {c} ({d}%)"
+					    },
+					    series: [
+					        {
+					            type:'pie',
+					            radius: ['50%', '80%'],
+					            avoidLabelOverlap: false,
+					            label: {
+					                normal: {
+					                    show: false,
+					                    position: 'center'
+					                },
+					                emphasis: {
+					                    show: true,
+					                    textStyle: {
+					                        fontSize: '30',
+					                        fontWeight: 'bold'
+					                    }
+					                }
+					            },
+					            labelLine: {
+					                normal: {
+					                    show: false
+					                }
+					            },
+					            data:[
+					                {value:map["其他"], name:'其他'},
+					                {value:map["事故"], name:'事故'},
+					                {value:map["流量"], name:'流量'},
+					                {value:map["管制类"], name:'管制类'},
+					                {value:map["施工类"], name:'施工类'},
+					                {value:map["路面"], name:'路面'}
+					            ]
+					        }
+					    ]
+			        };
+			
+			        // 使用刚指定的配置项和数据显示图表。
+			        myChart.setOption(option);
+				}
 				
 			});
 		}

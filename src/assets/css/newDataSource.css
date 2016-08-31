@@ -1,8 +1,7 @@
 *{margin: 0;padding: 0;}
 #widgets #w0{left: 40px;top: 402px;}
 #widgets #w4,#widgets #w5,#widgets #w6,#widgets #w7{visibility: hidden;}
-#eventType{left: 1716px;top: 200px;}
-#sourceColors{background: #000;}
+#sourceColors{background: #000;margin-left: 250px;top:530px}
 #chooseCity{position: absolute;width: 100%;top: 770px;left: 1695px;}
 #chooseCity div{width: 185px;color: #fff;background: #000;height: 50px;background: #07558f;
 border: 1px #009fe8 solid;margin-top: 10px;}
@@ -19,6 +18,7 @@ line-height: 30px;border-right: 1px #339ffa solid;font-size: 14px;font-weight: 6
 #cityBtn .quanguoBox{height: 50px;width: 373px;position: absolute;top: 86px;left: 600px;background: #fff;}
 #cityBtn .quanguoBox span{width: 123px;float: left;text-align: center;line-height: 30px;color: #565656;margin-top: 10px;
 font-size: 14px;font-weight: 600;border-right: 1px #e5e5e5 solid;cursor: pointer;}
+#cityBtn .quanguoHide{display: none;}
 
 #pro ul{position: absolute;list-style: none;width: 335px;height: auto;background: #fff;
 padding: 10px 20px;overflow: auto;display: none;top: 55px;}
@@ -29,7 +29,7 @@ padding: 10px 20px;overflow: auto;display: none;top: 55px;}
 #cities ul li{width: 150px;float: left;font-size: 14px;cursor: pointer;line-height: 24px;height: 24px;overflow: hidden;
 color: #565656;}
 
-#addMap{width: 250px;height: 50px;position: absolute;background: #fff;left: 1650px;top: 50px;border: none;}
+#addMap{width: 250px;height: 50px;position: absolute;background: #fff;left: 1650px;top: 30px;border: none;}
 #addMap div{float: left;width: 124px;height: 50px;position: relative;cursor: pointer;}
 #addMap div span{width: 80%;position: absolute;left: 20%;text-align: center;line-height: 30px;
 margin-top: 10px;color: #565656;font-weight: 600;}
@@ -37,6 +37,9 @@ margin-top: 10px;color: #565656;font-weight: 600;}
 
 #leftSource{height: 560px;width: 386px;position: absolute;background: #fff;top: 500px;left: 30px;display: none;}
 #leftSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
+padding-left: 20px;font-size: 16px;}
+#rightSource{height: 560px;width: 386px;position: absolute;background: #fff;top: 500px;left: 1506px;display: none;}
+#rightSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
 
 #widgets .number{color: #565656;}
@@ -63,3 +66,25 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #widgets #w0 #info1{position: relative;background: #f39800;}
 #widgets #w0 #info0 div{font-size: 16px;margin: 0;padding: 0;left: 10px;top: 5px;}
 #widgets #w0 #info1 div{font-size: 16px;margin: 0;padding: 0;left: 0;right: 10px;text-align: right;}
+
+#eventSource{left: 0;top: 0;height: 200px;width: 366px;left: 10px;top: 50px;display: block;}
+#eventSource #es0{width: 100%;height: 100px;border-bottom: 1px #a0a0a0 solid;background: none;}
+#eventSource #es0 #lable{color: #565656;font-size: 34px;line-height: 90px;}
+#eventSource #es2{width: 100%;height: 100px;left: 0;top: 100px;border-bottom: 1px #a0a0a0 solid;background: none;}
+#eventSource #es2 #lable{color: #565656;font-size: 34px;line-height: 90px;}
+.eventSource_text{left:300px;font-size: 30px;color: #565656;top: 10px;}
+.eventSource_text2{left:300px;font-size: 30px;color: #565656;top: 50px;}
+#eventType{left: 185px;top: 250px;}
+#eventType .et{float: left;width: 150px;font-weight: 600;font-size: 16px;margin-left: 30px;}
+#eventType .et div{float: left;height: 40px;line-height: 40px;}
+#eventType .et .count{float: right;}
+#title{font-size: 24px;color: #f39800;margin-top: 10px;}
+#et2{color: #0087f9;}
+#et5{color: #0087f9;}
+#et4{color: #0087f9;}
+#et6{color: #0087f9;}
+#et1{color: #0087f9;}
+#et3{color: #0087f9;}
+
+#rightEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;}
+#addMap .mapSelect span{color: #0087f9;}
