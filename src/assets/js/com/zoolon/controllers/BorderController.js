@@ -4,21 +4,35 @@ define("BorderController",function(exporter){
 	{
 		var viewer = controller.cesiumController.cesiumViewer;
 		var entities = viewer.entities;
-		var proBorder = []
+		var proBorder = [];
+		var self = this;
 		this.citys = [110000,120000,130000,140000,150000,210000,220000,230000,
-						310000,320100,330100,340000,350000,360000,370000,410000,430000,
+						310000,320000,330000,340000,350000,360000,370000,410000,430000,
 						420000,440000,450000,460000,500000,510000,520000,530000,
 						540000,610000,620000,630000,640000,650000,710000, 810000, 820000]
 		
-		for(var i=0;i<this.citys.length;i++){
+		for(var i=0;i<self.citys.length;i++){
 			var name = entities.add(new Cesium.Entity());
 			proBorder.push(name);
 		}
+		var pro = entities.add(new Cesium.Entity());
 		
 		loadData("src/assets/data/proArea.json").then(function(data){
 			var parseBorder = new ParseBorder(data);
 			for (var m=0;m<parseBorder.length;m++) {
-				var border = new Border(parseBorder[m],proBorder[m]);
+				parseBorders = parseBorder[m].geometry.coordinates[0]
+				var border = new Border(parseBorders,pro);
+			}
+		})
+		
+		loadData("src/assets/data/cityArea.json").then(function(data){
+			var parseBorder = new ParseBorder(data);
+			for (var m=0;m<parseBorder.length;m++) {
+				var areaCode = parseInt(parseBorder[m].properties.AD_CODE/10000)*10000;
+				var index = indexOf(self.citys, areaCode);
+				parseBorders = parseBorder[m].geometry.coordinates[0]
+				var border = new Border(parseBorders,proBorder[index]);
+				
 			}
 		})
 		
@@ -36,7 +50,7 @@ define("BorderController",function(exporter){
 		function ParseBorder(data){
 			var borderArr = [];
 			for(var i=0;i<data.features.length;i++){
-				borderArr.push(data.features[i].geometry.coordinates[0]);
+				borderArr.push(data.features[i]);
 			}
 			return borderArr;
 		}
@@ -63,19 +77,29 @@ define("BorderController",function(exporter){
 			}
 			
 		}
-//		this.show = function(bol,num){
-//			for(var i=0;i<proBorder.length;i++){
-//				proBorder[i].show = false;
-//			}
-//			if(num){
-//				proBorder[num].show = bol;
-//			}
-//		}
-
-		this.show = function(bol){
+		this.show = function(bol1,bol2,num){
+			pro.show = bol1;
 			for(var i=0;i<proBorder.length;i++){
-				proBorder[i].show = bol;
+				proBorder[i].show = false;
 			}
+//			proBorder[0].show = true;
+			console.log(bol1+"++"+bol2+"++"+num)
+			if(num != undefined){
+				proBorder[num].show = bol2;
+			}
+		}
+		
+		function indexOf(arr, str){
+		    if(arr && arr.indexOf){
+		        return arr.indexOf(str);
+		    }
+		    var len = arr.length;
+		    for(var i = 0; i < len; i++){
+		        if(arr[i] == str){
+		            return i;
+		        }
+		    }
+		    return -1;
 		}
 	}
 	return BorderController;

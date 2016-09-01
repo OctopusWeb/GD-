@@ -72,7 +72,7 @@ define("eventAreaController",function(exporter){
 				}
 			})
 			parseCityInfo();
-			borderController.show(false)
+			borderController.show(true)
 		}
 		
 		$(document).bind("ExternalCall",externalCall);
@@ -90,7 +90,6 @@ define("eventAreaController",function(exporter){
 		}
 		barController.clear(true,false);
 		
-		borderController.show(true)
 		
 		function parseCityInfo(){
 			initCityInfo("100000").then(function(data,citycode){
@@ -104,8 +103,6 @@ define("eventAreaController",function(exporter){
 			dom.click(function(e){
 				e.stopPropagation()
 				var index = dom.index($(this));
-				barController.clear(false,true,index);
-				borderController.show(false)
 				dom.parent().hide();
 				dom.parent().parent().find("h1").html($(this).html());
 				var cityTxt = $(this).html();
@@ -115,6 +112,9 @@ define("eventAreaController",function(exporter){
 				$("#pro span").html(cityTxt);
 				$("#cities span").html("请选择城市");
 				var cityCode = $(this).attr("class").toString();
+				var codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
+				barController.clear(false,true,codeIndex);
+				borderController.show(false,true,codeIndex);
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
 					orientation : {
@@ -279,6 +279,19 @@ define("eventAreaController",function(exporter){
 			CesiumController.cityCode = cityCode;
 			widgetsController.loadDataSource(cityCode);
 			CesiumController.loadDataSource(cityCode);	
+		}
+		
+		function indexOf(arr, str){
+		    if(arr && arr.indexOf){
+		        return arr.indexOf(str);
+		    }
+		    var len = arr.length;
+		    for(var i = 0; i < len; i++){
+		        if(arr[i] == str){
+		            return i;
+		        }
+		    }
+		    return -1;
 		}
 		
 		function externalCall(e,data){

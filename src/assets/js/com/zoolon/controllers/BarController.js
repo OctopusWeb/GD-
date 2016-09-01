@@ -30,7 +30,7 @@ define("BarController",function(exporter){
 			for(var i=0;i<cityBox.length;i++){
 				cityBox[i].show = false;
 			}
-			if(num){
+			if(num != undefined){
 				cityBox[num].show = bol1;
 			}
 		}
