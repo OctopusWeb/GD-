@@ -52,6 +52,18 @@ define("get",function(exporter){
 	}
 });
 
+define("getJsonp",function(exporter){
+	return function(urls,onSuccess)
+	{
+		return $.ajax({
+	        url: urls,
+	        dataType: "jsonp",
+	        jsonp: "callback",
+	        success: onSuccess
+	    })
+	}
+});
+
 function trace(any)
 {
     console.log(any);

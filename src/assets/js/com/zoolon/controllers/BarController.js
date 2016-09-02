@@ -69,7 +69,7 @@ define("BarController",function(exporter){
 		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/80),
 		        box : {
 		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/40),
-		            material : Cesium.Color.fromRandom({alpha : 1.0})
+		            material : Cesium.Color.fromCssColorString('#0c6bad')
 		        }
 		   });
 		}	

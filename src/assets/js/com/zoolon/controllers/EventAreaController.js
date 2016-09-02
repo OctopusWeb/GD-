@@ -1,3 +1,6 @@
+/**
+ * sslsslsll
+ */
 define("eventAreaController",function(exporter){
 	var eventAreaController  = function(controller){
 		var eventController = controller.eventController;
@@ -60,13 +63,13 @@ define("eventAreaController",function(exporter){
 			})
 			$("#pro").click(function(e){
 				e.stopPropagation();
-				$("#pro ul").show();
+				$("#pro ul").fadeIn();
 				citySlected = true;
 			})
 			$("#cities").click(function(e){
 				e.stopPropagation();
 				if(citySlected){
-					$("#cities ul").show();
+					$("#cities ul").fadeIn();
 					$("#cities ul li").unbind("click")
 					bindCity($("#cities ul li"));
 				}
@@ -103,7 +106,7 @@ define("eventAreaController",function(exporter){
 			dom.click(function(e){
 				e.stopPropagation()
 				var index = dom.index($(this));
-				dom.parent().hide();
+				dom.parent().fadeOut();
 				dom.parent().parent().find("h1").html($(this).html());
 				var cityTxt = $(this).html();
 				cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length)
@@ -134,7 +137,7 @@ define("eventAreaController",function(exporter){
 					barController.clear(false,false)
 					borderController.show(false)
 					e.stopPropagation()
-					dom.parent().hide();
+					dom.parent().fadeOut();
 					dom.parent().parent().find("h1").html($(this).html())
 					var cityTxt = $(this).html();
 					cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length);
@@ -223,15 +226,15 @@ define("eventAreaController",function(exporter){
 		this.trafficEvent = function(){
 			traffiBol=!traffiBol;
 			if(traffiBol){
-				$("#rightSource").show()
-				$("#eventSource").show();
-				$("#eventType").show();
+				$("#rightSource").fadeIn()
+				$("#eventSource").fadeIn();
+				$("#eventType").fadeIn();
 				eventController.clear();
 				eventController.active = true;
 				
 				eventController.loadEvent(this.cityCode);
 			}else{
-				$("#rightSource").hide()
+				$("#rightSource").fadeOut()
 //				$("#eventSource").hide();
 //				$("#eventType").hide();
 				eventController.clear();
@@ -247,7 +250,7 @@ define("eventAreaController",function(exporter){
 		this.Floatingcar = function(){
 			Floating=!Floating;
 			if(Floating){
-				$("#leftSource").show()
+				$("#leftSource").fadeIn()
 //				$("#sourceColors").show();
 //				$("#w0").show();
 //				
@@ -259,7 +262,7 @@ define("eventAreaController",function(exporter){
 
 				CesiumController.loadDataSource(cur_cityCode);
 			}else{
-				$("#leftSource").hide()
+				$("#leftSource").fadeOut()
 //				$("#sourceColors").hide();
 //				$("#w0").hide();
 //				

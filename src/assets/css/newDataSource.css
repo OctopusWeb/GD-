@@ -88,3 +88,21 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 
 #rightEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;}
 #addMap .mapSelect span{color: #0087f9;}
+
+#jam{position: absolute;width: 530px;top: 90px;left: 30px;background: #fff;height: 350px;}
+.tabClick{ background: #fff; overflow: hidden}
+.tabClick li{ height:40px; line-height: 40px; width: 33%; float: left; text-align: center;list-style: none;color: #0087f9;cursor: pointer;}
+.tabClick li.active{ color: #0087f9; transition: 0.1s; font-weight: bold}
+.tabCon{ overflow: auto;height: 310px;overflow-x: hidden;}
+.tabBox{ position: relative;background: #fff;}
+.tabList{word-break: break-all; width:100%;float:left; line-height:100px; text-align:center; color:#D3D3D3; font-size:36px;}
+.lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #099; background: #f3f3f3}
+.lineDiv{ background: #099; height: 2px; width: 33%;}
+
+.tabList ul{width: 490px;float: left;overflow: hidden;}
+.tabList ul li{width: 470px;float: left;margin-left: 20px;padding-top: 10px;border-bottom: 1px solid #565656;list-style: none;font-family: "微软雅黑";cursor: pointer;}
+.tabList ul li h1{width: 70%;float: left;text-align: left;font-size: 16px;color: #565656;line-height: 25px;}
+.tabList ul li h2{width: 30%;float: left;text-align: right;font-size: 16px;color: #e10000;line-height: 25px;}
+.tabList ul li h3{width: 90%;float: left;text-align: left;font-size: 16px;color: #a0a0a0;line-height: 25px;margin-left: 10%;}
+.tabList ul li .roadInfo{width: 25%;float: left;height: 30px;overflow: hidden;}
+.tabList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
