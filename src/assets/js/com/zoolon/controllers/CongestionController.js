@@ -15,8 +15,17 @@ define("CongestionController",function(exporter){
 			CommonNow(cur_cityCode);
 			$("#jam").fadeOut();
 			$("#jam").fadeIn();
-			
 		})
+		function bindEvent(){
+			$(".tabList li").click(function(){
+				var num = $(".tabList li").index($(this));
+				var citycode = cur_cityCode;
+				var eventId = $(this).attr("class");
+				var insertTime = $(this).find(".roadInfo h4").eq(3).text();
+				console.log(insertTime)
+				console.log(MommonEvent(citycode,eventId,insertTime));
+			})
+		}
 		
 		function CommonNow(citycode){
 			var data = {"city":citycode,
@@ -25,7 +34,8 @@ define("CongestionController",function(exporter){
 						}
 			getData("10001",JSON.stringify(data)).then(function(json){
 				var index = creatDom(json);
-				$(".tabList ul").eq(0).html(index)
+				$(".tabList ul").eq(0).html(index);
+				bindEvent()
 			})
 		}
 		function UnmommonNow(citycode){
@@ -35,16 +45,11 @@ define("CongestionController",function(exporter){
 						}
 			getData("10001",JSON.stringify(data)).then(function(json){
 				var index = creatDom(json);
-				$(".tabList ul").eq(0).html(index)
+				$(".tabList ul").eq(0).html(index);
+				bindEvent()
 			})
 		}
-		function CommonOld(){
-			
-		}
-		function UnmommonOld(){
-			
-		}
-		
+	
 		function creatDom(json){
 			var index="";
 			var dataInfo = json.data.rows;
@@ -73,6 +78,21 @@ define("CongestionController",function(exporter){
 		
 		function getData(sidCode,data){
 			var code = "sid="+sidCode+"&resType=json&encode=utf-8&reqData="
+			var urls = firstUrl+code+data+key;
+			console.log(urls)
+			return $at.getJsonp(urls,function(data){
+				return data;
+			})
+		}
+		
+		function MommonEvent(citycode,eventId,insertTime){
+			var data = {"city":citycode,
+						"eventId":eventId,
+						"type":"1",
+						"insertTime":insertTime
+						}
+			data = JSON.stringify(data);
+			var code = "sid="+"10002"+"&resType=json&encode=utf-8&reqData="
 			var urls = firstUrl+code+data+key;
 			console.log(urls)
 			return $at.getJsonp(urls,function(data){

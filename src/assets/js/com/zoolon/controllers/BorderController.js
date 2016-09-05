@@ -68,10 +68,12 @@ define("BorderController",function(exporter){
 				}
 				entities.add({
 			        parent : parents,
-			        polyline : {
-				        positions : Cesium.Cartesian3.fromDegreesArray(positions),
-				        width : 1,
-				        material : Cesium.Color.fromCssColorString('#0c6bad')
+			   		name:"aa",
+			        polygon : {
+				        hierarchy : Cesium.Cartesian3.fromDegreesArray(positions),
+				        material : Cesium.Color.fromCssColorString('#0c6bad').withAlpha(0.05),
+				        outline : true,
+				        outlineColor : Cesium.Color.fromCssColorString('#0c6bad')
 				    }
 			    });
 			}
