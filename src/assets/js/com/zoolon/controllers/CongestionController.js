@@ -4,17 +4,28 @@ define("CongestionController",function(exporter){
 	{
 		var firstUrl = "https://tp-restapi.amap.com/gate?";
 		var key = "&serviceKey=53F229EBD6394D42D5714FA621FB1584";
+		var showType = 0;
 		tapEvent();
 		$(".controller ").eq(2).click(function(){
 			UnmommonNow(cur_cityCode);
-			$("#jam").fadeOut();
-			$("#jam").fadeIn();
-			
+			if(showType == 0){
+				$("#jam").fadeToggle();
+			}else{
+				$("#jam").fadeOut();
+				$("#jam").fadeIn();
+			}
+			showType = 0;
 		});
 		$(".controller ").eq(3).click(function(){
 			CommonNow(cur_cityCode);
-			$("#jam").fadeOut();
-			$("#jam").fadeIn();
+			if(showType == 1){
+				$("#jam").fadeToggle();
+			}else{
+				$("#jam").fadeOut();
+				$("#jam").fadeIn();
+			}
+			
+			showType = 1;
 		})
 		function bindEvent(){
 			$(".tabList li").click(function(){

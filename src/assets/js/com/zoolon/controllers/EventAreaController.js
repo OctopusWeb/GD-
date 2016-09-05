@@ -18,6 +18,7 @@ define("eventAreaController",function(exporter){
 		var Floating = false;
 		var citySlected = false;
 		var proCenter=[];
+		handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 //		var cityCenter=[];
 		
 		eventInit();
@@ -41,8 +42,21 @@ define("eventAreaController",function(exporter){
 				$("#pro ul").hide();
 				$("#cities ul").hide();
 			})
-			$(".quanguo").click(function(){
-				$(".quanguoBox").toggleClass("quanguoHide");
+			$(".quanguo").click(function(e){
+//				$(".quanguoBox").toggleClass("quanguoHide");
+				e.stopPropagation();
+				barController.clear(true,false);
+				borderController.show(true);
+				$(".quanguo p").html("全国");
+				$("#guo span").html("全国");
+				$("#pro span").html("请选择省份");
+				$("#cities span").html("请选择城市")
+				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:"100000"}));
+				if(traffiBol){
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(this.cityCode);
+				}
 			})
 			
 			$("#guo").click(function(e){
@@ -78,6 +92,10 @@ define("eventAreaController",function(exporter){
 			borderController.show(true)
 		}
 		
+		handler.setInputAction(function (movement) {
+	    	ClickEvent(movement)
+	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
+		
 		$(document).bind("ExternalCall",externalCall);
 		setTimeout(initBar,100)
 		function initBar(){
@@ -93,6 +111,64 @@ define("eventAreaController",function(exporter){
 		}
 		barController.clear(true,false);
 		
+		function ClickEvent(movement){
+			var pickedObject = viewer.scene.drillPick(movement.position);
+	    	if (pickedObject.length > 0) {
+	    		for (var i = 0; i < pickedObject.length; i++) {
+	    			var pickID = pickedObject[i].id;
+	    			advanceCity(pickID.name)
+	    		}
+	    	}
+		}
+		function advanceCity(pickID){
+			var type = pickID.substr(0,1);
+			var cityCode = pickID.substr(1,6);
+			var num = pickID.indexOf("-");
+			var cityName = pickID.substring(7,num);
+			var index = pickID.substr(num+1,pickID.length+1)
+			if(type == "p"){
+				$("#city").html(cityName);
+				$(".quanguo  p").html(cityName);
+				$("#pro span").html(cityName);
+				$("#cities span").html("请选择城市");
+				var codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
+				barController.clear(false,true,codeIndex);
+				borderController.show(false,true,codeIndex);
+				viewer.camera.flyTo({
+					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
+					orientation : {
+				        direction : new Cesium.Cartesian3(0,0.7071067811865476,-0.7071067811865476),
+				        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
+				    }
+				});
+				initCityInfo(cityCode).then(function(data,citycode){
+					var cityParse =new CityParse(data,citycode);
+					var cityContorller = new CityContorller(cityParse);
+					cityContorller.append($("#cities ul"));
+				})
+			}else if(type == "c"){
+				barController.clear(false,false)
+				borderController.show(false)
+				$(".quanguo  p").html(cityName);
+				$("#cities span").html(cityName);
+				cur_cityCode = cityCode;
+				if(Floating){
+					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
+				}else{
+					var city = CesiumController.getInfoByCityCode(cur_cityCode);
+					$("#city").html(city.name)
+					viewer.camera.flyTo({
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+					});
+					
+				}
+				if(traffiBol){
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(this.cityCode);
+				}
+			}
+		}
 		
 		function parseCityInfo(){
 			initCityInfo("100000").then(function(data,citycode){
@@ -339,7 +415,7 @@ define("eventAreaController",function(exporter){
 			var dataType = dataJson.parameter;
 			var AdCode = dataJson.cityCode;
 			if(dataType == "pro"){
-				console.log(dataType)
+				
 			}else if(dataType == "city"){
 				barController.clear(false,false);
 		    	if(traffiBol){

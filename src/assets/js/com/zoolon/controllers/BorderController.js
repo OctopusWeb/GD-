@@ -20,8 +20,9 @@ define("BorderController",function(exporter){
 		loadData("src/assets/data/proArea.json").then(function(data){
 			var parseBorder = new ParseBorder(data);
 			for (var m=0;m<parseBorder.length;m++) {
-				parseBorders = parseBorder[m].geometry.coordinates[0]
-				var border = new Border(parseBorders,pro);
+				var areaCode = "p" + parseBorder[m].properties.AD_CODE+parseBorder[m].properties.NAME+"-"+m;
+				parseBorders = parseBorder[m].geometry.coordinates[0];
+				var border = new Border(parseBorders,pro,areaCode);
 			}
 		})
 		
@@ -29,9 +30,10 @@ define("BorderController",function(exporter){
 			var parseBorder = new ParseBorder(data);
 			for (var m=0;m<parseBorder.length;m++) {
 				var areaCode = parseInt(parseBorder[m].properties.AD_CODE/10000)*10000;
+				var areaInfo = "c"+parseBorder[m].properties.AD_CODE+parseBorder[m].properties.NAME+"-"+m
 				var index = indexOf(self.citys, areaCode);
 				parseBorders = parseBorder[m].geometry.coordinates[0]
-				var border = new Border(parseBorders,proBorder[index]);
+				var border = new Border(parseBorders,proBorder[index],areaInfo);
 				
 			}
 		})
@@ -54,7 +56,7 @@ define("BorderController",function(exporter){
 			}
 			return borderArr;
 		}
-		function Border(data,parents){
+		function Border(data,parents,citycode){
 			var positions=[]
 			var positionArr = [];
 			if(typeof(data[0][0]) == "number"){
@@ -68,7 +70,7 @@ define("BorderController",function(exporter){
 				}
 				entities.add({
 			        parent : parents,
-			   		name:"aa",
+			   		name:citycode,
 			        polygon : {
 				        hierarchy : Cesium.Cartesian3.fromDegreesArray(positions),
 				        material : Cesium.Color.fromCssColorString('#0c6bad').withAlpha(0.05),
@@ -85,7 +87,6 @@ define("BorderController",function(exporter){
 				proBorder[i].show = false;
 			}
 //			proBorder[0].show = true;
-			console.log(bol1+"++"+bol2+"++"+num)
 			if(num != undefined){
 				proBorder[num].show = bol2;
 			}
