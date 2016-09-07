@@ -108,7 +108,7 @@ define("eventAreaController",function(exporter){
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
 		
 		$(document).bind("ExternalCall",externalCall);
-		setTimeout(initBar,100)
+//		setTimeout(initBar,100)
 		function initBar(){
 //			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
 //			for (var i =0;i<provinceCitycode.length;i++) {
