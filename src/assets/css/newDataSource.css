@@ -1,7 +1,7 @@
 *{margin: 0;padding: 0;}
 #widgets #w0{left: 40px;top: 402px;}
 #widgets #w4,#widgets #w5,#widgets #w6,#widgets #w7{visibility: hidden;}
-#sourceColors{background: #000;margin-left: 250px;top:530px}
+#sourceColors{background: none;margin-left: 150px;top:260px;}
 #chooseCity{position: absolute;width: 100%;top: 770px;left: 1695px;}
 #chooseCity div{width: 185px;color: #fff;background: #000;height: 50px;background: #07558f;
 border: 1px #009fe8 solid;margin-top: 10px;}
@@ -72,8 +72,8 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #eventSource #es0 #lable{color: #565656;font-size: 34px;line-height: 90px;}
 #eventSource #es2{width: 100%;height: 100px;left: 0;top: 100px;border-bottom: 1px #a0a0a0 solid;background: none;}
 #eventSource #es2 #lable{color: #565656;font-size: 34px;line-height: 90px;}
-.eventSource_text{left:300px;font-size: 30px;color: #565656;top: 10px;}
-.eventSource_text2{left:300px;font-size: 30px;color: #565656;top: 50px;}
+.eventSource_text{font-size: 20px;color: #565656;top: 10px;text-align: right;width: 350px;}
+.eventSource_text2{font-size: 20px;color: #565656;top: 50px;text-align: right;width: 350px;}
 #eventType{left: 185px;top: 250px;}
 #eventType .et{float: left;width: 150px;font-weight: 600;font-size: 16px;margin-left: 30px;}
 #eventType .et div{float: left;height: 40px;line-height: 40px;}
@@ -87,13 +87,14 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #et3{color: #0087f9;}
 
 #rightEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;}
+#leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;display: none;}
 #addMap .mapSelect span{color: #0087f9;}
 
-#jam{position: absolute;width: 530px;top: 90px;left: 30px;background: #fff;height: 350px;}
+#jam{position: absolute;width: 530px;top: 90px;left: 30px;background: #fff;height: 350px;display: none;}
 .tabClick{ background: #fff; overflow: hidden}
 .tabClick li{ height:40px; line-height: 40px; width: 33%; float: left; text-align: center;list-style: none;color: #0087f9;cursor: pointer;}
 .tabClick li.active{ color: #0087f9; transition: 0.1s; font-weight: bold}
-.tabCon{ overflow: auto;height: 310px;overflow-x: hidden;}
+.tabCon{ overflow: auto;height: 310px;overflow-x: hidden;background: #fff;}
 .tabBox{ position: relative;background: #fff;}
 .tabList{word-break: break-all; width:100%;float:left; line-height:100px; text-align:center; color:#D3D3D3; font-size:36px;}
 .lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #099; background: #f3f3f3}
@@ -101,8 +102,24 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 
 .tabList ul{width: 490px;float: left;overflow: hidden;}
 .tabList ul li{width: 470px;float: left;margin-left: 20px;padding-top: 10px;border-bottom: 1px solid #565656;list-style: none;font-family: "微软雅黑";cursor: pointer;}
-.tabList ul li h1{width: 70%;float: left;text-align: left;font-size: 16px;color: #565656;line-height: 25px;}
-.tabList ul li h2{width: 30%;float: left;text-align: right;font-size: 16px;color: #e10000;line-height: 25px;}
-.tabList ul li h3{width: 90%;float: left;text-align: left;font-size: 16px;color: #a0a0a0;line-height: 25px;margin-left: 10%;}
+.tabList ul li h1{width: 70%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
+.tabList ul li h2{width: 30%;float: left;text-align: right;font-size: 14px;color: #e10000;line-height: 25px;}
+.tabList ul li h3{width: 90%;float: left;text-align: left;font-size: 14px;color: #a0a0a0;line-height: 25px;margin-left: 10%;}
 .tabList ul li .roadInfo{width: 25%;float: left;height: 30px;overflow: hidden;}
 .tabList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
+.tabList ul li .roadInfo h4 img{float: left;}
+.tabList ul li h6{display: none;}
+
+.tabLiList{position: absolute;width: 530px;background: #fff;top: 370px;height: 350px;overflow: auto;overflow-x: hidden;display: none;}
+.tabLiList h5{line-height: 40px;width: 500px;color: #0087f9;;padding-left: 30px;font-size: 16px;border-bottom: 1px #0087f9 solid;}
+
+.tabLiList ul{width: 490px;float: left;}
+.tabLiList ul li{width: 470px;float: left;margin-left: 20px;padding-top: 10px;border-bottom: 1px solid #565656;list-style: none;font-family: "微软雅黑";cursor: pointer;}
+.tabLiList ul li h1{width: 70%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
+.tabLiList ul li h2{width: 30%;float: left;text-align: right;font-size: 14px;color: #e10000;line-height: 25px;}
+.tabLiList ul li h3{width: 90%;float: left;text-align: left;font-size: 14px;color: #a0a0a0;line-height: 25px;margin-left: 10%;}
+.tabLiList ul li .roadInfo{width: 25%;float: left;height: 30px;overflow: hidden;}
+.tabLiList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
+.tabLiList ul li .roadInfo h4 img{float: left;}
+
+.jamBk{width: 250px;position: absolute;height: 50px;background: none;left: 30px;top: 30px;display: none;}

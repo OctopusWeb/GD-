@@ -390,12 +390,18 @@ define("CesiumController",function(exporter){
 				container.empty();
 				var list = colorMap.getShowList();
 				var colorItems = [];
+				var datas=[];
 				for(var i=0;i<list.length;i++)
 				{
 					var item = new ColorItem(list[i]);
+					console.log(item)
+					if(item.data.rank && item.data.label){
+						datas.push({value:item.data.rank, name:item.data.label})
+					}
 					item.view.appendTo(container);
 					colorItems.push(item);
 				}
+				drawEchart(datas);
 				var totalItem = new TotalItem();
 				totalItem.view.appendTo(container);
 				
@@ -461,6 +467,45 @@ define("CesiumController",function(exporter){
 					this.view = $("<div>",{style:"padding:5px;color:#ffffff;font-size:16px;font-family:黑体;"});
 					this.view.text("总计:"+_self.collection.length);
 				}
+			}
+			function drawEchart(datas){
+				var myChart = echarts.init(document.getElementById('leftEchart'));
+				var option = {
+		             tooltip: {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    },
+				    series: [
+				        {
+				            type:'pie',
+				            radius: ['50%', '80%'],
+				            avoidLabelOverlap: false,
+				            label: {
+				                normal: {
+				                    show: false,
+				                    position: 'center'
+				                },
+				                emphasis: {
+				                    show: true,
+				                    textStyle: {
+				                        fontSize: '30',
+				                        fontWeight: 'bold'
+				                    }
+				                }
+				            },
+				            labelLine: {
+				                normal: {
+				                    show: false
+				                }
+				            },
+				            data:datas
+				            
+				        }
+				    ]
+		        };
+		
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
 			}
 			
 			this.getPointsLengthOf = function(value)

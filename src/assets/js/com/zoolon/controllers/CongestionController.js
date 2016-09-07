@@ -1,42 +1,45 @@
 
 define("CongestionController",function(exporter){
-	var CongestionController = function()
+	var CongestionController = function(controller,eventArea)
 	{
+		var viewer = controller.cesiumController.cesiumViewer;
 		var firstUrl = "https://tp-restapi.amap.com/gate?";
 		var key = "&serviceKey=53F229EBD6394D42D5714FA621FB1584";
 		var showType = 0;
-		tapEvent();
+//		tapEvent();
 		$(".controller ").eq(2).click(function(){
+			
+			eventArea.trafficEvent(true);
+			eventArea.Floatingcar(true);
 			UnmommonNow(cur_cityCode);
+			$(".tabLiList").fadeOut();
 			if(showType == 0){
+				$(".jamBk").toggle();
 				$("#jam").fadeToggle();
 			}else{
 				$("#jam").fadeOut();
 				$("#jam").fadeIn();
+				$(".jamBk").show();
 			}
 			showType = 0;
 		});
 		$(".controller ").eq(3).click(function(){
+			$(".jamBk").show();
+			eventArea.trafficEvent(true);
+			eventArea.Floatingcar(true);
 			CommonNow(cur_cityCode);
+			$(".tabLiList").fadeOut();
 			if(showType == 1){
+				$(".jamBk").toggle();
 				$("#jam").fadeToggle();
 			}else{
+				$(".jamBk").show();
 				$("#jam").fadeOut();
 				$("#jam").fadeIn();
 			}
 			
 			showType = 1;
 		})
-		function bindEvent(){
-			$(".tabList li").click(function(){
-				var num = $(".tabList li").index($(this));
-				var citycode = cur_cityCode;
-				var eventId = $(this).attr("class");
-				var insertTime = $(this).find(".roadInfo h4").eq(3).text();
-				console.log(insertTime)
-				console.log(MommonEvent(citycode,eventId,insertTime));
-			})
-		}
 		
 		function CommonNow(citycode){
 			var data = {"city":citycode,
@@ -77,10 +80,10 @@ define("CongestionController",function(exporter){
 						handleState="趋向疏通"
 					}
 					index +="<li class="+dataInfo[i].eventId+"><h1>"+dataInfo[i].roadName+"</h1><h2>"+handleState+"</h2><h3>"+
-					dataInfo[i].roadName+"</h3><div class='roadInfo'><h4>"+dataInfo[i].jamSpeed+"</h4></div>"+
-					"<div class='roadInfo'><h4>"+dataInfo[i].jamDist+"</h4></div>"+
-					"<div class='roadInfo'><h4>"+dataInfo[i].longTime+"</h4></div>"+
-					"<div class='roadInfo'><h4>"+dataInfo[i].insertTime+"</h4></div></li>"
+					dataInfo[i].roadName+"</h3><div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon1.jpg'/>"+dataInfo[i].jamSpeed+"km/h</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon2.jpg'/>"+dataInfo[i].jamDist+"米</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon3.jpg'/>"+dataInfo[i].longTime+"min</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon4.jpg'/>"+dataInfo[i].insertTime+"</h4></div><h6>"+dataInfo[i].xy+"</h6></li>"
 				}
 			}
 
@@ -90,7 +93,6 @@ define("CongestionController",function(exporter){
 		function getData(sidCode,data){
 			var code = "sid="+sidCode+"&resType=json&encode=utf-8&reqData="
 			var urls = firstUrl+code+data+key;
-			console.log(urls)
 			return $at.getJsonp(urls,function(data){
 				return data;
 			})
@@ -102,12 +104,76 @@ define("CongestionController",function(exporter){
 						"type":"1",
 						"insertTime":insertTime
 						}
-			data = JSON.stringify(data);
-			var code = "sid="+"10002"+"&resType=json&encode=utf-8&reqData="
-			var urls = firstUrl+code+data+key;
-			console.log(urls)
-			return $at.getJsonp(urls,function(data){
-				return data;
+			getData("10002",JSON.stringify(data)).then(function(json){
+				var index = roadInfo(json);
+				$(".tabLiList ul").eq(0).html(index);
+			})
+		}
+		
+		function roadInfo(json){
+			var index="";
+			var dataInfo = json.data.rows;
+			if(json.status.msg != "success"){
+				index="数据加载错误，请重试"
+			}else{
+				for(var i=0;i<dataInfo.length;i++){
+					var handleState="拥堵"
+					if(dataInfo[i].pubRunStatus == 1){
+						handleState="拥堵"
+					}else if(dataInfo[i].pubRunStatus == 2){
+						handleState="趋向严重"
+					}else if(dataInfo[i].pubRunStatus == 3){
+						handleState="趋向疏通"
+					}
+					var roadType = "高速路"
+					if(dataInfo[i].roadType == 0){
+						roadType = "高速路"
+					}else if(dataInfo[i].roadType == 1){
+						roadType = "城市快速路"
+					}else if(dataInfo[i].roadType == 2){
+						roadType = "国道"
+					}else if(dataInfo[i].roadType == 3){
+						roadType = "主要道路"
+					}else if(dataInfo[i].roadType == 4){
+						roadType = "省道"
+					}else if(dataInfo[i].roadType == 5){
+						roadType = "次要道路"
+					}else if(dataInfo[i].roadType == 6){
+						roadType = "普通道路"
+					}else if(dataInfo[i].roadType == 7){
+						roadType = "县道"
+					}else if(dataInfo[i].roadType == 8){
+						roadType = "乡公路"
+					}else if(dataInfo[i].roadType == 9){
+						roadType = "县乡村内部道路"
+					}
+					index +="<li class="+dataInfo[i].linkId+"><h1>"+dataInfo[i].roadName+"</h1><h2>"+handleState+"</h2><h3>"+
+					roadType+"</h3><div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon1.jpg'/>"+dataInfo[i].eventJamSpeed+"km/h</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon2.jpg'/>"+dataInfo[i].length+"</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon3.jpg'/>"+dataInfo[i].travelTime+"</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon4.jpg'/>"+dataInfo[i].createTime+"</h4></div></li>"
+				}
+			}
+
+			return index;
+		}
+		
+		function bindEvent(){
+			$(".tabList li").click(function(){
+				var num = $(".tabList li").index($(this));
+				var citycode = cur_cityCode;
+				var eventId = $(this).attr("class");
+				var xy = $(this).find("h6").text();
+				var x=xy.substring(0,xy.indexOf(","));
+				var y=xy.substring(xy.indexOf(",")+1,xy.length);
+				var insertTime = $(this).find(".roadInfo h4").eq(3).text();
+				viewer.camera.flyTo({
+					destination : Cesium.Cartesian3.fromDegrees(x, y, 100000.0)
+				});
+				
+				MommonEvent(citycode,eventId,insertTime);
+				$(".tabLiList").fadeOut();
+				$(".tabLiList").fadeIn();
 			})
 		}
 

@@ -18,11 +18,12 @@ define("eventAreaController",function(exporter){
 		var Floating = false;
 		var citySlected = false;
 		var proCenter=[];
+		var codeIndex = false;
 		handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 //		var cityCenter=[];
-		
 		eventInit();
 		function eventInit(){
+
 			$("#addMap div").eq(1).click(function(e){
 				e.stopPropagation();
 				$(this).toggleClass("mapSelect")
@@ -45,14 +46,19 @@ define("eventAreaController",function(exporter){
 			$(".quanguo").click(function(e){
 //				$(".quanguoBox").toggleClass("quanguoHide");
 				e.stopPropagation();
-				barController.clear(true,false);
+				codeIndex = false;
+				if($("#leftSource").css("display") == "none"){
+					barController.clear(false,false);
+				}else{
+					barController.clear(true,false);
+				}
 				borderController.show(true);
 				$(".quanguo p").html("全国");
 				$("#guo span").html("全国");
 				$("#pro span").html("请选择省份");
 				$("#cities span").html("请选择城市")
 				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:"100000"}));
-				if(traffiBol){
+				if(traffiBol && $("#rightSource").css("display") == "block"){
 					eventController.clear();
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
@@ -61,7 +67,11 @@ define("eventAreaController",function(exporter){
 			
 			$("#guo").click(function(e){
 				e.stopPropagation();
-				barController.clear(true,false);
+				if($("#leftSource").css("display") == "none"){
+					barController.clear(false,false);
+				}else{
+					barController.clear(true,false);
+				}
 				borderController.show(true);
 				$(".quanguo p").html("全国");
 				$("#guo span").html("全国");
@@ -89,7 +99,8 @@ define("eventAreaController",function(exporter){
 				}
 			})
 			parseCityInfo();
-			borderController.show(true)
+			borderController.show(true);
+			barController.clear(false,false);
 		}
 		
 		handler.setInputAction(function (movement) {
@@ -109,7 +120,7 @@ define("eventAreaController",function(exporter){
 				barController.drawBars("src/assets/data/cityBar.json",i);
 			}
 		}
-		barController.clear(true,false);
+		
 		
 		function ClickEvent(movement){
 			var pickedObject = viewer.scene.drillPick(movement.position);
@@ -131,8 +142,12 @@ define("eventAreaController",function(exporter){
 				$(".quanguo  p").html(cityName);
 				$("#pro span").html(cityName);
 				$("#cities span").html("请选择城市");
-				var codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
-				barController.clear(false,true,codeIndex);
+				codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
+				if($("#leftSource").css("display") == "none"){
+					barController.clear(false,false);
+				}else{
+					barController.clear(false,true,codeIndex);
+				}
 				borderController.show(false,true,codeIndex);
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
@@ -147,12 +162,11 @@ define("eventAreaController",function(exporter){
 					cityContorller.append($("#cities ul"));
 				})
 			}else if(type == "c"){
-				barController.clear(false,false)
 				borderController.show(false)
 				$(".quanguo  p").html(cityName);
 				$("#cities span").html(cityName);
 				cur_cityCode = cityCode;
-				if(Floating){
+				if(Floating && $("#leftSource").css("display") == "block"){
 					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
 				}else{
 					var city = CesiumController.getInfoByCityCode(cur_cityCode);
@@ -160,13 +174,13 @@ define("eventAreaController",function(exporter){
 					viewer.camera.flyTo({
 						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
 					});
-					
 				}
-				if(traffiBol){
+				if(traffiBol && $("#rightSource").css("display") == "block"){
 					eventController.clear();
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
 				}
+				barController.clear(false,false)
 			}
 		}
 		
@@ -192,7 +206,11 @@ define("eventAreaController",function(exporter){
 				$("#cities span").html("请选择城市");
 				var cityCode = $(this).attr("class").toString();
 				var codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
-				barController.clear(false,true,codeIndex);
+				if($("#leftSource").css("display") == "none"){
+					barController.clear(false,false);
+				}else{
+					barController.clear(false,true,codeIndex);
+				}
 				borderController.show(false,true,codeIndex);
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
@@ -299,7 +317,16 @@ define("eventAreaController",function(exporter){
 			}
 			mapArea=!mapArea;
 		}
-		this.trafficEvent = function(){
+		this.trafficEvent = function(bol){
+			if(bol){
+				$("#rightSource").fadeOut()
+//				$("#eventSource").hide();
+//				$("#eventType").hide();
+				cur_selectedIndex1=0;
+				eventController.clear();
+				eventController.active = false;
+				return
+			}
 			traffiBol=!traffiBol;
 			if(traffiBol){
 				$("#rightSource").fadeIn()
@@ -313,8 +340,6 @@ define("eventAreaController",function(exporter){
 				$("#rightSource").fadeOut()
 //				$("#eventSource").hide();
 //				$("#eventType").hide();
-				eventController.clear();
-				eventController.active = false;
 				
 				cur_selectedIndex1=0;
 				eventController.clear();
@@ -323,9 +348,21 @@ define("eventAreaController",function(exporter){
 			
 		}
 		
-		this.Floatingcar = function(){
+		this.Floatingcar = function(bol){
+			if(bol){
+				$("#leftSource").fadeOut()
+				CesiumController.clear();
+				return
+			}
 			Floating=!Floating;
 			if(Floating){
+				if(cur_cityCode == "100000" && codeIndex){
+					$("#leftSource").fadeIn()
+					barController.clear(false,true,codeIndex);
+					return;
+				}else{
+					barController.clear(true,false);
+				}
 				$("#leftSource").fadeIn()
 //				$("#sourceColors").show();
 //				$("#w0").show();
@@ -338,6 +375,7 @@ define("eventAreaController",function(exporter){
 
 				CesiumController.loadDataSource(cur_cityCode);
 			}else{
+				barController.clear(false,false);
 				$("#leftSource").fadeOut()
 //				$("#sourceColors").hide();
 //				$("#w0").hide();

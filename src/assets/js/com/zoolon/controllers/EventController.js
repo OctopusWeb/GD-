@@ -117,11 +117,11 @@
 				var t22 = $("#widgets #eventSource #es2 #text2");
 				var setSource = function(source,sourceC) {
 
-					es0.width(50 + '%');
+					es0.width(100 + '%');
 					//es1.width(30 + '%');
 					//es1.css('left', 40 + '%');
-					es2.width(50 + '%');
-					es2.css('left', 50+ '%');
+					es2.width(100 + '%');
+					es2.css('left', 0+ '%');
 					t0.text("当前有效："+sourceC[0]+'('+source[0] + '%)');
 					//t1.text(sourceC[1]+'('+source[1] + '%)');
 					t2.text("当前有效："+sourceC[2]+'('+source[2] + '%)');
@@ -205,8 +205,8 @@
 				$("#widgets #eventType #et4 #count").text(map["管制类"]);
 				$("#widgets #eventType #et5 #count").text(map["施工类"]);
 				$("#widgets #eventType #et6 #count").text(map["路面"]);
-				a()
-				function a(){
+				drawEchart();
+				function drawEchart(){
 					var myChart = echarts.init(document.getElementById('rightEchart'));
 					var option = {
 			             tooltip: {

@@ -69,7 +69,7 @@ $(document).ready(function(){
 		
 	
 	var eventArea = new $at.eventAreaController(controller);
-	var congestion = new $at.CongestionController()
+	var congestion = new $at.CongestionController(controller,eventArea)
 	
 })
 
