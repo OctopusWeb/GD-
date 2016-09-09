@@ -8,8 +8,12 @@ define("CongestionController",function(exporter){
 		var showType = 0;
 		var entities = viewer.entities;
 		var roadLink;
+		var roadCar=[];
 //		tapEvent();
 		$(".controller ").eq(2).click(function(){
+			for(var m=0;m<roadCar.length;m++){
+				entities.remove(roadCar[m]);
+			}
 			if(roadLink){
 				entities.remove(roadLink);
 			}
@@ -28,6 +32,9 @@ define("CongestionController",function(exporter){
 			showType = 0;
 		});
 		$(".controller ").eq(3).click(function(){
+			for(var m=0;m<roadCar.length;m++){
+				entities.remove(roadCar[m]);
+			}
 			if(roadLink){
 				entities.remove(roadLink);
 			}
@@ -87,10 +94,10 @@ define("CongestionController",function(exporter){
 						handleState="趋向疏通"
 					}
 					index +="<li class="+dataInfo[i].eventId+"><h1>"+dataInfo[i].roadName+"</h1><h2>"+handleState+"</h2><h3>"+
-					dataInfo[i].roadName+"</h3><div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon1.jpg'/>"+dataInfo[i].jamSpeed+"km/h</h4></div>"+
-					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon2.jpg'/>"+dataInfo[i].jamDist+"米</h4></div>"+
-					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon3.jpg'/>"+dataInfo[i].longTime+"min</h4></div>"+
-					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon4.jpg'/>"+dataInfo[i].insertTime+"</h4></div><h6>"+dataInfo[i].xy+"</h6></li>"
+					dataInfo[i].roadName+"</h3><div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon1.png'/>"+dataInfo[i].jamSpeed+"km/h</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon2.png'/>"+dataInfo[i].jamDist+"米</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon3.png'/>"+dataInfo[i].longTime+"min</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon4.png'/>"+dataInfo[i].insertTime+"</h4></div><h6>"+dataInfo[i].xy+"</h6></li>"
 				}
 			}
 
@@ -131,9 +138,14 @@ define("CongestionController",function(exporter){
 					viewer.clock.currentTime = start.clone();
 					viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
 					viewer.clock.multiplier = 1;
+					viewer.clock.canAnimate  = true;
+					viewer.clock.shouldAnimate = true;
 					
-					viewer.timeline.zoomTo(start, stop)
-					
+					viewer.timeline.zoomTo(start, stop);
+					for(var m=0;m<roadCar.length;m++){
+						entities.remove(roadCar[m]);
+					}
+					roadCar=[];
 					var jsonParse = new JsonParse(json);
 					for(var i=0;i<jsonParse.length;i++){
 						var moveCar = new MoveCar(jsonParse[i],start,stop);
@@ -143,20 +155,31 @@ define("CongestionController",function(exporter){
 		}
 		function JsonParse(json){
 			var carArr = [];
+			var self = this;
+			self.SortByWeight = function(array, key) {
+			    return array.sort(function(a, b) {
+			        var x = a[key]; var y = b[key];
+			        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+			    });
+			}
 			for(var i=0;i<json.rows.length;i++){
 				var carData = [];
-				for(var m=0;m<json.rows[i].gpsInfos.length;m++){
-					carData.push(json.rows[i].gpsInfos[m].coord);
+				var gpsArr = json.rows[i].gpsInfos;
+				self.SortByWeight(gpsArr,"gpsTime")
+				for(var m=0;m<gpsArr.length;m++){
+					carData.push(gpsArr[m].coord);
 				}
 				carArr.push(carData);
 			}
+			
+				
 			return carArr;
 		}
 		function MoveCar(jsonParse,start,stop){
 			var myPosition = [];
 			var myTime = [];
 			for(var i=0;i<jsonParse.length;i++){
-				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[i][0], jsonParse[i][1]);
+				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[i][0], jsonParse[i][1],10);
 				myTime[i] = Cesium.JulianDate.addSeconds(start, i/jsonParse.length*300, new Cesium.JulianDate());
 			}
 			this.computeCirclularFlight = function() {
@@ -166,24 +189,28 @@ define("CongestionController",function(exporter){
             }
 			var Position = this.computeCirclularFlight();
 			
-			viewer.entities.add({
+			var car = viewer.entities.add({
 	            availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
 	                start : start,
 	                stop : stop
 	            })]),
 	            position : Position,
 	            point : {
-		            pixelSize : 10,
-		            color : Cesium.Color.RED
-		        },
+		            color : Cesium.Color.WHITE, // default: WHITE
+		            pixelSize : 10, // default: 1
+		            outlineColor : Cesium.Color.BLUE, // default: BLACK
+		            outlineWidth : 3, // default: 0
+		            scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.4, 0.3, 0.2)
+		        }
 //	           	billboard :{
 //		            image : 'src/assets/images/dataSource/car.png',
 //		            sizeInMeters : true
 //		        },
-	            path : {
-	                material:Cesium.Color.YELLOW.withAlpha(1)
-	            }
+//	            path : {
+//	                material:Cesium.Color.RED.withAlpha(0.1)
+//	            }
 	        }); 
+	        roadCar.push(car);
 		}
 		
 		function parseCar(datas){
@@ -204,8 +231,9 @@ define("CongestionController",function(exporter){
 		   		name:"roadLink",
 	            polyline : {
 			        positions : Cesium.Cartesian3.fromDegreesArray(positions),
-			        width : 5,
-			        material : Cesium.Color.RED
+			        width : 3,
+			        material : Cesium.Color.RED.withAlpha(0.8)
+//			        Cesium.Color.fromCssColorString('#0c6bad')
 			    }
 		    });
 			
@@ -258,10 +286,10 @@ define("CongestionController",function(exporter){
 						roadType = "县乡村内部道路"
 					}
 					index +="<li class="+dataInfo[i].linkId+"><h1>"+dataInfo[i].roadName+"</h1><h2>"+handleState+"</h2><h3>"+
-					roadType+"</h3><div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon1.jpg'/>"+dataInfo[i].eventJamSpeed+"km/h</h4></div>"+
-					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon2.jpg'/>"+dataInfo[i].length+"</h4></div>"+
-					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon3.jpg'/>"+dataInfo[i].travelTime+"</h4></div>"+
-					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon4.jpg'/>"+dataInfo[i].createTime+"</h4></div></li>"
+					roadType+"</h3><div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon1.png'/>"+dataInfo[i].eventJamSpeed+"km/h</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon2.png'/>"+dataInfo[i].length+"</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon3.png'/>"+dataInfo[i].travelTime+"</h4></div>"+
+					"<div class='roadInfo'><h4><img src='src/assets/images/dataSource/roadIcon4.png'/>"+dataInfo[i].createTime+"</h4></div></li>"
 				}
 			}
 

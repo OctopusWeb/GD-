@@ -17,10 +17,15 @@ define("BarController",function(exporter){
 		}
 		this.drawBars= function(url,dataType){
 			$at.get(url,undefined,function(barData){
+				var all = barData[0].dataNum
+				var max = barData[1].dataNum;
+				for(var i=1;i<barData.length;i++){ 
+				  if(max<barData[i].dataNum)max=barData[i].dataNum;
+				}
 				for(var i=0;i<barData.length;i++){
 					drawBar(barData[i],dataType).then(function(codeData,barData){
-						var barParse = new BarParse(codeData,barData)
-						var cityBar = new CityBar(barParse,dataType);
+						var barParse = new BarParse(codeData,barData);
+						var cityBar = new CityBar(barParse,dataType,max,all);
 					})
 				}
 			})
@@ -61,17 +66,22 @@ define("BarController",function(exporter){
 			return cityCenter;
 		}
 		
-		function CityBar(barParse,dataType){
-			 var Box;
+		function CityBar(barParse,dataType,max,all){
+			 var Box,wid,hei;
 			 dataType == "pro" ? Box = proBox :Box = cityBox[dataType];
+			 dataType == "pro" ? wid = 20000.0 :wid = 8000.0;
+			 hei = barParse[2]/max*wid*50;
 			 entities.add({
 		        parent : Box,
-		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],barParse[2]/1600),
+		        position : Cesium.Cartesian3.fromDegrees(barParse[0], barParse[1],hei/2),
 		        box : {
-		            dimensions : new Cesium.Cartesian3(20000.0, 20000.0, barParse[2]/800),
+		            dimensions : new Cesium.Cartesian3(wid, wid, hei),
 		            material : Cesium.Color.fromCssColorString('#0c6bad')
 		        }
-		   });
+//	            label : {
+//	                text : 'Label on top of scaling billboard'
+//	            }
+		   	});
 		}	
 	}
 	return BarController;

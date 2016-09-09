@@ -35,12 +35,13 @@ color: #565656;}
 margin-top: 10px;color: #565656;font-weight: 600;}
 #addMap div img{top: 17px;position: absolute;left: 15px;}
 
-#leftSource{height: 560px;width: 386px;position: absolute;background: #fff;top: 500px;left: 30px;display: none;}
+#leftSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 30px;display: none;}
 #leftSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
-#rightSource{height: 560px;width: 386px;position: absolute;background: #fff;top: 500px;left: 1506px;display: none;}
+#rightSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 1506px;display: none;}
 #rightSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
+#city{opacity: 0;}
 
 #widgets .number{color: #565656;}
 #widgets #w2{background: none;float: left;margin: 0;padding: 0;position: relative;
@@ -90,12 +91,12 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;display: none;}
 #addMap .mapSelect span{color: #0087f9;}
 
-#jam{position: absolute;width: 530px;top: 90px;left: 30px;background: #fff;height: 350px;display: none;}
-.tabClick{ background: #fff; overflow: hidden}
+#jam{position: absolute;width: 530px;top: 90px;left: 30px;height: 350px;display: none;}
+.tabClick{ background: rgba(255,255,255,0.8); overflow: hidden}
 .tabClick li{ height:40px; line-height: 40px; width: 33%; float: left; text-align: center;list-style: none;color: #0087f9;cursor: pointer;}
 .tabClick li.active{ color: #0087f9; transition: 0.1s; font-weight: bold}
-.tabCon{ overflow: auto;height: 310px;overflow-x: hidden;background: #fff;}
-.tabBox{ position: relative;background: #fff;}
+.tabCon{ overflow: auto;height: 310px;overflow-x: hidden;background: rgba(255,255,255,0.8)}
+.tabBox{ position: relative;}
 .tabList{word-break: break-all; width:100%;float:left; line-height:100px; text-align:center; color:#D3D3D3; font-size:36px;}
 .lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #099; background: #f3f3f3}
 .lineDiv{ background: #099; height: 2px; width: 33%;}
@@ -110,7 +111,7 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 .tabList ul li .roadInfo h4 img{float: left;}
 .tabList ul li h6{display: none;}
 
-.tabLiList{position: absolute;width: 530px;background: #fff;top: 370px;height: 350px;overflow: auto;overflow-x: hidden;display: none;}
+.tabLiList{position: absolute;width: 530px;background: rgba(255,255,255,0.8);top: 370px;height: 350px;overflow: auto;overflow-x: hidden;display: none;}
 .tabLiList h5{line-height: 40px;width: 500px;color: #0087f9;;padding-left: 30px;font-size: 16px;border-bottom: 1px #0087f9 solid;}
 
 .tabLiList ul{width: 490px;float: left;}

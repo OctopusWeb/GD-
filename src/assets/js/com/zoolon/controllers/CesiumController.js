@@ -394,10 +394,12 @@ define("CesiumController",function(exporter){
 				for(var i=0;i<list.length;i++)
 				{
 					var item = new ColorItem(list[i]);
-					console.log(item)
 					if(item.data.rank && item.data.label){
 						datas.push({value:item.data.rank, name:item.data.label})
 					}
+//					else{
+//						datas.push({value:item.data.rank, name:'其他'})
+//					}
 					item.view.appendTo(container);
 					colorItems.push(item);
 				}

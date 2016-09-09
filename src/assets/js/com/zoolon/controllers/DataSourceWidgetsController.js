@@ -170,10 +170,15 @@ define("NumController",function(exporter){
 				var len = nums.length;
 				var str = String(_value);
 				str = str.split("").reverse().join("");
+				str = str.substring(0,str.length-2)+"??"
 				for(var i=0;i<len;i++)
 				{
 					var num = $(nums[len-1-i]);
 					var numStr = str.charAt(i);
+					if((len-i)%4 == 0 && numStr){
+						numStr = numStr+",";
+						num.css({"margin-left":"-5px"})
+					}
 					num.text(numStr);
 				}
 			}

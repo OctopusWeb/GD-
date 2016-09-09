@@ -199,12 +199,13 @@
 				for (var i = 0; i < sourceData.length; i++) {
 					map[sourceData[i].name] = sourceData[i].value;
 				}
-				$("#widgets #eventType #et1 #count").text(map["其他"]);
-				$("#widgets #eventType #et2 #count").text(map["事故"]);
-				$("#widgets #eventType #et3 #count").text(map["流量"]);
-				$("#widgets #eventType #et4 #count").text(map["管制类"]);
-				$("#widgets #eventType #et5 #count").text(map["施工类"]);
-				$("#widgets #eventType #et6 #count").text(map["路面"]);
+				var all = map["其他"]+map["事故"]+map["流量"]+map["管制类"]+map["施工类"]+map["路面"];
+				$("#widgets #eventType #et1 #count").text(parseInt(map["其他"]/all*100)+"%");
+				$("#widgets #eventType #et2 #count").text(parseInt(map["事故"]/all*100)+"%");
+				$("#widgets #eventType #et3 #count").text(parseInt(map["流量"]/all*100)+"%");
+				$("#widgets #eventType #et4 #count").text(parseInt(map["管制类"]/all*100)+"%");
+				$("#widgets #eventType #et5 #count").text(parseInt(map["施工类"]/all*100)+"%");
+				$("#widgets #eventType #et6 #count").text(parseInt(map["路面"]/all*100)+"%");
 				drawEchart();
 				function drawEchart(){
 					var myChart = echarts.init(document.getElementById('rightEchart'));
@@ -415,18 +416,21 @@
 		}
 		
 		var checkViewEntity = function(eventsData){
+			var tmpLast = {};
 			for(var obj in lastTimeEntites){
 				var exist = false;
 				for(var i=0;i<eventsData.length;i++){
 					var eventObj = eventsData[i];
-					if(eventsData[i] == null){
-							
-					}else{
+					if(eventObj.id == obj){
 						exist = true;
+						tmpLast[obj] = lastTimeEntites[obj];
+						continue;
+					}else{
+						
 					}
 				}
 				if(!exist){
-					
+					console.log("清除事件： " + obj);
 					viewer.entities.remove(lastTimeEntites[obj]);
 					eventMap[obj]=undefined;
 					lastTimeEntites[obj]=undefined;  
