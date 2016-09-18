@@ -62,7 +62,7 @@ define("CesiumController",function(exporter){
 		{
 			this.cityCode = cityCode;
 			this.dsCodes = dsCodes;
-			this.clear();
+			this.clear(true);
 			flyToCurrentCity(function(){
 				switch(self.dataType)
 				{
@@ -76,6 +76,15 @@ define("CesiumController",function(exporter){
 					showHistory();
 					break;
 				}
+			});
+		}
+		this.loadDataSource1 = function(cityCode,dsCodes)
+		{
+			this.cityCode = cityCode;
+			this.dsCodes = dsCodes;
+			this.clear(false);
+			flyToCurrentCity(function(){
+				showRealTime();
 			});
 		}
 		
@@ -119,7 +128,7 @@ define("CesiumController",function(exporter){
 			}
 		}
 		
-		var customDataSource,dataLoader,timer;
+		var customDataSource,customDataSource1,dataLoader,timer;
 		//显示实时数据
 		function showRealTime()
 		{
@@ -137,9 +146,9 @@ define("CesiumController",function(exporter){
 					loadRealTimeData();
 					return;
 				}
-				if(customDataSource!=undefined)customDataSource.destroy();
-				customDataSource = new CustomDataSource(data);
-				viewer.dataSources.add(customDataSource.czmlDataSource);
+				if(customDataSource1!=undefined)customDataSource1.destroy();
+				customDataSource1 = new CustomDataSource(data);
+				viewer.dataSources.add(customDataSource1.czmlDataSource);
 				viewer.clock.multiplier = 30;
 				viewer.clock.shouldAnimate = true;
 				clearTimeout(timer);
@@ -191,7 +200,7 @@ define("CesiumController",function(exporter){
 			});
 		}
 		
-		this.clear=function()
+		this.clear=function(type)
 		{
 			if(timer!=undefined)
 			{
@@ -200,11 +209,20 @@ define("CesiumController",function(exporter){
 			}
 			viewer.clock.shouldAnimate = false;
 			if(dataLoader!=undefined)dataLoader.abort();
-			if(customDataSource!=undefined)
-			{
-				customDataSource.destroy();
-				customDataSource = undefined;
+			if(type){
+				if(customDataSource!=undefined)
+				{
+					customDataSource.destroy();
+					customDataSource = undefined;
+				}
+			}else{
+				if(customDataSource1!=undefined)
+				{
+					customDataSource1.destroy();
+					customDataSource1 = undefined;
+				}
 			}
+			
 			exporter.DebugTool.clear();
 			$("#sourceColors").hide();
 			
@@ -397,9 +415,16 @@ define("CesiumController",function(exporter){
 					if(item.data.rank && item.data.label){
 						datas.push({value:item.data.rank, name:item.data.label})
 					}
-//					else{
-//						datas.push({value:item.data.rank, name:'其他'})
-//					}
+					else{
+						var textA = item.data.value;
+						var arr = textA.split(',');
+						var totalSum = 0;
+						for (var i=0;i<arr.length;i++)
+						{
+						totalSum = totalSum + arr[i]*1
+						}
+						datas.push({value:totalSum, name:'其他'})
+					}
 					item.view.appendTo(container);
 					colorItems.push(item);
 				}
@@ -429,7 +454,7 @@ define("CesiumController",function(exporter){
 					colorBox.css("background-color",obj.color);
 					var label = this.view.find("label");
 					var pointsLen = _self.getPointsLengthOf(obj.value);
-					label.text(obj.label+"("+pointsLen+")");
+					label.text(obj.label+"("+parseInt(pointsLen/_self.collection.length*100)+"%)");
 					label.css("color",obj.type == 0?"#1cc5e1":"#ffbf31");
 					var toggled = true;
 					this.view.click(function(){
@@ -467,7 +492,8 @@ define("CesiumController",function(exporter){
 				function TotalItem()
 				{
 					this.view = $("<div>",{style:"padding:5px;color:#ffffff;font-size:16px;font-family:黑体;"});
-					this.view.text("总计:"+_self.collection.length);
+//					this.view.text("总计:"+_self.collection.length);
+					this.view.text("");
 				}
 			}
 			function drawEchart(datas){

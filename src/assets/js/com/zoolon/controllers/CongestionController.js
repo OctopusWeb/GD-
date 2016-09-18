@@ -19,6 +19,7 @@ define("CongestionController",function(exporter){
 			}
 			eventArea.trafficEvent(true);
 			eventArea.Floatingcar(true);
+			eventArea.FloatingcarTime(true);
 			UnmommonNow(cur_cityCode);
 			$(".tabLiList").fadeOut();
 			if(showType == 0){
@@ -41,6 +42,7 @@ define("CongestionController",function(exporter){
 			$(".jamBk").show();
 			eventArea.trafficEvent(true);
 			eventArea.Floatingcar(true);
+			eventArea.FloatingcarTime(true);
 			CommonNow(cur_cityCode);
 			$(".tabLiList").fadeOut();
 			if(showType == 1){
@@ -123,13 +125,33 @@ define("CongestionController",function(exporter){
 				$(".tabLiList ul").eq(0).html(index);
 				var linkId = drawCarPath(json.data.rows);
 				var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
-				var newTime = insertTime.replace(/-/g,' ').replace(/:/g,' ').replace(/ /g,'');
+				var myDate = new Date();
+				var year = myDate.getYear().toString()
+				var time1 = "20"+year.substring(1,year.length);
+				var time2 = parseInt(myDate.getMonth())+1;
+				var time5 = parseInt(myDate.getMinutes())-5;
+				var time4 = myDate.getHours();
+				time5<0?time5=0:time5=time5;
+				time5%2==0?time5=time5:time5=time5-1
+				if(time4<0){time4=0};
+				time2<10 ? time2 ="0" + time2:time2 =time2
+				myDate.getDate()<10 ? time3 ="0" + myDate.getDate():time3 =myDate.getDate()
+				time4<10 ? time4 ="0" + time4: time4 =time4
+				time5<10 ? time5 ="0" + time5:time5 =time5
+				var newTime = time1+""+time2+""+time3+""+time4+""+time5+"00";
+				console.log(newTime)
 				var datas = {
 					"roadId":linkId,
 					"time":newTime,
 					"cityCode":citycode
 				}
-				parseCar("").then(function(json){
+				parseCar(datas).then(function(json){
+					var x = json.rows[0].gpsInfos[0].coord[0];
+					var y = json.rows[0].gpsInfos[0].coord[1];
+					viewer.camera.flyTo({
+						destination : Cesium.Cartesian3.fromDegrees(x, y, 10000.0)
+					});
+					
 					var start = Cesium.JulianDate.fromDate(new Date(2016, 9, 7, 9));
 					var stop = Cesium.JulianDate.addSeconds(start, 300, new Cesium.JulianDate());
 					
@@ -209,13 +231,14 @@ define("CongestionController",function(exporter){
 //	            path : {
 //	                material:Cesium.Color.RED.withAlpha(0.1)
 //	            }
+
 	        }); 
 	        roadCar.push(car);
 		}
 		
 		function parseCar(datas){
-//			var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
-			var urls = "src/assets/data/roadCar.json"
+			var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
+//			var urls = "src/assets/data/roadCar.json"
 			return $at.get(urls,datas,function(json){
 				return json;
 			})
@@ -301,13 +324,13 @@ define("CongestionController",function(exporter){
 				var num = $(".tabList li").index($(this));
 				var citycode = cur_cityCode;
 				var eventId = $(this).attr("class");
-				var xy = $(this).find("h6").text();
-				var x=xy.substring(0,xy.indexOf(","));
-				var y=xy.substring(xy.indexOf(",")+1,xy.length);
+//				var xy = $(this).find("h6").text();
+//				var x=xy.substring(0,xy.indexOf(","));
+//				var y=xy.substring(xy.indexOf(",")+1,xy.length);
 				var insertTime = $(this).find(".roadInfo h4").eq(3).text();
-				viewer.camera.flyTo({
-					destination : Cesium.Cartesian3.fromDegrees(x, y, 10000.0)
-				});
+//				viewer.camera.flyTo({
+//					destination : Cesium.Cartesian3.fromDegrees(x, y, 10000.0)
+//				});
 				
 				MommonEvent(citycode,eventId,insertTime);
 				$(".tabLiList").fadeOut();

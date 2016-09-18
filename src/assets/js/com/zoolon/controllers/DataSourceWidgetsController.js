@@ -175,9 +175,9 @@ define("NumController",function(exporter){
 				{
 					var num = $(nums[len-1-i]);
 					var numStr = str.charAt(i);
-					if((len-i)%4 == 0 && numStr){
+					if((len-i+1)%3 == 0 && numStr && (len-i+1)!=(len+1)){
 						numStr = numStr+",";
-						num.css({"margin-left":"-5px"})
+						num.css({"margin-left":"-7px"})
 					}
 					num.text(numStr);
 				}
@@ -299,7 +299,18 @@ define("controllers.dataSource.Widget0",function(exporter){
 				"params.cityCodes":cityCode
 			};
 			loader = $at.get(exporter.Config.request.getDataSources,vars,function(list){
+				var daList1=[];
+				var daList2=[];
+				for(var m=0;m<list.length;m++){
+					if(list[m].type == 0){
+						daList1.push(list[m]);
+					}else{
+						daList2.push(list[m]);
+					}
+				}
+				list = daList1.concat(daList2);
 				dsList = list;
+//				console.log(JSON.stringify(dsList))
 				for(var i=0;i<list.length;i++)
 				{
 					var cb = new CustomCheckBoxController($('<div class="customCheckBox"><div></div><span>label</span></div>'),list[i]);
@@ -357,6 +368,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 		
 		this.close = function(onComplete)
 		{
+			$("#w0").css({"background":"none"})
 			var w0 = $("#widgets #w0");
 			var info0 = $("#widgets #w0 #info0");
 			var info1 = $("#widgets #w0 #info1");

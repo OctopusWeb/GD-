@@ -122,17 +122,21 @@
 					//es1.css('left', 40 + '%');
 					es2.width(100 + '%');
 					es2.css('left', 0+ '%');
-					t0.text("当前有效："+sourceC[0]+'('+source[0] + '%)');
+//					t0.text("当前有效："+sourceC[0]+'('+source[0] + '%)');
+					t0.text("当前有效："+source[0] + '%');
 					//t1.text(sourceC[1]+'('+source[1] + '%)');
-					t2.text("当前有效："+sourceC[2]+'('+source[2] + '%)');
+//					t2.text("当前有效："+sourceC[2]+'('+source[2] + '%)');
+					t2.text("当前有效："+source[2] + '%');
 					
 				}
 				var setSource2 = function(source,sourceC) {
 
 					
-					t02.text("当日累计："+sourceC[0]+'('+source[0] + '%)');
+//					t02.text("当日累计："+sourceC[0]+'('+source[0] + '%)');
+					t02.text("当日累计："+source[0] + '%');
 					//t1.text(sourceC[1]+'('+source[1] + '%)');
-					t22.text("当日累计："+sourceC[2]+'('+source[2] + '%)');
+//					t22.text("当日累计："+sourceC[2]+'('+source[2] + '%)');
+					t22.text("当日累计："+source[2] + '%');
 					
 				}
 				var dayData = sourceData.dayCumulative;

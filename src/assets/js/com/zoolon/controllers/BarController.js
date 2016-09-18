@@ -17,8 +17,12 @@ define("BarController",function(exporter){
 		}
 		this.drawBars= function(url,dataType){
 			$at.get(url,undefined,function(barData){
-				var all = barData[0].dataNum
-				var max = barData[1].dataNum;
+				var all = barData[0].dataNum;
+				if(barData[1]){
+					var max = barData[1].dataNum;
+				}else{
+					var max = barData[0].dataNum;
+				}
 				for(var i=1;i<barData.length;i++){ 
 				  if(max<barData[i].dataNum)max=barData[i].dataNum;
 				}
