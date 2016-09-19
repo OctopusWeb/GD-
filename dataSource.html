@@ -57,6 +57,16 @@
 	<div id="cesiumContainer"></div>
 	<div class="app">
 		<div id="widgets">
+			<div class="w0">
+				<div id="dsSelector">
+					<div class="header">
+						<div class="customCheckBox customCheckBoxSelected"><div></div><span>选择前十项</span></div>
+						<div style="float: left; font-size: 18px;line-height: 26px;"><span style="color: #1cc5e1;">行业</span><span style="color: #ffbf31;">公众</span></div>
+						<div id="submitBt">确定</div>
+					</div>
+					<div class="body"></div>
+				</div>
+			</div>
 	<div id="leftSource">
 			<div id="leftEchart">
 				
@@ -132,7 +142,7 @@
 				<div id="label">快照模式</div>
 				<div id="box"></div>
 			</div>
-			<div id="w0">
+			<div class="w0">
 				<div class="progress0 progress">
 					<p>众包</p>
 					<div id="info0">
@@ -147,14 +157,14 @@
 				</div>
 				
 				<div id="info"></div>
-				<div id="dsSelector">
+				<!--<div id="dsSelector">
 					<div class="header">
 						<div class="customCheckBox customCheckBoxSelected"><div></div><span>选择前十项</span></div>
 						<div style="float: left; font-size: 18px;line-height: 26px;"><span style="color: #1cc5e1;">行业</span><span style="color: #ffbf31;">公众</span></div>
 						<div id="submitBt">确定</div>
 					</div>
 					<div class="body"></div>
-				</div>
+				</div>-->
 			</div>
 			<div id="w1" style="z-index: 100;">
 				<div id="box"></div>
@@ -226,13 +236,14 @@
 				</div>
 			</div>
 	</div>
-			<div id="controllerBtn">
+			<!--<div id="controllerBtn">
 				<div class="controller"><img src="src/assets/images/dataSource/sourceIcon1.png"/><p>浮动车</p></div>
 				<div class="controller"><img src="src/assets/images/dataSource/sourceIcon2.png"/><p>交通事件</p></div>
 				<div class="controller unselected"><img src="src/assets/images/dataSource/sourceIcon3.png"/><p>异常拥堵</p></div>
 				<div class="controller controller1 unselected"><img src="src/assets/images/dataSource/sourceIcon4.png"/><p>常规拥堵</p></div>
-			</div>
+			</div>-->
 			<div class="jamBk"></div>
+			<div class="jamBk jamBk1"></div>
 			<div id="jam">
 			    <ul class="tabClick">
 			        <li class="active">拥堵时间排名</li>
@@ -259,7 +270,7 @@
 			            
 			        </div>
 			    </div>
-			    <div class="tabLiList">
+			    <!--<div class="tabLiList">
 			    	<h5>道路详情</h5>
 			    	<ul>
 	        		<li>
@@ -272,7 +283,7 @@
 	        			<div class="roadInfo"><h4><img src="src/assets/images/dataSource/roadIcon4.png"/>16:28</h4></div>
 	        		</li>
 	        	</ul>
-			    </div>
+			    </div>-->
 			</div>
 			<div id="cityBtn">
 				<div class="quanguo unselected"><p>全国</p></div>
@@ -294,7 +305,7 @@
 			<div id="addMap">
 				<div><img src="src/assets/images/dataSource/sourceIcon5.png" alt="" /><span>视频监控</span></div>
 				<div class=""><img src="src/assets/images/dataSource/sourceIcon6.png" alt="" /><span>路况</span></div>
-				<div class=""><img src="src/assets/images/dataSource/sourceIcon6.png" alt="" /><span>路况</span></div>
+				<div class=""><img src="src/assets/images/dataSource/sourceIcon9.png" alt="" /><span>诱导屏</span></div>
 			</div>
 		<div id="infoBox">
 			<div class="header">
@@ -307,7 +318,17 @@
 			<div id="logo">高德大数据</div>
 			<div id="preBt"></div>
 			<div id="nextBt"></div>
-		</div> 
+		</div>
+		<div id="nav">
+			<ul>
+				<li><img src="src/assets/images/dataSource/sourceIcon1.png"/><p>浮动车</p></li>
+				<li><img src="src/assets/images/dataSource/sourceIcon2.png"/><p>交通事件</p></li>
+				<li><img src="src/assets/images/dataSource/sourceIcon3.png"/><p>异常拥堵</p></li>
+				<li><img src="src/assets/images/dataSource/sourceIcon4.png"/><p>常规拥堵</p></li>
+				<li><img src="src/assets/images/dataSource/sourceIcon7.png"/><p>实时浮动车</p></li>
+				<li><img src="src/assets/images/dataSource/sourceIcon8.png"/><p>数据源</p></li>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>

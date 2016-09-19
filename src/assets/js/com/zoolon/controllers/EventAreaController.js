@@ -29,27 +29,35 @@ define("eventAreaController",function(exporter){
 
 			$("#addMap div").eq(2).click(function(e){
 				if(InducedBol){
+					$(this).toggleClass("mapSelect");
 					e.stopPropagation();
-					Induceds.show = true;
+					if(Induceds.show){
+						Induceds.show = false;
+					}else{
+						Induceds.show = true;
+					}
+					
 				}
 				
 			});
 			$("#addMap div").eq(1).click(function(e){
 				e.stopPropagation();
-				$(this).toggleClass("mapSelect")
+				$(this).toggleClass("mapSelect");
 				self.changeMap();
 			});
-			$("#addMap div").eq(0).click(function(e){
+			$("#nav ul li").eq(4).click(function(e){
 				e.stopPropagation();
-				$(this).toggleClass("mapSelect");
+				$(this).toggleClass("selected");
 				self.FloatingcarTime();
 			});
-			$(".controller").eq(1).click(function(e){
+			$("#nav ul li").eq(1).click(function(e){
 				e.stopPropagation();
+				$(this).toggleClass("selected");
 				self.trafficEvent();
 			})
-			$(".controller").eq(0).click(function(e){
+			$("#nav ul li").eq(0).click(function(e){
 				e.stopPropagation();
+				$(this).toggleClass("selected");
 				self.Floatingcar();
 			})
 			
@@ -149,9 +157,9 @@ define("eventAreaController",function(exporter){
 				    position : Cesium.Cartesian3.fromDegrees(lat[0],lat[1]),
 				    name : "I"+parse[i][2],
 				    billboard : {
-				        image : "src/assets/images/dataSource/ct0.png",
+				        image : "src/assets/images/dataSource/Induceds.jpg",
 				        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
-		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.4, 0.3, 0.3)
+		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.6, 0.5, 0.4)
 				    }
 				});
 			}
@@ -367,6 +375,7 @@ define("eventAreaController",function(exporter){
 				cur_selectedIndex1=0;
 				eventController.clear();
 				eventController.active = false;
+				traffiBol = false;
 				return
 			}
 			traffiBol=!traffiBol;
@@ -394,6 +403,8 @@ define("eventAreaController",function(exporter){
 			if(bol){
 				$("#leftSource").fadeOut()
 				CesiumController.clear(true);
+				barController.clear(false,false);
+				Floating = false;
 				return
 			}
 			Floating=!Floating;
@@ -434,6 +445,7 @@ define("eventAreaController",function(exporter){
 				$(viewer.animation.container).hide();
 				$(viewer.timeline.container).hide();
 				CesiumController.clear(false);
+				Floating1 = false;
 				return
 			}
 			Floating1=!Floating1;

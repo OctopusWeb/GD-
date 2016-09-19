@@ -10,7 +10,7 @@ define("CongestionController",function(exporter){
 		var roadLink;
 		var roadCar=[];
 //		tapEvent();
-		$(".controller ").eq(2).click(function(){
+		$("#nav ul li").eq(2).click(function(){
 			for(var m=0;m<roadCar.length;m++){
 				entities.remove(roadCar[m]);
 			}
@@ -30,9 +30,14 @@ define("CongestionController",function(exporter){
 				$("#jam").fadeIn();
 				$(".jamBk").show();
 			}
+			$("#nav ul li").eq(0).removeClass("selected");
+			$("#nav ul li").eq(1).removeClass("selected");
+			$("#nav ul li").eq(3).removeClass("selected");
+			$("#nav ul li").eq(2).toggleClass("selected");
+			$("#nav ul li").eq(4).removeClass("selected");
 			showType = 0;
 		});
-		$(".controller ").eq(3).click(function(){
+		$("#nav ul li").eq(3).click(function(){
 			for(var m=0;m<roadCar.length;m++){
 				entities.remove(roadCar[m]);
 			}
@@ -53,7 +58,11 @@ define("CongestionController",function(exporter){
 				$("#jam").fadeOut();
 				$("#jam").fadeIn();
 			}
-			
+			$("#nav ul li").eq(0).removeClass("selected");
+			$("#nav ul li").eq(1).removeClass("selected");
+			$("#nav ul li").eq(2).removeClass("selected");
+			$("#nav ul li").eq(3).toggleClass("selected");
+			$("#nav ul li").eq(4).removeClass("selected");
 			showType = 1;
 		})
 		

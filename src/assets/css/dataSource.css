@@ -21,7 +21,7 @@
 }
 
 /*�ڰ�/��ҵ*/
-#widgets #w0
+#widgets .w0
 {
 	position: absolute;
 	left: 1505px;
@@ -35,7 +35,7 @@
 }
 
 
-#widgets #w0 #info
+#widgets .w0 #info
 {
 	position: absolute;
 	width: 376px;
@@ -44,7 +44,7 @@
 	cursor: pointer;
 }
 
-#widgets #w0 #info0
+#widgets .w0 #info0
 {
 	position: absolute;
 	width: 50%;
@@ -52,14 +52,14 @@
 	height: 100%;
 }
 
-#widgets #w0 #info0 div
+#widgets .w0 #info0 div
 {
 	position: absolute;
 	left: 54px;
 	top: 42px;
 }
 
-#widgets #w0 #info1
+#widgets .w0 #info1
 {
 	position: absolute;
 	width: 50%;
@@ -68,7 +68,7 @@
 	left: 50%;
 }
 
-#widgets #w0 #info1 div
+#widgets .w0 #info1 div
 {
 	position: absolute;
 	left: 6px;
@@ -351,7 +351,7 @@
 }
 
 /*---------------------------------------------------------------------------------*/
-#widgets #w0 #dsSelector
+#widgets .w0 #dsSelector
 {
 	position: absolute;
 	width: 376px;
@@ -361,13 +361,13 @@
 	display: none;
 }
 
-#widgets #w0 #dsSelector .header
+#widgets .w0 #dsSelector .header
 {
 	padding: 10px;
 	height: 25px;
 }
 
-#widgets #w0 #dsSelector .header #submitBt
+#widgets .w0 #dsSelector .header #submitBt
 {
 	float: right;
 	font-size: 14px;
@@ -378,7 +378,7 @@
 	cursor: pointer;
 }
 
-#widgets #w0 #dsSelector .body
+#widgets .w0 #dsSelector .body
 {
 	padding-left: 10px;
 	padding-right: 10px;

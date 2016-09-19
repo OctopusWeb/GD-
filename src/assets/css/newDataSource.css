@@ -1,5 +1,5 @@
 *{margin: 0;padding: 0;}
-#widgets #w0{left: 40px;top: 402px;}
+#widgets .w0{left: 40px;top: 402px;}
 #widgets #w4,#widgets #w5,#widgets #w6,#widgets #w7{visibility: hidden;}
 #sourceColors{background: none;margin-left: 150px;top:260px;}
 #chooseCity{position: absolute;width: 100%;top: 770px;left: 1695px;}
@@ -13,7 +13,7 @@ border: 1px #009fe8 solid;margin-top: 10px;}
 #controllerBtn .controller p{color: #fff;position:absolute;text-align: center;width: 80%;top: 10px;left: 20%;
 line-height: 30px;border-right: 1px #339ffa solid;font-size: 14px;font-weight: 600;}
 #controllerBtn .controller1 p{border: none;}
-#cityBtn .quanguo{height: 50px;width: 120px;position: absolute;top: 30px;left: 600px;background: #0087f9;cursor: pointer;}
+#cityBtn .quanguo{height: 50px;width: 120px;position: absolute;top: 30px;left: 1300px;background: #0087f9;cursor: pointer;}
 #cityBtn .quanguo p{width: 100%;color: #fff;text-align: center;line-height: 50px;font-size: 14px;font-weight: 600;}
 #cityBtn .quanguoBox{height: 50px;width: 373px;position: absolute;top: 86px;left: 600px;background: #fff;}
 #cityBtn .quanguoBox span{width: 123px;float: left;text-align: center;line-height: 30px;color: #565656;margin-top: 10px;
@@ -29,13 +29,13 @@ padding: 10px 20px;overflow: auto;display: none;top: 55px;}
 #cities ul li{width: 150px;float: left;font-size: 14px;cursor: pointer;line-height: 24px;height: 24px;overflow: hidden;
 color: #565656;}
 
-#addMap{width: 250px;height: 50px;position: absolute;background: #fff;left: 1650px;top: 30px;border: none;}
+#addMap{width: 375px;height: 50px;position: absolute;background: #fff;left: 1500px;top: 30px;border: none;}
 #addMap div{float: left;width: 124px;height: 50px;position: relative;cursor: pointer;}
 #addMap div span{width: 80%;position: absolute;left: 20%;text-align: center;line-height: 30px;
 margin-top: 10px;color: #565656;font-weight: 600;}
 #addMap div img{top: 17px;position: absolute;left: 15px;}
 
-#leftSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 30px;display: none;}
+#leftSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 100px;display: none;}
 #leftSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
 #rightSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 1506px;display: none;}
@@ -57,16 +57,16 @@ top: 0px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
 #widgets  #w3Title p{position: absolute;top: 70px;left: 20px;color: #565656;font-size: 14px;width: 200px;}
 #widgets  #w3Title span{position: absolute;top: 70px;left: 340px;color: #565656;font-size: 14px;width: 200px;}
 
-#widgets #w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;
-border-top: 1px #a0a0a0 solid;border-bottom: 1px #a0a0a0 solid;}
-#widgets #w0 .progress{float: left;width: 305px;position: relative;height: 30px;background: #dfdfdf;margin-left: 40px;
+#widgets .w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;
+border-top: 1px #a0a0a0 solid;}
+#widgets .w0 .progress{float: left;width: 305px;position: relative;height: 30px;background: #dfdfdf;margin-left: 40px;
 margin-top: 15px;box-shadow: #ccc 2px 2px;}
-#widgets #w0 .progress p{position: absolute;color: #565656;font-size: 14px;left: -40px;top: 5px;font-weight: 400;}
-#widgets #w0 #info{background: none;float: left;}
-#widgets #w0 #info0{position: relative;background: #920783;}
-#widgets #w0 #info1{position: relative;background: #f39800;}
-#widgets #w0 #info0 div{font-size: 16px;margin: 0;padding: 0;left: 10px;top: 5px;}
-#widgets #w0 #info1 div{font-size: 16px;margin: 0;padding: 0;left: 0;right: 10px;text-align: right;}
+#widgets .w0 .progress p{position: absolute;color: #565656;font-size: 14px;left: -40px;top: 5px;font-weight: 400;}
+#widgets .w0 #info{background: none;float: left;}
+#widgets .w0 #info0{position: relative;background: #920783;}
+#widgets .w0 #info1{position: relative;background: #f39800;}
+#widgets .w0 #info0 div{font-size: 16px;margin: 0;padding: 0;left: 10px;top: 5px;}
+#widgets .w0 #info1 div{font-size: 16px;margin: 0;padding: 0;left: 0;right: 10px;text-align: right;}
 
 #eventSource{left: 0;top: 0;height: 200px;width: 366px;left: 10px;top: 50px;display: block;}
 #eventSource #es0{width: 100%;height: 100px;border-bottom: 1px #a0a0a0 solid;background: none;}
@@ -91,11 +91,11 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;display: none;}
 #addMap .mapSelect span{color: #0087f9;}
 
-#jam{position: absolute;width: 530px;top: 90px;left: 30px;height: 350px;display: none;}
+#jam{position: absolute;width: 530px;top: 0px;left: 80px;height: 1050px;display: none;}
 .tabClick{ background: rgba(255,255,255,0.8); overflow: hidden}
 .tabClick li{ height:40px; line-height: 40px; width: 33%; float: left; text-align: center;list-style: none;color: #0087f9;cursor: pointer;}
 .tabClick li.active{ color: #0087f9; transition: 0.1s; font-weight: bold}
-.tabCon{ overflow: auto;height: 310px;overflow-x: hidden;background: rgba(255,255,255,0.8)}
+.tabCon{ overflow: auto;height: 1080px;overflow-x: hidden;background: rgba(255,255,255,0.8)}
 .tabBox{ position: relative;}
 .tabList{word-break: break-all; width:100%;float:left; line-height:100px; text-align:center; color:#D3D3D3; font-size:36px;}
 .lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #099; background: #f3f3f3}
@@ -123,4 +123,11 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 .tabLiList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
 .tabLiList ul li .roadInfo h4 img{float: left;}
 
-.jamBk{width: 250px;position: absolute;height: 50px;background: none;left: 30px;top: 30px;display: none;}
+.jamBk{width: 80px;position: absolute;height: 200px;display: none;z-index: 100;}
+.jamBk1{display: none;z-index: 100;top: 400px;background: none;}
+
+#nav{width: 80px;height: 1080px;position: absolute;left: 0;top: 0;background: #707070;padding-top: 30px;}
+#nav ul li{float: left;width: 80px;margin-top: 15px;height: 70px;text-align: center;list-style: none;background: none;cursor: pointer;}
+#nav ul .selected{background: #0087f9;}
+#nav ul li img{margin-top: 15px;}
+#nav ul li p{color: #fff;margin-top: 5px;font-size: 14px;font-weight: 600;}

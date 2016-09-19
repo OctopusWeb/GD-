@@ -206,9 +206,9 @@ define("NumController",function(exporter){
 define("controllers.dataSource.Widget0",function(exporter){
 	var Widget0 = function()
 	{
-		var info0 = $("#widgets #w0 #info0");
-		var info1 = $("#widgets #w0 #info1");
-		var info = $("#widgets #w0 #info");
+		var info0 = $("#widgets .w0 #info0");
+		var info1 = $("#widgets .w0 #info1");
+		var info = $("#widgets .w0 #info");
 		var t0 = info0.children().first();
 		var t1 = info1.children().first();
 		this.setSource = function(source)
@@ -224,7 +224,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 		}
 		var self = this;
 		this.dsSelector = new DsSelector(this);
-		info.click(function(){
+		$("#nav ul li").eq(5).click(function(){
 			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
 		});
 	}
@@ -233,13 +233,13 @@ define("controllers.dataSource.Widget0",function(exporter){
 	//数据源选择
 	function DsSelector(widget)
 	{
-		var view = $("#widgets #w0 #dsSelector");
-		var container = $("#widgets #w0 #dsSelector .body");
+		var view = $("#widgets .w0 #dsSelector");
+		var container = $("#widgets .w0 #dsSelector .body");
 		var cbs = [];
 		var loader;
-		var header = $("#widgets #w0 #dsSelector .header #submitBt");
-		var cb0 = new CustomCheckBoxController($("#widgets #w0 #dsSelector .header .customCheckBox"),{label:"选择前十项"}); //选择10项
-		var submitBt = $("#widgets #w0 #dsSelector .header #submitBt");
+		var header = $("#widgets .w0 #dsSelector .header #submitBt");
+		var cb0 = new CustomCheckBoxController($("#widgets .w0 #dsSelector .header .customCheckBox"),{label:"选择前十项"}); //选择10项
+		var submitBt = $("#widgets .w0 #dsSelector .header #submitBt");
 		var isOpen = false;
 		var dsList;
 		
@@ -268,6 +268,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 			var values = self.getSelectedValues();
 			if(values.length == 0)return;
 			self.close(function(){
+				console.log(values)
 				if(widget.onSubmit!=undefined)widget.onSubmit(values);
 			});
 		});
@@ -347,18 +348,18 @@ define("controllers.dataSource.Widget0",function(exporter){
 		
 		this.open = function()
 		{
-			var w0 = $("#widgets #w0");
-			w0.css("background-color",view.css("background-color"));
-			var info0 = $("#widgets #w0 #info0");
-			var info1 = $("#widgets #w0 #info1");
-			var info = $("#widgets #w0 #info");
+			var w0 = $("#widgets .w0").eq(0);
+//			w0.css("background-color",view.css("background-color"));
+			var info0 = $("#widgets .w0 #info0");
+			var info1 = $("#widgets .w0 #info1");
+			var info = $("#widgets .w0 #info");
 			TweenLite.to([info0,info1,info],0.5,{alpha:0});
 			exporter.mouseChildren(info,false);
 			
 			exporter.mouseChildren(view,false);
 			view.show();
 			TweenLite.set(view,{height:86,alpha:0});
-			TweenLite.to([w0,view],0.5,{height:300,alpha:1,ease:Cubic.easeInOut,onComplete:function(){
+			TweenLite.to([view],0.5,{height:300,alpha:1,ease:Cubic.easeInOut,onComplete:function(){
 				exporter.mouseChildren(view,true);
 			}});
 			isOpen = true;
@@ -368,11 +369,11 @@ define("controllers.dataSource.Widget0",function(exporter){
 		
 		this.close = function(onComplete)
 		{
-			$("#w0").css({"background":"none"})
-			var w0 = $("#widgets #w0");
-			var info0 = $("#widgets #w0 #info0");
-			var info1 = $("#widgets #w0 #info1");
-			var info = $("#widgets #w0 #info");
+			$(".w0").css({"background":"none"})
+			var w0 = $("#widgets .w0");
+			var info0 = $("#widgets .w0 #info0");
+			var info1 = $("#widgets .w0 #info1");
+			var info = $("#widgets .w0 #info");
 			TweenLite.to([info0,info1,info],0.5,{alpha:1});
 			exporter.mouseChildren(info,false);
 			
