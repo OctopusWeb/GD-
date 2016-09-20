@@ -225,7 +225,9 @@ define("controllers.dataSource.Widget0",function(exporter){
 		var self = this;
 		this.dsSelector = new DsSelector(this);
 		$("#nav ul li").eq(5).click(function(){
-			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
+			$(this).toggleClass("selected");
+			$(this).attr("class") == "selected"?self.dsSelector.open():self.dsSelector.close();
+//			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
 		});
 	}
 	return Widget0;
@@ -268,7 +270,6 @@ define("controllers.dataSource.Widget0",function(exporter){
 			var values = self.getSelectedValues();
 			if(values.length == 0)return;
 			self.close(function(){
-				console.log(values)
 				if(widget.onSubmit!=undefined)widget.onSubmit(values);
 			});
 		});
@@ -317,7 +318,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 					var cb = new CustomCheckBoxController($('<div class="customCheckBox"><div></div><span>label</span></div>'),list[i]);
 					cb.view.appendTo(container);
 					cbs.push(cb);
-					if(i<10)
+					if(i<0)
 					{
 						cb.setSelected(true);
 					}
@@ -377,8 +378,8 @@ define("controllers.dataSource.Widget0",function(exporter){
 			TweenLite.to([info0,info1,info],0.5,{alpha:1});
 			exporter.mouseChildren(info,false);
 			
-			exporter.mouseChildren(view,false);
-			TweenLite.to(view,0.5,{height:86,alpha:0,ease:Cubic.easeInOut});
+//			exporter.mouseChildren(view,false);
+			TweenLite.to(view,0.5,{height:86,alpha:1,ease:Cubic.easeInOut});
 			TweenLite.to(w0,0.5,{height:86,ease:Cubic.easeInOut,onComplete:function(){
 				exporter.mouseChildren(info,true);
 				if(onComplete!=undefined)onComplete();

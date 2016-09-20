@@ -61,7 +61,8 @@
 				<div id="dsSelector">
 					<div class="header">
 						<div class="customCheckBox customCheckBoxSelected"><div></div><span>选择前十项</span></div>
-						<div style="float: left; font-size: 18px;line-height: 26px;"><span style="color: #1cc5e1;">行业</span><span style="color: #ffbf31;">公众</span></div>
+						<input type="text" style="position: absolute;width: 100px;top: 14px;margin-left: 5px;" id="chooseSource"/>
+						<div style="float: left; font-size: 18px;line-height: 30px;margin-left: 120px;"><span style="color: #1cc5e1;cursor: pointer;" id="search">筛选</span><!--<span style="color: #ffbf31;">公众</span>--></div>
 						<div id="submitBt">确定</div>
 					</div>
 					<div class="body"></div>
@@ -244,6 +245,7 @@
 			</div>-->
 			<div class="jamBk"></div>
 			<div class="jamBk jamBk1"></div>
+			<div class="jamBk2"></div>
 			<div id="jam">
 			    <ul class="tabClick">
 			        <li class="active">拥堵时间排名</li>
@@ -328,6 +330,9 @@
 				<li><img src="src/assets/images/dataSource/sourceIcon7.png"/><p>实时浮动车</p></li>
 				<li><img src="src/assets/images/dataSource/sourceIcon8.png"/><p>数据源</p></li>
 			</ul>
+			<div id="navShow">
+				<img src="src/assets/images/dataSource/navShow.png" />
+			</div>
 		</div>
 	</div>
 </body>

@@ -35,7 +35,7 @@ color: #565656;}
 margin-top: 10px;color: #565656;font-weight: 600;}
 #addMap div img{top: 17px;position: absolute;left: 15px;}
 
-#leftSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 100px;display: none;}
+#leftSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 110px;display: none;}
 #leftSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
 #rightSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 1506px;display: none;}
@@ -91,7 +91,7 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;display: none;}
 #addMap .mapSelect span{color: #0087f9;}
 
-#jam{position: absolute;width: 530px;top: 0px;left: 80px;height: 1050px;display: none;}
+#jam{position: absolute;width: 530px;top: 0px;left: 110px;height: 1050px;display: none;}
 .tabClick{ background: rgba(255,255,255,0.8); overflow: hidden}
 .tabClick li{ height:40px; line-height: 40px; width: 33%; float: left; text-align: center;list-style: none;color: #0087f9;cursor: pointer;}
 .tabClick li.active{ color: #0087f9; transition: 0.1s; font-weight: bold}
@@ -125,9 +125,15 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 
 .jamBk{width: 80px;position: absolute;height: 200px;display: none;z-index: 100;}
 .jamBk1{display: none;z-index: 100;top: 400px;background: none;}
+.jamBk2{width: 80px;position: absolute;display: none;z-index: 100;display: none;z-index: 100;top: 0px;background: none;height: 450px;}
 
 #nav{width: 80px;height: 1080px;position: absolute;left: 0;top: 0;background: #707070;padding-top: 30px;}
 #nav ul li{float: left;width: 80px;margin-top: 15px;height: 70px;text-align: center;list-style: none;background: none;cursor: pointer;}
 #nav ul .selected{background: #0087f9;}
 #nav ul li img{margin-top: 15px;}
 #nav ul li p{color: #fff;margin-top: 5px;font-size: 14px;font-weight: 600;}
+
+#dsSelector{left: 80px;top: 470px;}
+#widgets .w0 #dsSelector{height: 600px !important;}
+#widgets .w0 #dsSelector .body{height: 549px;}
+#navShow{position: absolute;left: 80px;top: 500px;display: none;}

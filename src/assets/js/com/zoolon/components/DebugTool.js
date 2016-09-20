@@ -6,10 +6,10 @@ define("DebugTool",function(){
 	})
 	
 	$(window).keyup(function(e){
-		if(e.keyCode == 68) //d
-		{
-			DebugTool.isOpen?DebugTool.close():DebugTool.show();
-		}
+//		if(e.keyCode == 68) //d
+//		{
+//			DebugTool.isOpen?DebugTool.close():DebugTool.show();
+//		}
 	});
 	
 	DebugTool.show = function()

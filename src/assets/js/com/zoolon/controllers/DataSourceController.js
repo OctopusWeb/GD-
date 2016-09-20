@@ -46,8 +46,10 @@ define("DataSourceController",function(exporter){
 		
 		function selectSourcesHandler(dsCodes)
 		{
+			cur_dsCodes = dsCodes;
 			if(cesiumController.dataType == 2)return;
-			cesiumController.loadDataSource(cesiumController.cityCode,dsCodes);
+//			cesiumController.loadDataSource(cesiumController.cityCode,dsCodes);
+			cesiumController.loadDataSource(cur_cityCode,dsCodes);
 		}
 		
 		function selectCityHandler(info)

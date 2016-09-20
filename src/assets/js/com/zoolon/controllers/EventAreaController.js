@@ -21,12 +21,35 @@ define("eventAreaController",function(exporter){
 		var InducedBol = false;
 		var proCenter=[];
 		var codeIndex = false;
+		var navNum=10;
 		handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 		var Induceds = viewer.entities.add(new Cesium.Entity());
 //		var cityCenter=[];
 		eventInit();
 		function eventInit(){
-
+			$("#search").click(function(){
+				var search = $("#chooseSource").val()
+				screening(search);
+			})
+			$("#nav ul li").eq(5).click(function(){
+				if($(this).attr("class") == "selected"){
+					$(".jamBk2").show();
+					self.trafficEvent(true);
+					self.Floatingcar(true);
+					self.FloatingcarTime(true);
+					$("#nav ul li").eq(0).removeClass("selected");
+					$("#nav ul li").eq(1).removeClass("selected");
+					$("#nav ul li").eq(3).removeClass("selected");
+					$("#nav ul li").eq(2).removeClass("selected");
+					$("#nav ul li").eq(4).removeClass("selected");
+				}else{
+					cur_dsCodes=undefined;
+					$(".jamBk2").hide()
+					CesiumController.clear(true);
+					$("#dsSelector").hide()
+				}
+	//			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
+			});
 			$("#addMap div").eq(2).click(function(e){
 				if(InducedBol){
 					$(this).toggleClass("mapSelect");
@@ -124,13 +147,68 @@ define("eventAreaController",function(exporter){
 					bindCity($("#cities ul li"));
 				}
 			})
+			
+			navTime = setInterval(navHide,1000);
+			$("#navShow").click(function(){
+				navShow();
+				navTime = setInterval(navHide,1000);
+			})
 			var induced = new Induced(InducedParse);
 			parseCityInfo();
 			borderController.show(true);
 			barController.clear(false,false);
 			Induceds.show = false;
 		}
-		
+		function screening(search){
+			for(var i=1;i<$(".customCheckBox").length;i++){
+				$(".customCheckBox").eq(i).hide()
+				var boxVal = $(".customCheckBox").eq(i).find("span").html();
+				if(boxVal.indexOf(search)>=0){
+					$(".customCheckBox").eq(i).show()
+				}
+			}
+		}
+		function navHide(){
+			navNum--
+			if(navNum==0){
+				$("#nav").animate({
+					"left":"-80px"
+				})
+				$("#leftSource").animate({
+					"left":"30px"
+				})
+				$("#jam").animate({
+					"left":"30px"
+				})
+				$("#dsSelector").animate({
+					"left":"10px"
+				})
+				$(".jamBk1").animate({
+					"left":"-80px"
+				})
+				clearInterval(navTime);
+				$("#navShow").fadeIn()
+			}
+		}
+		function navShow(){
+			navNum=10;
+			$("#navShow").fadeOut()
+			$("#nav").animate({
+				"left":"0px"
+			})
+			$("#leftSource").animate({
+				"left":"110px"
+			})
+			$("#jam").animate({
+				"left":"110px"
+			})
+			$("#dsSelector").animate({
+				"left":"80px"
+			})
+			$(".jamBk1").animate({
+				"left":"0px"
+			})
+		}
 		handler.setInputAction(function (movement) {
 	    	ClickEvent(movement)
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
@@ -228,6 +306,10 @@ define("eventAreaController",function(exporter){
 				if(Floating1){
 					CesiumController.loadDataSource1(cur_cityCode);
 				}
+				if($("#nav ul li").eq(5).attr("class") == "selected"){
+					CesiumController.loadDataSource(cur_cityCode,cur_dsCodes);
+				}
+				
 				barController.clear(false,false)
 			}else if(type == "I"){
 				console.log(pickID.substring(1,pickID.length))
@@ -464,7 +546,7 @@ define("eventAreaController",function(exporter){
 				CesiumController.clear(false);
 			}
 		}
-		
+
 		function loadDataSource(cityCode)
 		{
 			cur_cityCode = cityCode;
