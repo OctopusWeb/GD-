@@ -78,12 +78,15 @@ define("CesiumController",function(exporter){
 				}
 			});
 		}
-		this.loadDataSource1 = function(cityCode,dsCodes)
+		this.loadDataSource1 = function(cityCode,dsCodes1)
 		{
-			console.log(dsCodes)
-			this.cityCode = cityCode;
-			this.dsCodes = dsCodes;
 			this.clear(false);
+			var dsList = []
+			for(var i=0;i<dsCodes1.length;i++){
+				dsList.push(dsCodes1[i].value);
+			}
+			this.cityCode = cityCode;
+			this.dsCodes = dsList;			
 			flyToCurrentCity(function(){
 				showRealTime();
 			});

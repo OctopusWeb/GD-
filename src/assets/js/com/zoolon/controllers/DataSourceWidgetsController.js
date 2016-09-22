@@ -90,7 +90,7 @@ define("CustomLoadController",function(exporter){
 				vars["params.cityCodes"] = "100000"
 			}
 			loader = $at.get($at.Config.request.getDayKpi,vars,function(json){
-				json != null ? onComplete(json[0]) : onError();
+				json != null ? onComplete(json) : onError();
 			},undefined,onError);
 		}
 		
@@ -313,8 +313,8 @@ define("controllers.dataSource.Widget0",function(exporter){
 //					}
 //				}
 //				list = daList1.concat(daList2);
+
 				dsList = list;
-//				console.log(JSON.stringify(dsList))
 				for(var i=0;i<list.length;i++)
 				{
 					var cb = new CustomCheckBoxController($('<div class="customCheckBox"><div></div><span>label</span></div>'),list[i]);
@@ -333,8 +333,14 @@ define("controllers.dataSource.Widget0",function(exporter){
 			});
 		}
 		
-		this.getDsList = function()
+		this.getDsList = function(cityCode)
 		{
+			var vars = {
+				"params.cityCodes":cityCode
+			};
+			var loader = $at.get(exporter.Config.request.getDataSources,vars,function(list){
+				dsList = list
+			})
 			return dsList;
 		}
 		

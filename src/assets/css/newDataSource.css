@@ -141,3 +141,7 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 .UserPic img{width: 700px;position: absolute;left: 50%;top: 50%;background: #044074;padding: 10px;margin:10px}
 .label1{display: none;}
 .tx1{display: none;}
+.customCheckBox{width: 150px;overflow: hidden;white-space:nowrap; 
+text-overflow:ellipsis; 
+-o-text-overflow:ellipsis; 
+overflow: hidden; }

@@ -227,6 +227,8 @@ define("eventAreaController",function(exporter){
 //				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+provinceCitycode[i]
 //				barController.drawBars(cityUrl,i);
 //			}
+
+
 			barController.drawBars("src/assets/data/proBar.json","pro");
 			for (var i =0;i<provinceCitycode.length;i++) {
 				barController.drawBars("src/assets/data/cityBar.json",i);
@@ -310,7 +312,8 @@ define("eventAreaController",function(exporter){
 					eventController.loadEvent(this.cityCode);
 				}
 				if(Floating1){
-					CesiumController.loadDataSource1(cur_cityCode);
+					var dsList =CesiumController.getDsList(cur_cityCode);
+					CesiumController.loadDataSource1(cur_cityCode,dsList);
 				}
 				if($("#nav ul li").eq(5).attr("class") == "selected"){
 					CesiumController.loadDataSource(cur_cityCode,cur_dsCodes);
@@ -547,7 +550,8 @@ define("eventAreaController",function(exporter){
 //				}else if(cur_cityCode == "100000"){
 //					barController.clear(true,false);
 //				}
-				CesiumController.loadDataSource1(cur_cityCode);
+				var dsList =CesiumController.getDsList(cur_cityCode);
+				CesiumController.loadDataSource1(cur_cityCode,dsList);
 			}else{
 				$(viewer.animation.container).hide();
 				$(viewer.timeline.container).hide();

@@ -138,16 +138,21 @@ define("CongestionController",function(exporter){
 				var year = myDate.getYear().toString()
 				var time1 = "20"+year.substring(1,year.length);
 				var time2 = parseInt(myDate.getMonth())+1;
-				var time5 = parseInt(myDate.getMinutes())-5;
-				var time4 = myDate.getHours();
-				time5<0?time5=0:time5=time5;
-				time5%2==0?time5=time5:time5=time5-1
+				var time5 = parseInt(myDate.getMinutes())-15;
+				if(time5<0){
+					time5=time5+59
+					var time4 = parseInt(myDate.getHours())-1;
+				}else{
+					var time4 = myDate.getHours()
+				}
+				time5%2==0?time5=time5:time5=time5-1;
 				if(time4<0){time4=0};
 				time2<10 ? time2 ="0" + time2:time2 =time2
 				myDate.getDate()<10 ? time3 ="0" + myDate.getDate():time3 =myDate.getDate()
 				time4<10 ? time4 ="0" + time4: time4 =time4
 				time5<10 ? time5 ="0" + time5:time5 =time5
 				var newTime = time1+""+time2+""+time3+""+time4+""+time5+"00";
+				console.log(newTime)
 				var datas = {
 					"roadId":linkId,
 					"time":newTime,
