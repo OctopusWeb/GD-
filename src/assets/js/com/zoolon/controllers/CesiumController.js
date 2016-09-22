@@ -80,6 +80,7 @@ define("CesiumController",function(exporter){
 		}
 		this.loadDataSource1 = function(cityCode,dsCodes)
 		{
+			console.log(dsCodes)
 			this.cityCode = cityCode;
 			this.dsCodes = dsCodes;
 			this.clear(false);
@@ -447,15 +448,18 @@ define("CesiumController",function(exporter){
 					this.data = obj;
 					var htmlStr  =  '<div class="item">'+
 									'	<div class="colorBox"></div>'+
-									'	<label></label>'+
+									'	<label class="label0"></label><label class="label1"></label>'+
 									'</div>';
 					this.view = $(htmlStr);
 					var colorBox = this.view.find(".colorBox");
 					colorBox.css("background-color",obj.color);
-					var label = this.view.find("label");
+					var label0 = this.view.find(".label0");
+					var label1 = this.view.find(".label1");
 					var pointsLen = _self.getPointsLengthOf(obj.value);
-					label.text(obj.label+"("+parseInt(pointsLen/_self.collection.length*100)+"%)");
-					label.css("color",obj.type == 0?"#1cc5e1":"#ffbf31");
+					label0.text(obj.label+"("+parseInt(pointsLen/_self.collection.length*100)+"%)");
+					label0.css("color",obj.type == 0?"#1cc5e1":"#ffbf31");
+					label1.text(obj.label+"("+pointsLen+")");
+					label1.css("color",obj.type == 0?"#1cc5e1":"#ffbf31");
 					var toggled = true;
 					this.view.click(function(){
 						$(this).toggleClass("selected");

@@ -45,7 +45,7 @@ define("eventAreaController",function(exporter){
 				}else{
 					cur_dsCodes=undefined;
 					$(".jamBk2").hide()
-					CesiumController.clear(true);
+					CesiumController.clear(false);
 					$("#dsSelector").hide()
 				}
 	//			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
@@ -96,11 +96,13 @@ define("eventAreaController",function(exporter){
 				Induceds.show = false;	
 				InducedBol = false;
 				$("#leftEchart").hide();
+				$("#addMap div").eq(2).removeClass("mapSelect");
 				if($("#leftSource").css("display") == "none"){
 					barController.clear(false,false);
 				}else{
 					barController.clear(true,false);
 				}
+				CesiumController.clear(false);
 				borderController.show(true);
 				$(".quanguo p").html("全国");
 				$("#guo span").html("全国");
@@ -152,6 +154,10 @@ define("eventAreaController",function(exporter){
 			$("#navShow").click(function(){
 				navShow();
 				navTime = setInterval(navHide,1000);
+			})
+			$(".UserPic").click(function(e){
+				e.stopPropagation();
+				$(".UserPic").fadeOut()
 			})
 			var induced = new Induced(InducedParse);
 			parseCityInfo();
@@ -237,7 +243,7 @@ define("eventAreaController",function(exporter){
 				    billboard : {
 				        image : "src/assets/images/dataSource/Induceds.jpg",
 				        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
-		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.6, 0.5, 0.4)
+		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.9, 0.8, 0.7)
 				    }
 				});
 			}
@@ -313,6 +319,9 @@ define("eventAreaController",function(exporter){
 				barController.clear(false,false)
 			}else if(type == "I"){
 				console.log(pickID.substring(1,pickID.length))
+				var urls = "http://10.101.83.99/UserPic?picid="+pickID.substring(1,pickID.length);
+				$(".UserPic").fadeIn();
+				$(".UserPic img").attr({"src":urls})
 			}
 		}
 		

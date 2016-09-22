@@ -50,3 +50,4 @@ var cur_selectedIndex = 0;
 var cur_selectedIndex1 = 0;
 var cur_cityCode = "100000";
 var cur_dsCodes;
+var numShow=false;

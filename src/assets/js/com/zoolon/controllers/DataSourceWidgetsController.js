@@ -90,7 +90,7 @@ define("CustomLoadController",function(exporter){
 				vars["params.cityCodes"] = "100000"
 			}
 			loader = $at.get($at.Config.request.getDayKpi,vars,function(json){
-				json != null ? onComplete(json) : onError();
+				json != null ? onComplete(json[0]) : onError();
 			},undefined,onError);
 		}
 		
@@ -170,7 +170,9 @@ define("NumController",function(exporter){
 				var len = nums.length;
 				var str = String(_value);
 				str = str.split("").reverse().join("");
-				str = str.substring(0,str.length-2)+"??"
+				if(!numShow){
+					str = str.substring(0,str.length-2)+"??"
+				}
 				for(var i=0;i<len;i++)
 				{
 					var num = $(nums[len-1-i]);
@@ -303,14 +305,14 @@ define("controllers.dataSource.Widget0",function(exporter){
 			loader = $at.get(exporter.Config.request.getDataSources,vars,function(list){
 				var daList1=[];
 				var daList2=[];
-				for(var m=0;m<list.length;m++){
-					if(list[m].type == 0){
-						daList1.push(list[m]);
-					}else{
-						daList2.push(list[m]);
-					}
-				}
-				list = daList1.concat(daList2);
+//				for(var m=0;m<list.length;m++){
+//					if(list[m].type == 0){
+//						daList1.push(list[m]);
+//					}else{
+//						daList2.push(list[m]);
+//					}
+//				}
+//				list = daList1.concat(daList2);
 				dsList = list;
 //				console.log(JSON.stringify(dsList))
 				for(var i=0;i<list.length;i++)

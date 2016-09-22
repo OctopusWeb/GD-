@@ -148,7 +148,6 @@ define("CongestionController",function(exporter){
 				time4<10 ? time4 ="0" + time4: time4 =time4
 				time5<10 ? time5 ="0" + time5:time5 =time5
 				var newTime = time1+""+time2+""+time3+""+time4+""+time5+"00";
-				console.log(newTime)
 				var datas = {
 					"roadId":linkId,
 					"time":newTime,
@@ -210,7 +209,7 @@ define("CongestionController",function(exporter){
 			var myPosition = [];
 			var myTime = [];
 			for(var i=0;i<jsonParse.length;i++){
-				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[i][0], jsonParse[i][1],10);
+				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[jsonParse.length-i][0], jsonParse[jsonParse.length-i][1],10);
 				myTime[i] = Cesium.JulianDate.addSeconds(start, i/jsonParse.length*300, new Cesium.JulianDate());
 			}
 			this.computeCirclularFlight = function() {
@@ -248,7 +247,7 @@ define("CongestionController",function(exporter){
 		function parseCar(datas){
 			var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
 //			var urls = "src/assets/data/roadCar.json"
-			return $at.get(urls,datas,function(json){
+			return $at.get(urls,datas,function(json){				
 				return json;
 			})
 		}

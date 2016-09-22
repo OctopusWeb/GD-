@@ -123,10 +123,10 @@
 					es2.width(100 + '%');
 					es2.css('left', 0+ '%');
 //					t0.text("当前有效："+sourceC[0]+'('+source[0] + '%)');
-					t0.text("当前有效："+source[0] + '%');
+					t0.html("<div class='label0'>"+"当前有效："+source[0] + '%'+"</div>"+"<div class='label1'>"+"当前有效："+sourceC[0]+'('+source[0] + '%)'+"</div>");
 					//t1.text(sourceC[1]+'('+source[1] + '%)');
 //					t2.text("当前有效："+sourceC[2]+'('+source[2] + '%)');
-					t2.text("当前有效："+source[2] + '%');
+					t2.html("<div class='label0'>"+"当前有效："+source[2] + '%'+"</div>"+"<div class='label1'>"+"当前有效："+sourceC[2]+'('+source[2] + '%)'+"</div>");
 					
 				}
 				var setSource2 = function(source,sourceC) {
@@ -134,9 +134,11 @@
 					
 //					t02.text("当日累计："+sourceC[0]+'('+source[0] + '%)');
 					t02.text("当日累计："+source[0] + '%');
+					t02.html("<div class='label0'>"+"当日累计："+source[0] + '%'+"</div>"+"<div class='label1'>"+"当日累计："+sourceC[0]+'('+source[0] + '%)'+"</div>");
 					//t1.text(sourceC[1]+'('+source[1] + '%)');
 //					t22.text("当日累计："+sourceC[2]+'('+source[2] + '%)');
-					t22.text("当日累计："+source[2] + '%');
+//					t22.text("当日累计："+source[2] + '%');
+					t22.html("<div class='label0'>"+"当日累计："+source[2] + '%'+"</div>"+"<div class='label1'>"+"当日累计："+sourceC[2]+'('+source[2] + '%)'+"</div>");
 					
 				}
 				var dayData = sourceData.dayCumulative;
@@ -204,12 +206,14 @@
 					map[sourceData[i].name] = sourceData[i].value;
 				}
 				var all = map["其他"]+map["事故"]+map["流量"]+map["管制类"]+map["施工类"]+map["路面"];
-				$("#widgets #eventType #et1 #count").text(parseInt(map["其他"]/all*100)+"%");
-				$("#widgets #eventType #et2 #count").text(parseInt(map["事故"]/all*100)+"%");
-				$("#widgets #eventType #et3 #count").text(parseInt(map["流量"]/all*100)+"%");
-				$("#widgets #eventType #et4 #count").text(parseInt(map["管制类"]/all*100)+"%");
-				$("#widgets #eventType #et5 #count").text(parseInt(map["施工类"]/all*100)+"%");
-				$("#widgets #eventType #et6 #count").text(parseInt(map["路面"]/all*100)+"%");
+				
+				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseInt(map["其他"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
+				$("#widgets #eventType #et2 #count").html("<div class='label0'>"+parseInt(map["事故"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["事故"]+"</div>");
+				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseInt(map["流量"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
+				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseInt(map["管制类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
+				$("#widgets #eventType #et5 #count").html("<div class='label0'>"+parseInt(map["施工类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["施工类"]+"</div>");
+				$("#widgets #eventType #et6 #count").html("<div class='label0'>"+parseInt(map["路面"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["路面"]+"</div>");
+
 				drawEchart();
 				function drawEchart(){
 					var myChart = echarts.init(document.getElementById('rightEchart'));
@@ -539,7 +543,7 @@
 		function flyToEvent(position,onComplete){
 			removeLine();
 			viewer.camera.flyTo({
-				destination : Cesium.Cartesian3.fromDegrees(position.lng, position.lat, 3000.0),
+				destination : Cesium.Cartesian3.fromDegrees(parseFloat(position.lng)-0.001, parseFloat(position.lat)-0.001, 3000.0),
 				complete:onComplete
 			});
 		}
