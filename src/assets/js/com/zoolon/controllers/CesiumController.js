@@ -16,8 +16,8 @@ define("CesiumController",function(exporter){
 //		if(!exporter.Config.debugMode)
 //		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
-		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',
@@ -86,7 +86,7 @@ define("CesiumController",function(exporter){
 				dsList.push(dsCodes1[i].value);
 			}
 			this.cityCode = cityCode;
-			this.dsCodes = dsList;			
+			this.dsCodes = dsList;
 			flyToCurrentCity(function(){
 				showRealTime();
 			});
@@ -151,7 +151,7 @@ define("CesiumController",function(exporter){
 					return;
 				}
 				if(customDataSource1!=undefined)customDataSource1.destroy();
-				customDataSource1 = new CustomDataSource(data);
+				customDataSource1 = new CustomDataSource(data,false);
 				viewer.dataSources.add(customDataSource1.czmlDataSource);
 				viewer.clock.multiplier = 30;
 				viewer.clock.shouldAnimate = true;
@@ -172,6 +172,8 @@ define("CesiumController",function(exporter){
 		function loadSnapshotData()
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
+			$("#leftEchart").hide()
+			$("#leftBk").show()
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
 				if(data.data == "404")
 				{
@@ -197,7 +199,7 @@ define("CesiumController",function(exporter){
 					showHistory();
 					return;
 				}
-				customDataSource = new CustomDataSource(data);
+				customDataSource = new CustomDataSource(data,true);
 				viewer.dataSources.add(customDataSource.czmlDataSource);
 				viewer.clock.multiplier = 1300;
 				viewer.clock.shouldAnimate = true;
@@ -269,7 +271,7 @@ define("CesiumController",function(exporter){
 			{
 				rows[i] = rows[i].split(",");
 			}
-			
+			rows = rows.reverse()
 			if(rows.length > 1000000)rows.splice(1000000,rows.length-1000000);
 			
 			this.getRows = function()
@@ -407,17 +409,37 @@ define("CesiumController",function(exporter){
 			
 			function showSourceColors()
 			{
+				
 				var container = $("#sourceColors");
 				container.show();
 				container.empty();
 				var list = colorMap.getShowList();
 				var colorItems = [];
 				var datas=[];
+				var staticColors = [
+					"#FFFFFF",
+					"#FFFF00",
+					"#FF0000",
+					"#3399FF",
+					"#00FFFF",
+					"#33CC33",
+					"#9999CC",
+					"#999966",
+					"#CC6699",
+					"#FF9999",
+					"#669999"
+				];
 				for(var i=0;i<list.length;i++)
 				{
 					var item = new ColorItem(list[i]);
 					if(item.data.rank && item.data.label){
-						datas.push({value:item.data.rank, name:item.data.label})
+						datas.push({value:item.data.rank, name:item.data.label,
+					                	itemStyle: {
+							                normal: {
+							                    color: staticColors[i]
+							                }
+						            	}
+					                })
 					}
 					else{
 						var textA = item.data.value;
@@ -427,7 +449,12 @@ define("CesiumController",function(exporter){
 						{
 						totalSum = totalSum + arr[i]*1
 						}
-						datas.push({value:totalSum, name:'其他'})
+						datas.push({value:totalSum, name:'其他',
+					                	itemStyle: {
+							                normal: {
+							                    color: "#669999"
+							                }
+						            	}})
 					}
 					item.view.appendTo(container);
 					colorItems.push(item);
@@ -460,9 +487,9 @@ define("CesiumController",function(exporter){
 					var label1 = this.view.find(".label1");
 					var pointsLen = _self.getPointsLengthOf(obj.value);
 					label0.text(obj.label+"("+parseInt(pointsLen/_self.collection.length*100)+"%)");
-					label0.css("color",obj.type == 0?"#1cc5e1":"#ffbf31");
+					label0.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
 					label1.text(obj.label+"("+pointsLen+")");
-					label1.css("color",obj.type == 0?"#1cc5e1":"#ffbf31");
+					label1.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
 					var toggled = true;
 					this.view.click(function(){
 						$(this).toggleClass("selected");
@@ -540,6 +567,8 @@ define("CesiumController",function(exporter){
 		        };
 		
 		        // 使用刚指定的配置项和数据显示图表。
+		        $("#leftBk").hide();
+		        $("#leftEchart").show()
 		        myChart.setOption(option);
 			}
 			
@@ -716,7 +745,7 @@ define("CesiumController",function(exporter){
 		}
 		
 		//自定义的CzmlDataSource
-		function CustomDataSource(data) 
+		function CustomDataSource(data,bol) 
 		{
 			var dataParser = new DataParser(data.data);
 			this.czmlDataSource = new Cesium.CzmlDataSource();
@@ -727,7 +756,11 @@ define("CesiumController",function(exporter){
 		    	"version":"1.0"
 			});
 			//创建所有的点
-			var paths = self.dataType == DataType.realTime ? dataParser.getPaths() : dataParser.getHistoryPaths();
+			if(bol){
+				var paths = self.dataType == DataType.realTime ? dataParser.getPaths() : dataParser.getHistoryPaths();
+			}else{
+				var paths =dataParser.getPaths();
+			}
 			var len = paths.length;
 			
 			//显示调试信息

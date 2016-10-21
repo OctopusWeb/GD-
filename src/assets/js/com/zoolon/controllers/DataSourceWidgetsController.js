@@ -75,8 +75,8 @@ define("CustomLoadController",function(exporter){
 		var loader,timer;
 		//初次加载
 		firstLoad(function(json){
-			dataSourceWidgetsController.controllers["widget2"].numController.value(json.dataNum*0.9);
-			dataSourceWidgetsController.controllers["widget3"].numController.value(json.validMileage*0.9);
+			dataSourceWidgetsController.controllers["widget2"].numController.value(json.dataNum[-1]*0.9);
+			dataSourceWidgetsController.controllers["widget3"].numController.value(json.validMileage[-1]*0.9);
 			tween(json);
 		});
 		
@@ -115,8 +115,8 @@ define("CustomLoadController",function(exporter){
 					lastJson = json;
 				});
 			});
-			dataSourceWidgetsController.controllers["widget2"].numController.tweenValueTo(time,currentJson.dataNum);
-			dataSourceWidgetsController.controllers["widget3"].numController.tweenValueTo(time,currentJson.validMileage,function(){
+			dataSourceWidgetsController.controllers["widget2"].numController.tweenValueTo(time,currentJson.dataNum[-1]);
+			dataSourceWidgetsController.controllers["widget3"].numController.tweenValueTo(time,currentJson.validMileage[-1],function(){
 				if(lastJson!=undefined)
 				{
 					tween(lastJson);
@@ -226,10 +226,8 @@ define("controllers.dataSource.Widget0",function(exporter){
 		}
 		var self = this;
 		this.dsSelector = new DsSelector(this);
-		$("#nav ul li").eq(5).click(function(){
-			$(this).toggleClass("selected");
-			$(this).attr("class") == "selected"?self.dsSelector.open():self.dsSelector.close();
-//			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
+		info.click(function(){
+			self.dsSelector.getIsOpen()?self.dsSelector.close():self.dsSelector.open();
 		});
 	}
 	return Widget0;
@@ -303,24 +301,13 @@ define("controllers.dataSource.Widget0",function(exporter){
 				"params.cityCodes":cityCode
 			};
 			loader = $at.get(exporter.Config.request.getDataSources,vars,function(list){
-				var daList1=[];
-				var daList2=[];
-//				for(var m=0;m<list.length;m++){
-//					if(list[m].type == 0){
-//						daList1.push(list[m]);
-//					}else{
-//						daList2.push(list[m]);
-//					}
-//				}
-//				list = daList1.concat(daList2);
-
 				dsList = list;
 				for(var i=0;i<list.length;i++)
 				{
 					var cb = new CustomCheckBoxController($('<div class="customCheckBox"><div></div><span>label</span></div>'),list[i]);
 					cb.view.appendTo(container);
 					cbs.push(cb);
-					if(i<0)
+					if(i<10)
 					{
 						cb.setSelected(true);
 					}
@@ -333,14 +320,8 @@ define("controllers.dataSource.Widget0",function(exporter){
 			});
 		}
 		
-		this.getDsList = function(cityCode)
+		this.getDsList = function()
 		{
-			var vars = {
-				"params.cityCodes":cityCode
-			};
-			var loader = $at.get(exporter.Config.request.getDataSources,vars,function(list){
-				dsList = list
-			})
 			return dsList;
 		}
 		
@@ -358,7 +339,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 		this.open = function()
 		{
 			var w0 = $("#widgets .w0").eq(0);
-//			w0.css("background-color",view.css("background-color"));
+			w0.css("background-color",view.css("background-color"));
 			var info0 = $("#widgets .w0 #info0");
 			var info1 = $("#widgets .w0 #info1");
 			var info = $("#widgets .w0 #info");
@@ -386,9 +367,9 @@ define("controllers.dataSource.Widget0",function(exporter){
 			TweenLite.to([info0,info1,info],0.5,{alpha:1});
 			exporter.mouseChildren(info,false);
 			
-//			exporter.mouseChildren(view,false);
-			TweenLite.to(view,0.5,{height:86,alpha:1,ease:Cubic.easeInOut});
-			TweenLite.to(w0,0.5,{height:86,ease:Cubic.easeInOut,onComplete:function(){
+			exporter.mouseChildren(view,false);
+			TweenLite.to(view,0.5,{height:0,alpha:1,ease:Cubic.easeInOut});
+			TweenLite.to(w0,0.5,{height:0,ease:Cubic.easeInOut,onComplete:function(){
 				exporter.mouseChildren(info,true);
 				if(onComplete!=undefined)onComplete();
 			}});
@@ -410,6 +391,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 		this.data = data;
 		this.selected = this.view.hasClass("customCheckBoxSelected");
 		var label = this.view.find("span");
+		label.attr({"title":data.label});
 		label.text(data.label);
 		if(data.type!=undefined)
 		{

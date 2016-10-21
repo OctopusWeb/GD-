@@ -359,6 +359,8 @@
 	background-color: #044074;
 	overflow: hidden;
 	display: none;
+	left:-15px;
+	z-index: 100;
 }
 
 #widgets .w0 #dsSelector .header

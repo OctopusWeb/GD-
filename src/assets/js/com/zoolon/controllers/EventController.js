@@ -207,9 +207,9 @@
 				}
 				var all = map["其他"]+map["事故"]+map["流量"]+map["管制类"]+map["施工类"]+map["路面"];
 				
-				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseInt(map["其他"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
+				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseInt(map["其他"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
 				$("#widgets #eventType #et2 #count").html("<div class='label0'>"+parseInt(map["事故"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["事故"]+"</div>");
-				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseInt(map["流量"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
+				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseInt(map["流量"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
 				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseInt(map["管制类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
 				$("#widgets #eventType #et5 #count").html("<div class='label0'>"+parseInt(map["施工类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["施工类"]+"</div>");
 				$("#widgets #eventType #et6 #count").html("<div class='label0'>"+parseInt(map["路面"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["路面"]+"</div>");
@@ -246,12 +246,48 @@
 					                }
 					            },
 					            data:[
-					                {value:map["其他"], name:'其他'},
-					                {value:map["事故"], name:'事故'},
-					                {value:map["流量"], name:'流量'},
-					                {value:map["管制类"], name:'管制类'},
-					                {value:map["施工类"], name:'施工类'},
-					                {value:map["路面"], name:'路面'}
+					                {value:map["其他"], name:'其他',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#0087f9'
+							                }
+						            	}
+					                },
+					                {value:map["事故"], name:'事故',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#be1e2d'
+							                }
+						            	}
+					                },
+					                {value:map["流量"], name:'流量',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#58595b'
+							                }
+						            	}
+					                },
+					                {value:map["管制类"], name:'管制类',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#8dc63f'
+							                }
+						            	}
+					                },
+					                {value:map["施工类"], name:'施工类',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#00bf31'
+							                }
+						            	}
+					                },
+					                {value:map["路面"], name:'路面',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#f39800'
+							                }
+						            	}
+					                }
 					            ]
 					        }
 					    ]
@@ -550,7 +586,6 @@
 		
 		
 		var addMouseHander = function() {
-			
 			
 			//鼠标点击事件响应
 			var selectPinHandler = new Cesium.ScreenSpaceEventHandler(

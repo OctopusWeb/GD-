@@ -1,7 +1,7 @@
 *{margin: 0;padding: 0;}
 #widgets .w0{left: 40px;top: 402px;}
 #widgets #w4,#widgets #w5,#widgets #w6,#widgets #w7{visibility: hidden;}
-#sourceColors{background: none;margin-left: 150px;top:240px;}
+#sourceColors{background: none;margin-left: 160px;top:240px;}
 #chooseCity{position: absolute;width: 100%;top: 770px;left: 1695px;}
 #chooseCity div{width: 185px;color: #fff;background: #000;height: 50px;background: #07558f;
 border: 1px #009fe8 solid;margin-top: 10px;}
@@ -35,10 +35,10 @@ color: #565656;}
 margin-top: 10px;color: #565656;font-weight: 600;}
 #addMap div img{top: 17px;position: absolute;left: 15px;}
 
-#leftSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 110px;display: none;}
+#leftSource{height: 540px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 540px;left:110px;display: none;}
 #leftSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
-#rightSource{height: 560px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 500px;left: 1506px;display: none;}
+#rightSource{height: 540px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 540px;left: 1506px;display: none;}
 #rightSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
 #city{opacity: 0;}
@@ -57,11 +57,12 @@ top: 0px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
 #widgets  #w3Title p{position: absolute;top: 70px;left: 20px;color: #565656;font-size: 14px;width: 200px;}
 #widgets  #w3Title span{position: absolute;top: 70px;left: 340px;color: #565656;font-size: 14px;width: 200px;}
 
-#widgets .w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;
-border-top: 1px #a0a0a0 solid;}
-#widgets .w0 .progress{float: left;width: 305px;position: relative;height: 30px;background: #dfdfdf;margin-left: 40px;
-margin-top: 15px;box-shadow: #ccc 2px 2px;}
+#widgets .w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;border-top: 1px #a0a0a0 solid;}
+#widgets .w0 .progress{float: left;width: 270px;position: relative;height: 30px;margin-left: 40px;box-shadow: #ccc 2px 2px;}
+#widgets .w0 .progress0{margin-top: 15px;}
+#widgets .w0 .progress1{margin-top: -30px;}
 #widgets .w0 .progress p{position: absolute;color: #565656;font-size: 14px;left: -40px;top: 5px;font-weight: 400;}
+#widgets .w0 .progress1 p{position: absolute;left: 280px;width: 30px;}
 #widgets .w0 #info{background: none;float: left;}
 #widgets .w0 #info0{position: relative;background: #920783;}
 #widgets .w0 #info1{position: relative;background: #f39800;}
@@ -88,7 +89,7 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 #et3{color: #0087f9;}
 
 #rightEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;}
-#leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;display: none;}
+#leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;}
 #addMap .mapSelect span{color: #0087f9;}
 
 #jam{position: absolute;width: 530px;top: 0px;left: 110px;height: 400px;display: none;}
@@ -99,14 +100,14 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 .tabBox{ position: relative;}
 .tabList{word-break: break-all; width:100%;float:left; line-height:100px; text-align:center; color:#D3D3D3; font-size:36px;}
 .lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #099; background: #f3f3f3}
-.lineDiv{ background: #099; height: 2px; width: 33%;}
+.lineDiv{ background: #099; height: 2px; width: 100%;}
 
-.tabList ul{width: 490px;float: left;overflow: hidden;}
-.tabList ul li{width: 470px;float: left;margin-left: 20px;padding-top: 10px;border-bottom: 1px solid #565656;list-style: none;font-family: "微软雅黑";cursor: pointer;}
+.tabList ul{width: 100%;float: left;overflow: hidden;}
+.tabList ul li{width: 100%;float: left;padding-left: 20px;padding-top: 10px;border-bottom: 1px solid #565656;padding-right: 80px;list-style: none;font-family: "微软雅黑";cursor: pointer;}
 .tabList ul li h1{width: 70%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
-.tabList ul li h2{width: 30%;float: left;text-align: right;font-size: 14px;color: #e10000;line-height: 25px;}
+.tabList ul li h2{width: 20%;float: left;text-align: right;font-size: 14px;color: #e10000;line-height: 25px;}
 .tabList ul li h3{width: 90%;float: left;text-align: left;font-size: 14px;color: #a0a0a0;line-height: 25px;margin-left: 10%;}
-.tabList ul li .roadInfo{width: 25%;float: left;height: 30px;overflow: hidden;}
+.tabList ul li .roadInfo{width: 22%;float: left;height: 30px;overflow: hidden;}
 .tabList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
 .tabList ul li .roadInfo h4 img{float: left;}
 .tabList ul li h6{display: none;}
@@ -127,21 +128,42 @@ margin-top: 15px;box-shadow: #ccc 2px 2px;}
 .jamBk1{display: none;z-index: 100;top: 400px;background: none;}
 .jamBk2{width: 80px;position: absolute;display: none;z-index: 100;display: none;z-index: 100;top: 0px;background: none;height: 450px;}
 
-#nav{width: 80px;height: 1080px;position: absolute;left: 0;top: 0;background: #707070;padding-top: 30px;}
-#nav ul li{float: left;width: 80px;margin-top: 15px;height: 70px;text-align: center;list-style: none;background: none;cursor: pointer;}
+#et2{color: #be1e2d;}
+#et5{color: #00bf31;}
+#et4{color: #8dc63f;}
+#et6{color: #f39800;}
+#et1{color: #58595b;}
+#et3{color: #0087f9;}
+#nav{width: 85px;height: 1080px;position: absolute;left: 0;top: 0;background: url(../images/dataSource/left.png);padding-top: 30px;}
+#nav ul li{float: left;width: 80px;margin-top: 15px;height: 70px;text-align: center;list-style: none;background: none;cursor: pointer;position: relative;}
 #nav ul .selected{background: #0087f9;}
 #nav ul li img{margin-top: 15px;}
 #nav ul li p{color: #fff;margin-top: 5px;font-size: 14px;font-weight: 600;}
 
-#dsSelector{left: 80px;top: 470px;}
+/*#dsSelector{left: 70px;top: 470px;}
 #widgets .w0 #dsSelector{height: 600px !important;}
-#widgets .w0 #dsSelector .body{height: 549px;}
+#widgets .w0 #dsSelector .body{height: 549px;}*/
 #navShow{position: absolute;left: 80px;top: 550px;display: none;}
 .UserPic{position: absolute;width: 1920px;height: 1080px;z-index: 1000;background: rgba(0,0,0,0.2);display: none;}
 .UserPic img{width: 700px;position: absolute;left: 50%;top: 50%;background: #044074;padding: 10px;margin:10px}
 .label1{display: none;}
 .tx1{display: none;}
-.customCheckBox{width: 150px;overflow: hidden;white-space:nowrap; 
-text-overflow:ellipsis; 
--o-text-overflow:ellipsis; 
-overflow: hidden; }
+.customCheckBox{width: 150px;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;overflow: hidden; }
+#dataSour{position: absolute;background: none;height: 100px;width: 80px;top: 450px;display: none;}
+
+.tabListHide{display: none;}
+#leftBk{width: 386px;height:340px;position: absolute;background: rgba(0,0,0,0.3);z-index: 100;display: none;top: 260px;}
+#leftBk h1{color: #fff;font-size: 14px;text-align: center;margin-top: 30%;}
+#sourceData{height: 540px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 540px;left: 1506px;display: none;}
+#sourceData h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
+padding-left: 20px;font-size: 16px;}
+#sourceData h3{width: 100%;float: left;color: #5d5d5d;font-weight: 500;padding: 10px;padding-left: 20px;line-height: 35px;    color: #565656;
+    font-size: 14px;
+    width: 200px;}
+#sourceData span{position: absolute;right: 30px;font-size: 30px;line-height: 30px;color: #565656;font-family: "微软雅黑";}
+#sourceData h4 span{right: 10px;}
+#sourceData p{position: absolute;right: 10px;font-size: 14px;line-height: 10px;color: #565656;font-family: "微软雅黑";margin-top: -20px;}
+#sourceData .sourceList{float: left;width: 200px;height: 350px;margin-left: 190px;margin-top: 20px;}
+#sourceData .sourceList h4{width: 100%;float: left;line-height: 30px;color: #3399FF;}
+#sourceData .sourceList span{color: #3399FF;font-size: 14px;}
+#sourceEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 200px;}

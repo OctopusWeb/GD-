@@ -61,18 +61,8 @@
 			<img src=""/>
 		</div>
 		<div id="widgets">
-			<div class="w0">
-				<div id="dsSelector">
-					<div class="header">
-						<div class="customCheckBox customCheckBoxSelected"><div></div><span>选择前十项</span></div>
-						<input type="text" style="position: absolute;width: 100px;top: 14px;margin-left:-15px;" id="chooseSource"/>
-						<div style="float: left; font-size: 18px;line-height: 30px;margin-left: 100px;"><span style="color: #1cc5e1;cursor: pointer;" id="search">筛选</span><!--<span style="color: #ffbf31;">公众</span>--></div>
-						<div id="submitBt">确定</div>
-					</div>
-					<div class="body"></div>
-				</div>
-			</div>
 	<div id="leftSource">
+			<div id="leftBk"><h1>正在加载，请稍后......</h1></div>
 			<div id="leftEchart">
 				
 			</div>
@@ -162,14 +152,14 @@
 				</div>
 				
 				<div id="info"></div>
-				<!--<div id="dsSelector">
+				<div id="dsSelector">
 					<div class="header">
 						<div class="customCheckBox customCheckBoxSelected"><div></div><span>选择前十项</span></div>
 						<div style="float: left; font-size: 18px;line-height: 26px;"><span style="color: #1cc5e1;">行业</span><span style="color: #ffbf31;">公众</span></div>
 						<div id="submitBt">确定</div>
 					</div>
 					<div class="body"></div>
-				</div>-->
+				</div>
 			</div>
 			<div id="w1" style="z-index: 100;">
 				<div id="box"></div>
@@ -232,13 +222,24 @@
 					<div id="count" class="count">100</div>
 				</div>
 				<div id="et1" class="et">
-					<div>其他</div>
-					<div id="count" class="count">100</div>
-				</div>
-				<div id="et3" class="et">
 					<div>交通流量</div>
 					<div id="count" class="count">100</div>
 				</div>
+				<div id="et3" class="et">
+					<div>其他</div>
+					<div id="count" class="count">100</div>
+				</div>
+			</div>
+	</div>
+	<div id="sourceData">
+			<div id="sourceEchart">
+				
+			</div>
+			<h2>数据源数据</h2>
+			<h3>当日累计的GPS<span>0</span><p>个</p></h3>
+			<h3>当日累计的里程<span>0</span><p>km</p></h3>
+			<div class="sourceList">
+				
 			</div>
 	</div>
 			<!--<div id="controllerBtn">
@@ -252,14 +253,15 @@
 			<div class="jamBk2"></div>
 			<div id="jam">
 			    <ul class="tabClick">
-			        <li class="active">拥堵时间排名</li>
+			        <li class="active">拥堵距离排名</li>
+			        <li>拥堵时间排名</li>
 			    </ul>
 			    <div class="lineBorder">
 			        <div class="lineDiv"><!--移动的div--></div>
 			    </div>
 			    <div class="tabCon">
-			        <div class="tabBox">
-			            <div class="tabList">
+			        <div class="tabBox0">
+			            <div class="tabList ">
 			            	<ul>
 			            		<li>
 			            			<h1>1.东四环</h1>
@@ -273,8 +275,21 @@
 			            		</li>
 			            	</ul>
 			            </div>
-			            
-			        </div>
+			            <div class="tabList tabListHide">
+			            	<ul>
+			            		<li>
+			            			<h1>1.东四环</h1>
+			            			<h2>拥堵</h2>
+			            			<h3>东四环东路-道路</h3>
+			            			<div class="roadInfo"><img src="src/assets/images/dataSource/roadIcon1.png"/><h4>10km/h</h4></div>
+			            			<div class="roadInfo"><img src="src/assets/images/dataSource/roadIcon2.png"/><h4>1.3km</h4></div>
+			            			<div class="roadInfo"><img src="src/assets/images/dataSource/roadIcon3.png"/><h4>4分</h4></div>
+			            			<div class="roadInfo"><img src="src/assets/images/dataSource/roadIcon4.png"/><h4>16:28</h4></div>
+			            			<h6></h6>
+			            		</li>
+			            	</ul>
+			            </div>
+			        </div>      
 			    </div>
 			    <!--<div class="tabLiList">
 			    	<h5>道路详情</h5>
@@ -334,6 +349,9 @@
 				<li><img src="src/assets/images/dataSource/sourceIcon7.png"/><p>实时浮动车</p></li>
 				<li><img src="src/assets/images/dataSource/sourceIcon8.png"/><p>数据源</p></li>
 			</ul>
+			<div id="dataSour">
+				
+			</div>
 			<div id="navShow">
 				<img src="src/assets/images/dataSource/navShow.png" />
 			</div>

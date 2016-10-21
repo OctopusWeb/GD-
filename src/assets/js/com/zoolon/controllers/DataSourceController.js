@@ -122,7 +122,6 @@ define("DataSourceController",function(exporter){
 				cesiumController.loadDataSource(cityCode);
 			}
 			
-			
 		}
 		
 		init();

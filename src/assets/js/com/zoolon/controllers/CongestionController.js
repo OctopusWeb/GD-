@@ -69,7 +69,7 @@ define("CongestionController",function(exporter){
 		function CommonNow(citycode){
 			var data = {"city":citycode,
 						"orderType":"2",
-						"isNormal ":"0"
+						"isNormal":"0"
 						}
 			getData("10001",JSON.stringify(data)).then(function(json){
 				var index = creatDom(json);
@@ -80,18 +80,24 @@ define("CongestionController",function(exporter){
 		function UnmommonNow(citycode){
 			var data = {"city":citycode,
 						"orderType":"2",
-						"isNormal ":"1"
+						"isNormal":"1"
 						}
 			getData("10001",JSON.stringify(data)).then(function(json){
-				var index = creatDom(json);
-				$(".tabList ul").eq(0).html(index);
+				var index = creatDom(json,"road");
+				var indexTime = creatDom(json,"time");
+				$(".tabList").eq(0).find("ul").html(index);
+				$(".tabList").eq(1).find("ul").html(indexTime);
 				bindEvent()
 			})
 		}
 	
-		function creatDom(json){
-			var index="";
+		function creatDom(json,type){
 			var dataInfo = json.data.rows;
+			if(type == "time"){
+				SortByWeight(dataInfo,"longTime")
+			}
+			var index="";
+			
 			if(json.status.msg != "success"){
 				index="数据加载错误，请重试"
 			}else{
@@ -113,6 +119,12 @@ define("CongestionController",function(exporter){
 			}
 
 			return index;
+		}
+		function SortByWeight(array, key) {
+		    return array.sort(function(a, b) {
+		        var x = a[key]; var y = b[key];
+		        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+		    });
 		}
 		
 		function getData(sidCode,data){
@@ -152,7 +164,6 @@ define("CongestionController",function(exporter){
 				time4<10 ? time4 ="0" + time4: time4 =time4
 				time5<10 ? time5 ="0" + time5:time5 =time5
 				var newTime = time1+""+time2+""+time3+""+time4+""+time5+"00";
-				console.log(newTime)
 				var datas = {
 					"roadId":linkId,
 					"time":newTime,
@@ -162,7 +173,7 @@ define("CongestionController",function(exporter){
 					var x = json.rows[0].gpsInfos[0].coord[0];
 					var y = json.rows[0].gpsInfos[0].coord[1];
 					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(x, y, 10000.0)
+						destination : Cesium.Cartesian3.fromDegrees(parseFloat(x)-0.001, parseFloat(y)-0.001, 10000.0)
 					});
 					
 					var start = Cesium.JulianDate.fromDate(new Date(2016, 9, 7, 9));
@@ -194,7 +205,7 @@ define("CongestionController",function(exporter){
 			self.SortByWeight = function(array, key) {
 			    return array.sort(function(a, b) {
 			        var x = a[key]; var y = b[key];
-			        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+			        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 			    });
 			}
 			for(var i=0;i<json.rows.length;i++){
@@ -202,7 +213,9 @@ define("CongestionController",function(exporter){
 				var gpsArr = json.rows[i].gpsInfos;
 				self.SortByWeight(gpsArr,"gpsTime")
 				for(var m=0;m<gpsArr.length;m++){
-					carData.push(gpsArr[m].coord);
+					var coord=gpsArr[m].coord;
+					coord.push(gpsArr[m].gpsTime)
+					carData.push(coord);
 				}
 				carArr.push(carData);
 			}
@@ -213,9 +226,12 @@ define("CongestionController",function(exporter){
 		function MoveCar(jsonParse,start,stop){
 			var myPosition = [];
 			var myTime = [];
+			var firstTime = jsonParse[0][2].split(':').join('');
 			for(var i=0;i<jsonParse.length;i++){
-				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[jsonParse.length-i][0], jsonParse[jsonParse.length-i][1],10);
-				myTime[i] = Cesium.JulianDate.addSeconds(start, i/jsonParse.length*300, new Cesium.JulianDate());
+				var carTime = jsonParse[i][2].split(':').join('');
+				var showtime = (carTime-firstTime)%100+parseInt((carTime-firstTime)/100)*60;
+				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[i][0], jsonParse[i][1],10);
+				myTime[i] = Cesium.JulianDate.addSeconds(start, showtime, new Cesium.JulianDate());
 			}
 			this.computeCirclularFlight = function() {
                 var property = new Cesium.SampledPositionProperty();
@@ -337,6 +353,8 @@ define("CongestionController",function(exporter){
 				var num = $(".tabList li").index($(this));
 				var citycode = cur_cityCode;
 				var eventId = $(this).attr("class");
+				$(this).siblings().css({"background":"none"})
+				$(this).css({"background":"#fff"})
 //				var xy = $(this).find("h6").text();
 //				var x=xy.substring(0,xy.indexOf(","));
 //				var y=xy.substring(xy.indexOf(",")+1,xy.length);

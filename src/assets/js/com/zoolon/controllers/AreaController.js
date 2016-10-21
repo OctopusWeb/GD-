@@ -16,6 +16,7 @@ define("controllerArea",function(exporter){
 			})
 			loadData("src/assets/data/cityArea.json").then(function(data){
 				var parseArea = new ParseArea(data,"c");
+				console.log(parseArea.length)
 				for (var m=0;m<parseArea.length;m++) {
 					var areaController = new AreaController("c"+self.cityCitycode[m],parseArea[m],m);
 				}
