@@ -1,0 +1,54 @@
+{
+    "children": {
+        "330600": {
+            "dataNum": 853977,
+            "validMileage": 209037
+        },
+        "330200": {
+            "dataNum": 981865,
+            "validMileage": 230437
+        },
+        "330100": {
+            "dataNum": 2112380,
+            "validMileage": 500060
+        },
+        "330900": {
+            "dataNum": 108106,
+            "validMileage": 23409
+        },
+        "330500": {
+            "dataNum": 719935,
+            "validMileage": 154044
+        },
+        "331000": {
+            "dataNum": 852976,
+            "validMileage": 192560
+        },
+        "330300": {
+            "dataNum": 938665,
+            "validMileage": 213197
+        },
+        "330400": {
+            "dataNum": 913113,
+            "validMileage": 238496
+        },
+        "330800": {
+            "dataNum": 268077,
+            "validMileage": 82620
+        },
+        "331100": {
+            "dataNum": 217637,
+            "validMileage": 57423
+        },
+        "330700": {
+            "dataNum": 828248,
+            "validMileage": 192776
+        }
+    },
+    "dataNum": {
+        "-1": 8794979
+    },
+    "validMileage": {
+        "-1": 2094059
+    }
+}

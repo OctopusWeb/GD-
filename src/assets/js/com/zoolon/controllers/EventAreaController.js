@@ -82,7 +82,6 @@ define("eventAreaController",function(exporter){
 				$("#cities ul").hide();
 			})
 			$(".quanguo").click(function(e){
-//				$(".quanguoBox").toggleClass("quanguoHide");
 				e.stopPropagation();
 				returnGuo();
 			})
@@ -93,6 +92,7 @@ define("eventAreaController",function(exporter){
 				InducedBol = false;
 				$("#leftEchart").hide();
 				$("#addMap div").eq(2).removeClass("mapSelect");
+				barController.CityClear();
 				if($("#leftSource").css("display") == "none"){
 					barController.clear(false,false);
 				}else{
@@ -175,20 +175,26 @@ define("eventAreaController",function(exporter){
 		handler.setInputAction(function (movement) {
 	    	ClickEvent(movement)
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
-		
-		setTimeout(contryBar,100)
+	    
+		contryBar();
 		function contryBar(){
-			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
-
+//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
+			barController.drawBars("src/assets/data/全国-分源.json","pro");
 		}
-		function cityBar(dityCode){
-				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+dityCode
+		function cityBar(cityCode){
+//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+				var cityUrl = "src/assets/data/省份-不分源.json";
 				barController.drawBars(cityUrl,"city");
+		}
+		function sourceBar(cityCode,dataType,source){
+//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+				var cityUrl = "src/assets/data/省份-不分源.json";
+				barController.drawBars(cityUrl,dataType,source);
 		}
 		
 		function Induced(parse){
 			for(var i=0;i<parse.length;i++){
-				var lat = parse[i][1].split(",")
+				var lat = parse[i][1].split(",");
 				var bluePin = viewer.entities.add({
 					parent : Induceds,
 				    position : Cesium.Cartesian3.fromDegrees(lat[0],lat[1]),
@@ -271,7 +277,7 @@ define("eventAreaController",function(exporter){
 			}else if(type == "I"){
 				var urls = "http://10.101.83.99/UserPic?picid="+pickID.substring(1,pickID.length);
 				$(".UserPic").fadeIn();
-				$(".UserPic img").attr({"src":urls})
+				$(".UserPic img").attr({"src":urls});
 			}
 		}
 		

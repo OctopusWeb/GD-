@@ -1,0 +1,50 @@
+{
+    "children": {
+        "150000": {
+            "dataNum": 1540950,
+            "validMileage": 64810
+        },
+        "120000": {
+            "dataNum": 1142290,
+            "validMileage": 64506
+        },
+        "140000": {
+            "dataNum": 1637408,
+            "validMileage": 245277
+        },
+        "420000": {
+            "dataNum": 657493,
+            "validMileage": 93766
+        },
+        "350000": {
+            "dataNum": 474110,
+            "validMileage": 48285
+        },
+        "410000": {
+            "dataNum": 7106044,
+            "validMileage": 762281
+        },
+        "430000": {
+            "dataNum": 805746,
+            "validMileage": 100424
+        },
+        "330000": {
+            "dataNum": 2317463,
+            "validMileage": 233786
+        },
+        "130000": {
+            "dataNum": 1291581,
+            "validMileage": 174096
+        }
+    },
+    "dataNum": {
+        "2452": 9590728,
+        "-1": 17085587,
+        "2706": 7494859
+    },
+    "validMileage": {
+        "2452": 984960,
+        "-1": 1801089,
+        "2706": 816129
+    }
+}
