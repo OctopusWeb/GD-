@@ -13,6 +13,7 @@ define("eventAreaController",function(exporter){
 		var layers = viewer.imageryLayers;
 		var self = this;
 		handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+		var cesiumType=1;
 		
 		var proArr=[];
 		var proCenter=[];
@@ -22,6 +23,28 @@ define("eventAreaController",function(exporter){
 		
 		eventInit();
 		function eventInit(){
+			var nav = $("#nav");
+			
+			var navLi=nav.find("ul li");
+			navLi.eq(0).on("click",function(e){
+				e.stopPropagation();
+				$(this).toggleClass("selected");
+				Floating ? self.Floatingcar.clear() : self.Floatingcar.show();
+			})
+			
+			navLi.eq(1).on("click",function(e){
+				e.stopPropagation();
+				$(this).toggleClass("selected");
+				traffiBol ? self.trafficEvent.clear() : self.trafficEvent.show();
+			})
+			
+			navLi.eq(4).click(function(e){
+				e.stopPropagation();
+				$(this).toggleClass("selected");
+				Floating1 ? self.FloatingcarTime.clear() : self.FloatingcarTime.show();
+			});
+			
+			
 			$("#search").click(function(){
 				var search = $("#chooseSource").val()
 				screening(search);
@@ -60,44 +83,22 @@ define("eventAreaController",function(exporter){
 				}
 				self.changeMap();
 			});
-			$("#nav ul li").eq(4).click(function(e){
-				e.stopPropagation();
-				$(this).toggleClass("selected");
-				self.FloatingcarTime();
-			});
-			$("#nav ul li").eq(1).click(function(e){
-				e.stopPropagation();
-				$(this).toggleClass("selected");
-				self.trafficEvent();
-			})
-			$("#nav ul li").eq(0).click(function(e){
-				e.stopPropagation();
-				$(this).toggleClass("selected");
-				self.Floatingcar();
-			})
 			
-			$("body").click(function(e){
-				e.stopPropagation();
-				$("#pro ul").hide();
-				$("#cities ul").hide();
-			})
+			
 			$(".quanguo").click(function(e){
 				e.stopPropagation();
 				returnGuo();
 			})
 			function returnGuo(){
+				cesiumType=1;
+				if(Floating)contryBar();
 				$("#leftBk").hide()
 				codeIndex = false;
 				Induceds.show = false;	
 				InducedBol = false;
 				$("#leftEchart").hide();
 				$("#addMap div").eq(2).removeClass("mapSelect");
-				barController.CityClear();
-				if($("#leftSource").css("display") == "none"){
-					barController.clear(false,false);
-				}else{
-					barController.clear(true,false);
-				}
+//				barController.clear
 				CesiumController.clear(false);
 				borderController.show(true);
 				$(".quanguo p").html("全国");
@@ -134,7 +135,6 @@ define("eventAreaController",function(exporter){
 			var induced = new Induced(InducedParse);
 			parseCityInfo();
 			borderController.show(true);
-			barController.clear(false,false);
 			Induceds.show = false;
 		}
 		
@@ -176,20 +176,15 @@ define("eventAreaController",function(exporter){
 	    	ClickEvent(movement)
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
 	    
-		contryBar();
-		function contryBar(){
+		
+		function contryBar(vars){
 //			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
-			barController.drawBars("src/assets/data/全国-分源.json","pro");
+			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,vars);
 		}
-		function cityBar(cityCode){
+		function cityBar(cityCode,vars){
 //				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
 				var cityUrl = "src/assets/data/省份-不分源.json";
-				barController.drawBars(cityUrl,"city");
-		}
-		function sourceBar(cityCode,dataType,source){
-//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
-				var cityUrl = "src/assets/data/省份-不分源.json";
-				barController.drawBars(cityUrl,dataType,source);
+				barController.drawBars(cityUrl,"city",cesiumType,vars);
 		}
 		
 		function Induced(parse){
@@ -223,20 +218,14 @@ define("eventAreaController",function(exporter){
 			var num = pickID.indexOf("-");
 			var cityName = pickID.substring(7,num);
 			var index = pickID.substr(num+1,pickID.length+1);
+			
 			if(type == "p"){
+				cesiumType=2;
 				$("#city").html(cityName);
 				$(".quanguo  p").html(cityName);
 				codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
-				if($("#leftSource").css("display") == "none"){
-					barController.clear(false,false);
-				}else{
-					cityBar(cityCode/10000*10000)
-					barController.clear(false,true);
-				}
-				if($("#nav ul li").eq(5).attr("class") == "selected"){
-					proNumshow(cityCode,cur_dsCodes,cur_label)
-				}
 				borderController.show(false,true,codeIndex);
+				if(Floating)cityBar(codeIndex);
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
 					orientation : {
@@ -244,18 +233,15 @@ define("eventAreaController",function(exporter){
 				        up : new Cesium.Cartesian3(0,0.7071067811865476,0.7071067811865476)
 				    }
 				});
-				initCityInfo(cityCode).then(function(data,citycode){
-					var cityParse =new CityParse(data,citycode);
-					var cityContorller = new CityContorller(cityParse);
-					cityContorller.append($("#cities ul"));
-				})
 			}else if(type == "c"){
+				cesiumType=3;
+				barController.CityClear()
 				borderController.show(false)
 				InducedBol = true;
 				$(".quanguo  p").html(cityName);
 				$("#leftEchart").show();
 				cur_cityCode = cityCode;
-				if(Floating && $("#leftSource").css("display") == "block"){
+				if(Floating){
 					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
 				}else{
 					var city = CesiumController.getInfoByCityCode(cur_cityCode);
@@ -264,7 +250,7 @@ define("eventAreaController",function(exporter){
 						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
 					});
 				}
-				if(traffiBol && $("#rightSource").css("display") == "block"){
+				if(traffiBol){
 					eventController.clear();
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
@@ -273,7 +259,6 @@ define("eventAreaController",function(exporter){
 					var dsList =CesiumController.getDsList(cur_cityCode);
 					CesiumController.loadDataSource1(cur_cityCode,dsList);
 				}
-				barController.clear(false,false)
 			}else if(type == "I"){
 				var urls = "http://10.101.83.99/UserPic?picid="+pickID.substring(1,pickID.length);
 				$(".UserPic").fadeIn();
@@ -301,12 +286,6 @@ define("eventAreaController",function(exporter){
 				$(".quanguo  p").html(cityTxt);
 				var cityCode = $(this).attr("class").toString();
 				var codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
-				if($("#leftSource").css("display") == "none"){
-					barController.clear(false,false);
-				}else{
-					cityBar(cityCode/10000*10000)
-					barController.clear(false,true);
-				}
 				borderController.show(false,true,codeIndex);
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
@@ -324,7 +303,6 @@ define("eventAreaController",function(exporter){
 		}
 		function bindCity(dom){
 				dom.click(function(e){
-					barController.clear(false,false)
 					borderController.show(false)
 					e.stopPropagation()
 					dom.parent().fadeOut();
@@ -394,7 +372,64 @@ define("eventAreaController",function(exporter){
 			this.append=function(dom){
 				dom.html(index);
 			}
-		}		
+		}
+		$("#info").on('source',function (e,data) {
+		  var values = JSON.parse(data);
+		  if(cesiumType == 1){
+		  	contryBar(values);
+		  }else if(cesiumType == 2){
+		  	cityBar(codeIndex,values);
+		  }
+		});
+		this.trafficEvent = {}
+		this.trafficEvent.show = function(){
+			traffiBol=true;
+			$("#rightSource").fadeIn();
+			$("#eventSource").fadeIn();
+			$("#eventType").fadeIn();
+			eventController.clear();
+			eventController.active = true;
+			eventController.loadEvent(this.cityCode);
+		}
+		this.trafficEvent.clear = function(){
+			traffiBol=false;
+			$("#rightSource").fadeOut()
+			eventController.clear();
+			eventController.active = false;
+		}
+
+		this.Floatingcar = {}
+		this.Floatingcar.show = function(){
+			Floating=true;
+			$("#leftSource").fadeIn()
+			if(cesiumType == 1){
+				contryBar();
+			}else if(cesiumType == 2){
+				cityBar(cur_cityCode);
+				return;
+			}
+			ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cur_cityCode}));
+		}
+		this.Floatingcar.clear = function(){
+			Floating=false;
+			barController.CityClear();
+			$("#leftSource").fadeOut()
+			CesiumController.clear(true);
+		}
+		
+		this.FloatingcarTime = {};
+		this.FloatingcarTime.clear = function(){
+			Floating1 = false;
+			$(viewer.animation.container).hide();
+			$(viewer.timeline.container).hide();
+			CesiumController.clear(false);
+			
+		}
+		this.FloatingcarTime.show = function(){
+			Floating1=true;
+			var dsList =CesiumController.getDsList(cur_cityCode);
+			CesiumController.loadDataSource1(cur_cityCode,dsList);
+		}
 		
 		this.changeMap = function(){
 			if(mapArea){
@@ -412,80 +447,7 @@ define("eventAreaController",function(exporter){
 			}
 			mapArea=!mapArea;
 		}
-		this.trafficEvent = function(bol){
-			if(bol){
-				$("#rightSource").fadeOut()
-				cur_selectedIndex1=0;
-				eventController.clear();
-				eventController.active = false;
-				traffiBol = false;
-				return
-			}
-			traffiBol=!traffiBol;
-			if(traffiBol){
-				$("#rightSource").fadeIn()
-				$("#eventSource").fadeIn();
-				$("#eventType").fadeIn();
-				eventController.clear();
-				eventController.active = true;
-				
-				eventController.loadEvent(this.cityCode);
-			}else{
-				$("#rightSource").fadeOut()
-				
-				cur_selectedIndex1=0;
-				eventController.clear();
-				eventController.active = false;
-			}
-			
-		}
 		
-		this.Floatingcar = function(bol){
-			if(bol){
-				$("#leftSource").fadeOut()
-				CesiumController.clear(true);
-				barController.clear(false,false);
-				Floating = false;
-				return
-			}
-			Floating=!Floating;
-			if(Floating){
-				if(cur_cityCode == "100000" && codeIndex){
-					$("#leftSource").fadeIn()
-					cityBar(cityCode/10000*10000)
-					barController.clear(false,true);
-					return;
-				}else if(cur_cityCode == "100000"){
-					barController.clear(true,false);
-				}
-				$("#leftSource").fadeIn()
-				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cur_cityCode}));
-			}else{
-				barController.clear(false,false);
-				$("#leftSource").fadeOut()
-				CesiumController.clear(true);
-			}
-		}
-		this.FloatingcarTime = function(bol){
-			if(bol){
-				$(viewer.animation.container).hide();
-				$(viewer.timeline.container).hide();
-				CesiumController.clear(false);
-				Floating1 = false;
-				return
-			}
-			Floating1=!Floating1;
-			if(Floating1){
-				var dsList =CesiumController.getDsList(cur_cityCode);
-				CesiumController.loadDataSource1(cur_cityCode,dsList);
-				
-			}else{
-				$(viewer.animation.container).hide();
-				$(viewer.timeline.container).hide();
-				barController.clear(false,false);
-				CesiumController.clear(false);
-			}
-		}
 		function indexOf(arr, str){
 		    if(arr && arr.indexOf){
 		        return arr.indexOf(str);

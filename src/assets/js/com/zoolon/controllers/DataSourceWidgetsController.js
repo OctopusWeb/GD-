@@ -268,6 +268,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 		var self = this;
 		submitBt.click(function(e){
 			var values = self.getSelectedValues();
+			$("#info").trigger("source",JSON.stringify(values));
 			if(values.length == 0)return;
 			self.close(function(){
 				if(widget.onSubmit!=undefined)widget.onSubmit(values);

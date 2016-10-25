@@ -10,16 +10,16 @@ define("CongestionController",function(exporter){
 		var roadLink;
 		var roadCar=[];
 //		tapEvent();
-		$("#nav ul li").eq(2).click(function(){
+		$("#nav ul li").eq(2).on("click",function(){
 			for(var m=0;m<roadCar.length;m++){
 				entities.remove(roadCar[m]);
 			}
 			if(roadLink){
 				entities.remove(roadLink);
 			}
-			eventArea.trafficEvent(true);
-			eventArea.Floatingcar(true);
-			eventArea.FloatingcarTime(true);
+			eventArea.trafficEvent.clear();
+			eventArea.Floatingcar.clear();
+			eventArea.FloatingcarTime.clear();
 			UnmommonNow(cur_cityCode);
 			$(".tabLiList").fadeOut();
 			if(showType == 0){
@@ -45,9 +45,9 @@ define("CongestionController",function(exporter){
 				entities.remove(roadLink);
 			}
 			$(".jamBk").show();
-			eventArea.trafficEvent(true);
-			eventArea.Floatingcar(true);
-			eventArea.FloatingcarTime(true);
+			eventArea.trafficEvent.clear();
+			eventArea.Floatingcar.clear();
+			eventArea.FloatingcarTime.clear();
 			CommonNow(cur_cityCode);
 			$(".tabLiList").fadeOut();
 			if(showType == 1){
