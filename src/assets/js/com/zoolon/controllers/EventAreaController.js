@@ -12,6 +12,7 @@ define("eventAreaController",function(exporter){
 		var provinceCitycode = barController.citys;
 		var layers = viewer.imageryLayers;
 		var self = this;
+		var dsCodes = undefined;
 		handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 		var cesiumType=1;
 		
@@ -174,17 +175,17 @@ define("eventAreaController",function(exporter){
 		}
 		handler.setInputAction(function (movement) {
 	    	ClickEvent(movement)
-	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK );
+	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 	    
 		
 		function contryBar(vars){
-//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro");
-			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,vars);
+//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
+			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
 		}
 		function cityBar(cityCode,vars){
 //				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
 				var cityUrl = "src/assets/data/省份-不分源.json";
-				barController.drawBars(cityUrl,"city",cesiumType,vars);
+				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
 		function Induced(parse){
@@ -235,7 +236,7 @@ define("eventAreaController",function(exporter){
 				});
 			}else if(type == "c"){
 				cesiumType=3;
-				barController.CityClear()
+				barController.CityClear();
 				borderController.show(false)
 				InducedBol = true;
 				$(".quanguo  p").html(cityName);
@@ -375,6 +376,7 @@ define("eventAreaController",function(exporter){
 		}
 		$("#info").on('source',function (e,data) {
 		  var values = JSON.parse(data);
+		  dsCodes = values;
 		  if(cesiumType == 1){
 		  	contryBar(values);
 		  }else if(cesiumType == 2){

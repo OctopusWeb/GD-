@@ -39,7 +39,7 @@ define("BarController",function(exporter){
 						var cityBar = new CityBar(barParse,dataType,max,all);
 					})
 				}
-				self.drawSourceBars(url,dataSourcetype,type,vars)
+				self.drawSourceBars(url,dataSourcetype,type,vars);
 			})
 		}
 		
@@ -53,7 +53,7 @@ define("BarController",function(exporter){
 					var all = cityMax*2;
 				}
 				var barDataChild = barData.children;
-
+				newChart(barData.validMileage)
 				for(x in barDataChild){
 					drawBar(barDataChild,dataType,x).then(function(codeData,barData,x){
 						var barParse = new BarParse(codeData,barData,x);
@@ -70,6 +70,75 @@ define("BarController",function(exporter){
 				entities.removeById(cityArr[i]._id);
 			}
 			cityArr=[];
+		}
+		
+		function newChart(data){
+			var i=0;
+			var datas=[];
+			var staticColors = [
+					"#FFFFFF",
+					"#FFFF00",
+					"#FF0000",
+					"#3399FF",
+					"#00FFFF",
+					"#33CC33",
+					"#9999CC",
+					"#999966",
+					"#CC6699",
+					"#FF9999",
+					"#669999"
+				];
+			for(x in data){
+				
+				datas.push({value:x, name:data[x],
+			                	itemStyle: {
+					                normal: {
+					                    color: staticColors[i]
+					                }
+				            	}
+			                })
+				i++;
+			}
+			drawEchart(datas)
+			function drawEchart(datas){
+				console.log(datas)
+				var myChart = echarts.init(document.getElementById('NewSourcechart'));
+				var option = {
+		             tooltip: {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b}: {c} ({d}%)"
+				    },
+				    series: [
+				        {
+				            type:'pie',
+				            radius: ['50%', '80%'],
+				            avoidLabelOverlap: false,
+				            label: {
+				                normal: {
+				                    show: false,
+				                    position: 'center'
+				                },
+				                emphasis: {
+				                    show: true,
+				                    textStyle: {
+				                        fontSize: '30',
+				                        fontWeight: 'bold'
+				                    }
+				                }
+				            },
+				            labelLine: {
+				                normal: {
+				                    show: false
+				                }
+				            },
+				            data:datas
+				        }
+				    ]
+		        };
+		
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+			}
 		}
 		
 		function drawBar(barData,dataType,x){

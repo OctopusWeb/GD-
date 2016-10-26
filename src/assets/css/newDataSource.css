@@ -167,3 +167,6 @@ padding-left: 20px;font-size: 16px;}
 #sourceData .sourceList h4{width: 100%;float: left;line-height: 30px;color: #3399FF;}
 #sourceData .sourceList span{color: #3399FF;font-size: 14px;}
 #sourceEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 200px;}
+
+#leftNewSource{width: 100%;height: 350px;position: absolute;top:200px}
+#NewSourcechart{width: 200px;height: 200px;float: left;background: #fff;z-index: 100;top: 100px;}
