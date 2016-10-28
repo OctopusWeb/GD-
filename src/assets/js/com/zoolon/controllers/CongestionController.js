@@ -141,6 +141,7 @@ define("CongestionController",function(exporter){
 						"type":"1",
 						"insertTime":insertTime
 						}
+			
 			getData("10002",JSON.stringify(data)).then(function(json){
 				var index = roadInfo(json);
 				$(".tabLiList ul").eq(0).html(index);
@@ -170,6 +171,7 @@ define("CongestionController",function(exporter){
 					"cityCode":citycode
 				}
 				parseCar(datas).then(function(json){
+					console.log(json)
 					var x = json.rows[0].gpsInfos[0].coord[0];
 					var y = json.rows[0].gpsInfos[0].coord[1];
 					viewer.camera.flyTo({
@@ -268,7 +270,7 @@ define("CongestionController",function(exporter){
 		function parseCar(datas){
 			var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
 //			var urls = "src/assets/data/roadCar.json"
-			return $at.get(urls,datas,function(json){				
+			return $at.get(urls,datas,function(json){	
 				return json;
 			})
 		}

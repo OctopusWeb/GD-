@@ -17,14 +17,16 @@ define("BarController",function(exporter){
 						420000,440000,450000,460000,500000,510000,520000,530000,
 						540000,610000,620000,630000,640000,650000,710000, 810000, 820000]
 		this.drawBars= function(url,dataType,type,vars){
+			$("#cesiumBk").show();
 			self.CityClear();
 			$at.get(url,undefined,function(barData){
+				if(dataType == "city" && type == 2)$(document).trigger("proLoad",barData);
 				var dataSourcetype;
-				var all = barData.dataNum[-1];
+				var all = barData.validMileage[-1];
 				var barDataChild = barData.children;
 				var max = 0;
 				for(x in barDataChild){
-					if(max<barDataChild[x].dataNum)max=barDataChild[x].dataNum;
+					if(max<barDataChild[x].validMileage)max=barDataChild[x].validMileage;
 				}
 				if(dataType == "pro"){
 					proMax=max;proAll=all;
@@ -39,27 +41,44 @@ define("BarController",function(exporter){
 						var cityBar = new CityBar(barParse,dataType,max,all);
 					})
 				}
-				self.drawSourceBars(url,dataSourcetype,type,vars);
+				if(vars==undefined|| vars.length ==0){
+					$("#cesiumBk").hide();
+					$("#NewsourceInfo").html("");
+					$("#NewSourcechart").hide();
+				}else{
+					
+					$("#NewSourcechart").show();
+					self.drawSourceBars(url,dataSourcetype,type,vars);
+					
+				}
+				
 			})
 		}
 		
 		this.drawSourceBars= function(url,dataType,type,vars){
-			$at.get(url,vars,function(barData){
+			for(var i=0;i<vars.length;i++){
+				url+="&params.dsCodes="+vars[i]
+			}
+			$at.get(url,undefined,function(barData){
 				if(type == 1){
-					var max = proMax*2;
-					var all = proMax*2;
+					var max = proMax;
+					var all = proAll;
 				}else if(type == 2){
-					var max = cityMax*2;
-					var all = cityMax*2;
+					var max = cityMax;
+					var all = cityAll;
+				}else if(type == 3){
+					var max = cityMax;
+					var all = cityAll;
 				}
 				var barDataChild = barData.children;
-				newChart(barData.validMileage)
+				newChart(barData.validMileage,all)
 				for(x in barDataChild){
 					drawBar(barDataChild,dataType,x).then(function(codeData,barData,x){
 						var barParse = new BarParse(codeData,barData,x);
 						var cityBar = new CityBar(barParse,dataType,max,all);
 					})
 				}
+				$("#cesiumBk").hide();
 			})
 		}
 		this.CityClear = function(){
@@ -72,11 +91,13 @@ define("BarController",function(exporter){
 			cityArr=[];
 		}
 		
-		function newChart(data){
+		function newChart(data,all){
 			var i=0;
 			var datas=[];
+			var index="";
+			
 			var staticColors = [
-					"#FFFFFF",
+					"#669999",
 					"#FFFF00",
 					"#FF0000",
 					"#3399FF",
@@ -89,19 +110,29 @@ define("BarController",function(exporter){
 					"#669999"
 				];
 			for(x in data){
-				
-				datas.push({value:x, name:data[x],
-			                	itemStyle: {
-					                normal: {
-					                    color: staticColors[i]
-					                }
-				            	}
-			                })
+				var label;
+				if(x !=-1){
+					datas.push({value:data[x], name:x,
+				                	itemStyle: {
+						                normal: {
+						                    color: staticColors[i]
+						                }
+					            	}
+				               })
+				}
+				for(var j=0;j<cur_dsCodesArr.length;j++){
+					if(x == cur_dsCodesArr[j][0]) label=cur_dsCodesArr[j][1];
+					if(x == -1)label="合计"
+				}
+				var par = parseInt(data[x]/all*10000)/100
+				index+='<div class="newInfo"><div class="box" style="background-color: '+staticColors[i]+'";></div><p style="color: '+staticColors[i]+'">'+label+'</p><span class="label1" style="color: '+staticColors[i]+'">'+data[x]+'</span><span class="label0" style="color: '+staticColors[i]+'">'+par+'%</span></div>';
 				i++;
 			}
-			drawEchart(datas)
+			index+='<div class="newInfo"><div class="box" style="background-color: #000";></div><p style="color: #000">总计</p><span class="label1" style="color: #000">'+all+'</span><span class="label0" style="color: #000">100%</span></div>';
+			$("#NewsourceInfo").html(index);
+			
+			drawEchart(datas);
 			function drawEchart(datas){
-				console.log(datas)
 				var myChart = echarts.init(document.getElementById('NewSourcechart'));
 				var option = {
 		             tooltip: {
@@ -159,7 +190,7 @@ define("BarController",function(exporter){
 			var codeDatas = codeData.features;
 			for (var i=0;i<codeDatas.length;i++) {
 				if(codeDatas[i].properties.AD_CODE == x){
-					cityCenter.push(codeDatas[i].properties.X_COORD,codeDatas[i].properties.Y_COORD,barData[x].dataNum)
+					cityCenter.push(codeDatas[i].properties.X_COORD,codeDatas[i].properties.Y_COORD,barData[x].validMileage)
 				};
 			}
 			return cityCenter;

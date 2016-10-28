@@ -417,7 +417,7 @@ define("CesiumController",function(exporter){
 				var colorItems = [];
 				var datas=[];
 				var staticColors = [
-					"#FFFFFF",
+					"#669999",
 					"#FFFF00",
 					"#FF0000",
 					"#3399FF",
@@ -567,9 +567,9 @@ define("CesiumController",function(exporter){
 		        };
 		
 		        // 使用刚指定的配置项和数据显示图表。
-		        $("#leftBk").hide();
-		        $("#leftEchart").show()
 		        myChart.setOption(option);
+		        $("#leftBk").hide();
+		        $("#leftEchart").show();
 			}
 			
 			this.getPointsLengthOf = function(value)
@@ -636,7 +636,7 @@ define("CesiumController",function(exporter){
 		function ColorMap()
 		{
 			var staticColors = [
-				"#FFFFFF",
+				"#669999",
 				"#FFFF00",
 				"#FF0000",
 				"#3399FF",

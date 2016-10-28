@@ -91,6 +91,7 @@ define("eventAreaController",function(exporter){
 				returnGuo();
 			})
 			function returnGuo(){
+				cur_cityCode = 100000;
 				cesiumType=1;
 				if(Floating)contryBar();
 				$("#leftBk").hide()
@@ -179,12 +180,13 @@ define("eventAreaController",function(exporter){
 	    
 		
 		function contryBar(vars){
-//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
-			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
+			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
+//			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
 		}
 		function cityBar(cityCode,vars){
-//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
-				var cityUrl = "src/assets/data/省份-不分源.json";
+				
+				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+//				var cityUrl = "src/assets/data/省份-不分源.json";
 				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
@@ -226,7 +228,9 @@ define("eventAreaController",function(exporter){
 				$(".quanguo  p").html(cityName);
 				codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
 				borderController.show(false,true,codeIndex);
-				if(Floating)cityBar(codeIndex);
+				if(Floating)cityBar(parseInt(cityCode/10000)*10000);
+				cur_cityCode = parseInt(cityCode/10000)*10000;
+				$(document).trigger("loadList",cur_cityCode)
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
 					orientation : {
@@ -235,14 +239,15 @@ define("eventAreaController",function(exporter){
 				    }
 				});
 			}else if(type == "c"){
+
 				cesiumType=3;
 				barController.CityClear();
 				borderController.show(false)
 				InducedBol = true;
 				$(".quanguo  p").html(cityName);
-				$("#leftEchart").show();
 				cur_cityCode = cityCode;
 				if(Floating){
+					cityBar(cityCode);
 					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
 				}else{
 					var city = CesiumController.getInfoByCityCode(cur_cityCode);
@@ -374,15 +379,19 @@ define("eventAreaController",function(exporter){
 				dom.html(index);
 			}
 		}
-		$("#info").on('source',function (e,data) {
+		$("#info").on('source',function (e,data,dataArr) {
 		  var values = JSON.parse(data);
 		  dsCodes = values;
 		  if(cesiumType == 1){
 		  	contryBar(values);
 		  }else if(cesiumType == 2){
-		  	cityBar(codeIndex,values);
+		  	cityBar(cur_cityCode,values);
+		  }else if(cesiumType == 3){
+		  	cityBar(cur_cityCode,values);
 		  }
 		});
+		
+		
 		this.trafficEvent = {}
 		this.trafficEvent.show = function(){
 			traffiBol=true;

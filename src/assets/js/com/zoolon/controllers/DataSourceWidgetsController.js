@@ -79,6 +79,12 @@ define("CustomLoadController",function(exporter){
 			dataSourceWidgetsController.controllers["widget3"].numController.value(json.validMileage[-1]*0.9);
 			tween(json);
 		});
+		$(document).on("proLoad",function(e,json){
+			dataSourceWidgetsController.controllers["widget2"].numController.value(json.dataNum[-1]*0.9);
+			dataSourceWidgetsController.controllers["widget3"].numController.value(json.validMileage[-1]*0.9);
+			tween(json);
+		})
+		
 		
 		function loadData(onComplete,onError)
 		{
@@ -268,6 +274,7 @@ define("controllers.dataSource.Widget0",function(exporter){
 		var self = this;
 		submitBt.click(function(e){
 			var values = self.getSelectedValues();
+			cur_dsCodesArr = self.getSelectedValuesArr();
 			$("#info").trigger("source",JSON.stringify(values));
 			if(values.length == 0)return;
 			self.close(function(){
@@ -294,7 +301,9 @@ define("controllers.dataSource.Widget0",function(exporter){
 				cbs.shift();
 			}
 		}
-		
+		$(document).on('loadList',function (e,cityCode) {
+		  self.loadSource(cityCode)
+		});
 		this.loadSource = function(cityCode)
 		{
 			this.reset();
@@ -333,6 +342,17 @@ define("controllers.dataSource.Widget0",function(exporter){
 			{
 				var cb = cbs[i];
 				if(cb.selected)values.push(cb.data.value);
+			}
+			return values;
+		}
+		
+		this.getSelectedValuesArr = function()
+		{
+			var values = [];
+			for(var i=0;i<cbs.length;i++)
+			{
+				var cb = cbs[i];
+				if(cb.selected)values.push([cb.data.value , cb.data.label]);
 			}
 			return values;
 		}
