@@ -6,7 +6,7 @@
 	background-image: url(../images/dataSource/topBar.png);
 }
 
-#topBar #logo
+#topBar #logo1
 {
 	width: 176px;
 	height: 50px;
@@ -20,28 +20,7 @@
 	color: #FFFFFF;
 	font-size: 32px;
 	font-family: "微软雅黑";
-	padding-left: 210px;
-	cursor: pointer;
+	padding-left: 240px;
 }
-
-#topBar #preBt
-{
-	width: 71px;
-	height: 26px;
-	position: absolute;
-	left: 44px;
-	top: 15px;
-	background-image: url(../images/dataSource/pre.png);
-	cursor: pointer;
-}
-
-#topBar #nextBt
-{
-	width: 71px;
-	height: 26px;
-	position: absolute;
-	left: 1812px;
-	top: 15px;
-	background-image: url(../images/dataSource/next.png);
-	cursor: pointer;
-}
+#topBar #logo{position: absolute;left:40px;font-size: 26px;color: #fff;line-height: 60px;font-family: "微软雅黑";cursor: pointer;}
+.quanguo{position: absolute;right:70px;font-size: 26px;color: #fff;line-height: 60px;font-family: "微软雅黑";cursor: pointer;}

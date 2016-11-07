@@ -1,7 +1,8 @@
 *{margin: 0;padding: 0;}
 #widgets .w0{left: 40px;top: 402px;}
 #widgets #w4,#widgets #w5,#widgets #w6,#widgets #w7{visibility: hidden;}
-#sourceColors{background: rgba(255,255,255,0.8);margin-left: 345px;top:200px;height: 350px;width: 240px;padding-left: 200px;padding-top: 10px;}
+#sourceColors{background: rgba(0,45,89,0.8);margin-left: -40px;top:380px;height: 215px;width: 185px;padding-left: 200px;
+padding-top: 10px;border-top: 1px #06558e solid;}
 #chooseCity{position: absolute;width: 100%;top: 770px;left: 1695px;}
 #chooseCity div{width: 185px;color: #fff;background: #000;height: 50px;background: #07558f;
 border: 1px #009fe8 solid;margin-top: 10px;}
@@ -29,35 +30,33 @@ padding: 10px 20px;overflow: auto;display: none;top: 55px;}
 #cities ul li{width: 150px;float: left;font-size: 14px;cursor: pointer;line-height: 24px;height: 24px;overflow: hidden;
 color: #565656;}
 
-#addMap{width: 250px;height: 50px;position: absolute;background: #fff;left: 1500px;top: 30px;border: none;}
-#addMap div{float: left;width: 124px;height: 50px;position: relative;cursor: pointer;}
-#addMap div span{width: 80%;position: absolute;left: 20%;text-align: center;line-height: 30px;
-margin-top: 10px;color: #565656;font-weight: 600;}
-#addMap div img{top: 17px;position: absolute;left: 15px;}
+#addMap{width: 146px;height: auto;position: absolute;left: 1750px;top: 100px;}
+#addMap div{float: left;width: 146px;height: 38px;position: relative;cursor: pointer;margin-top: 15px;background: url(../images/dataSource/navBk1.png)}
+#addMap div span{line-height: 38px;color: #fff;float: left;font-size: 14px;}
+#addMap div img{float: left;margin: 10px;margin-left: 20px;}
 
-#leftSource{height: 540px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 540px;left:110px;display: none;}
-#leftSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
-padding-left: 20px;font-size: 16px;}
-#rightSource{height: 540px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 540px;left: 1506px;display: none;}
-#rightSource h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
-padding-left: 20px;font-size: 16px;}
+#leftSource{height: 380px;width: 386px;position: absolute;background: rgba(0,45,89,0.8);top: 100px;left:20px;display: none;}
+#leftSource h2{width: 366px;float: left;height: 36px;background: url(../images/dataSource/tabTitle.png) no-repeat;color: #fff;line-height: 36px;
+padding-left: 20px;font-size: 16px;margin-top: -20px;}
+#rightSource{height: 300px;width: 386px;position: absolute;background: rgba(0,45,89,0.8);top: 760px;left: 20px;display: none;}
+#rightSource h2{width: 366px;float: left;height: 36px;background: url(../images/dataSource/tabTitle.png) no-repeat;color: #fff;line-height: 36px;
+padding-left: 20px;font-size: 16px;margin-top: -20px;}
 #city{opacity: 0;}
 
-#widgets .number{color: #565656;}
 #widgets #w2{background: none;float: left;margin: 0;padding: 0;position: relative;
-top: 10px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
-#widgets .number{position: relative;float: left;font-weight: 600;margin-left: -10px;font-size: 30px;}
+top: 10px;left: 0;height: 30px;width: 385px;padding-left: 130px;}
+#widgets .number{position: relative;float: left;font-weight: 600;margin-left: -13px;font-size: 20px;color: #fff;}
 #widgets  #w2Title{position: absolute;}
-#widgets  #w2Title p{position: absolute;top: 70px;left: 20px;color: #565656;font-size: 14px;width: 200px;}
-#widgets  #w2Title span{position: absolute;top: 70px;left: 340px;color: #565656;font-size: 14px;width: 200px;}
+#widgets  #w2Title p{position: absolute;top: 30px;left: 20px;color: #b4b4b6;font-size: 14px;width: 200px;font-weight: 600}
+#widgets  #w2Title span{position: absolute;top: 30px;left: 340px;color: #b4b4b6;font-size: 14px;width: 200px;}
 
 #widgets #w3{background: none;float: left;margin: 0;padding: 0;position: relative;
-top: 0px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
+top: 0px;left: 0;height: 30px;width: 385px;padding-left: 130px;}
 #widgets  #w3Title{position: absolute;top: 45px;}
-#widgets  #w3Title p{position: absolute;top: 70px;left: 20px;color: #565656;font-size: 14px;width: 200px;}
-#widgets  #w3Title span{position: absolute;top: 70px;left: 340px;color: #565656;font-size: 14px;width: 200px;}
+#widgets  #w3Title p{position: absolute;top: 10px;left: 20px;color: #b4b4b6;font-size: 14px;width: 200px;font-weight: 600;}
+#widgets  #w3Title span{position: absolute;top: 10px;left: 340px;color: #b4b4b6;font-size: 14px;width: 200px;}
 
-#widgets .w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;border-top: 1px #a0a0a0 solid;}
+#widgets .w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;border-top: 1px #a0a0a0 solid;background: none !important;}
 #widgets .w0 .progress{float: left;width: 270px;position: relative;height: 30px;margin-left: 40px;box-shadow: #ccc 2px 2px;}
 #widgets .w0 .progress0{margin-top: 15px;}
 #widgets .w0 .progress1{margin-top: -30px;}
@@ -69,47 +68,45 @@ top: 0px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
 #widgets .w0 #info0 div{font-size: 16px;margin: 0;padding: 0;left: 10px;top: 5px;}
 #widgets .w0 #info1 div{font-size: 16px;margin: 0;padding: 0;left: 0;right: 10px;text-align: right;}
 
-#eventSource{left: 0;top: 0;height: 200px;width: 366px;left: 10px;top: 50px;display: block;}
-#eventSource #es0{width: 100%;height: 100px;border-bottom: 1px #a0a0a0 solid;background: none;}
-#eventSource #es0 #lable{color: #565656;font-size: 34px;line-height: 90px;}
-#eventSource #es2{width: 100%;height: 100px;left: 0;top: 100px;border-bottom: 1px #a0a0a0 solid;background: none;}
-#eventSource #es2 #lable{color: #565656;font-size: 34px;line-height: 90px;}
-.eventSource_text{font-size: 20px;color: #565656;top: 10px;text-align: right;width: 350px;}
-.eventSource_text2{font-size: 20px;color: #565656;top: 50px;text-align: right;width: 350px;}
-#eventType{left: 185px;top: 250px;}
-#eventType .et{float: left;width: 150px;font-weight: 600;font-size: 16px;margin-left: 30px;}
+#eventSource{left: 0;top: 0;width: 366px;left: 10px;top: 20px;display: block;}
+#eventSource #es0{width: 50%;height: 80px;border-bottom: 1px #a0a0a0 solid;background: none;}
+#eventSource #es0 #lable{color: #fff;font-size: 24px;line-height: 80px;}
+#eventSource #es2{width: 50%;height: 80px;left: 50%;border-bottom: 1px #a0a0a0 solid;background: none;}
+#eventSource #es2 #lable{color: #fff;font-size: 24px;line-height: 80px;}
+.eventSource_text{font-size: 20px;color: #b5b5b7;top: 10px;text-align: right;width: 150px;}
+.eventSource_text2{font-size: 20px;color: #b5b5b7;top: 50px;text-align: right;width: 150px;}
+#eventType{left: 185px;top: 105px;}
+#eventType .et{position:relative;float: left;width: 150px;font-weight: 600;font-size: 14px;margin-left: 30px;height: 22px;color: #b4b5b7;}
 #eventType .et div{float: left;height: 40px;line-height: 40px;}
+#eventType .et img{position: absolute;left: -15px;top: 12px;}
 #eventType .et .count{float: right;}
-#title{font-size: 24px;color: #f39800;margin-top: 10px;}
-#et2{color: #0087f9;}
-#et5{color: #0087f9;}
-#et4{color: #0087f9;}
-#et6{color: #0087f9;}
-#et1{color: #0087f9;}
-#et3{color: #0087f9;}
+#eventType #title{font-size: 16px;color: #b4b5b7;margin-top: 10px;}
 
-#rightEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;}
-#leftEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 300px;left: 380px;}
-#addMap .mapSelect span{color: #0087f9;}
 
-#jam{position: absolute;width: 530px;top: 0px;left: 110px;height: 400px;display: none;}
-.tabClick{ background: rgba(255,255,255,0.8); overflow: hidden}
-.tabClick li{ height:40px; line-height: 40px; width: 33%; float: left; text-align: center;list-style: none;color: #0087f9;cursor: pointer;}
-.tabClick li.active{ color: #0087f9; transition: 0.1s; font-weight: bold}
-.tabCon{ overflow: auto;height: 400px;overflow-x: hidden;background: rgba(255,255,255,0.8)}
+#rightEchart{position: absolute;width: 130px;height: 130px;z-index: 100;top: 135px;left: 30px;}
+#leftEchart{position: absolute;width: 130px;height: 130px;z-index: 100;top: 300px;left: 380px;}
+#addMap .mapSelect{background: url(../images/dataSource/navBk2.png);}
+.echartBk{position: absolute;top: 140px;left: 34px;width: 120px;}
+
+#jam{position: absolute;width: 385px;top: 640px;left: 20px;height: 400px;display: none;}
+.tabTitle{width: 385px;height: 35px;background: url(../images/dataSource/tabTitle.png) no-repeat;line-height: 34px;padding-left: 25px;color: #fff;font-weight: 600;}
+.tabClick{overflow: hidden;background: rgba(0,45,89,0.8)}
+.tabClick li{ height:50px; line-height: 50px; width: 33%; float: left; text-align: center;list-style: none;color: #fff;cursor: pointer;font-size: 14px;}
+.tabClick li.active{ color: #fff; transition: 0.1s; font-weight: bold}
+.tabCon{ overflow: auto;height: 330px;overflow-x: hidden;background: rgba(0,45,89,0.8)}
 .tabBox{ position: relative;}
 .tabList{word-break: break-all; width:100%;float:left; line-height:100px; text-align:center; color:#D3D3D3; font-size:36px;}
-.lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #099; background: #f3f3f3}
+.lineBorder{ height: 2px; overflow: hidden; border-bottom:1px solid #0072ad; background: #0072ad}
 .lineDiv{ background: #099; height: 2px; width: 100%;}
 
 .tabList ul{width: 100%;float: left;overflow: hidden;}
-.tabList ul li{width: 100%;float: left;padding-left: 20px;padding-top: 10px;border-bottom: 1px solid #565656;padding-right: 80px;list-style: none;font-family: "微软雅黑";cursor: pointer;}
-.tabList ul li h1{width: 70%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
-.tabList ul li h2{width: 20%;float: left;text-align: right;font-size: 14px;color: #e10000;line-height: 25px;}
-.tabList ul li h3{width: 90%;float: left;text-align: left;font-size: 14px;color: #a0a0a0;line-height: 25px;margin-left: 10%;}
+.tabList ul li{width: 100%;float: left;padding-left: 20px;padding-top: 10px;border-bottom: 1px solid #000;padding-right: 80px;list-style: none;font-family: "微软雅黑";cursor: pointer;}
+.tabList ul li h1{width: 70%;float: left;text-align: left;font-size: 14px;color: #019fe8;line-height: 25px;}
+.tabList ul li h2{width: 20%;float: left;text-align: right;font-size: 14px;color: #c6403d;line-height: 25px;}
+.tabList ul li h3{width: 90%;float: left;text-align: left;font-size: 14px;color: #b8b4b5;line-height: 25px;margin-left: 10%;display: none;}
 .tabList ul li .roadInfo{width: 22%;float: left;height: 30px;overflow: hidden;}
-.tabList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 14px;color: #565656;line-height: 25px;}
-.tabList ul li .roadInfo h4 img{float: left;}
+.tabList ul li .roadInfo h4{width: 100%;float: left;text-align: left;font-size: 12px;color: #b8b4b5;line-height: 25px;}
+.tabList ul li .roadInfo h4 img{float: left;margin: 3px;}
 .tabList ul li h6{display: none;}
 
 .tabLiList{position: absolute;width: 530px;background: rgba(255,255,255,0.8);top: 370px;height: 350px;overflow: auto;overflow-x: hidden;display: none;}
@@ -128,21 +125,13 @@ top: 0px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
 .jamBk1{display: none;z-index: 100;top: 400px;background: none;}
 .jamBk2{width: 80px;position: absolute;display: none;z-index: 100;display: none;z-index: 100;top: 0px;background: none;height: 450px;}
 
-#et2{color: #be1e2d;}
-#et5{color: #00bf31;}
-#et4{color: #8dc63f;}
-#et6{color: #f39800;}
-#et1{color: #58595b;}
-#et3{color: #0087f9;}
-#nav{width: 85px;height: 1080px;position: absolute;left: 0;top: 0;background: url(../images/dataSource/left.png);padding-top: 30px;}
-#nav ul li{float: left;width: 80px;margin-top: 15px;height: 70px;text-align: center;list-style: none;background: none;cursor: pointer;position: relative;}
-#nav ul .selected{background: #0087f9;}
-#nav ul li img{margin-top: 15px;}
-#nav ul li p{color: #fff;margin-top: 5px;font-size: 14px;font-weight: 600;}
 
-/*#dsSelector{left: 70px;top: 470px;}
-#widgets .w0 #dsSelector{height: 600px !important;}
-#widgets .w0 #dsSelector .body{height: 549px;}*/
+#nav{width: 150px;height: 500px;position: absolute;left: 1750px;top: 250px;}
+#nav ul li{float: left;width: 146px;margin-top: 15px;height: 38px;text-align: center;list-style: none;background: url(../images/dataSource/navBk1.png);cursor: pointer;position: relative;}
+#nav ul .selected{background: url(../images/dataSource/navBk2.png)}
+#nav ul li img{float: left;margin: 10px;margin-left: 20px;}
+#nav ul li p{color: #fff;font-size: 14px;font-weight: 600;float: left;line-height: 38px;}
+
 #navShow{position: absolute;left: 80px;top: 550px;display: none;}
 .UserPic{position: absolute;width: 1920px;height: 1080px;z-index: 1000;background: rgba(0,0,0,0.2);display: none;}
 .UserPic img{width: 700px;position: absolute;left: 50%;top: 50%;background: #044074;padding: 10px;margin:10px}
@@ -152,7 +141,7 @@ top: 0px;left: 0;height: 50px;width: 385px;padding-left: 130px;}
 #dataSour{position: absolute;background: none;height: 100px;width: 80px;top: 450px;display: none;}
 
 .tabListHide{display: none;}
-#leftBk{width: 386px;height:435px;position: absolute;background: rgba(0,0,0,0.3);z-index: 100;display: none;top: 200px;left: 390px;}
+#leftBk{width: 386px;height:225px;position: absolute;background: rgba(0,0,0,0.3);z-index: 100;display: none;top: 380px;}
 #leftBk h1{color: #fff;font-size: 14px;text-align: center;margin-top: 30%;}
 #sourceData{height: 540px;width: 386px;position: absolute;background: rgba(255,255,255,0.8);top: 540px;left: 1506px;display: none;}
 #sourceData h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
@@ -169,7 +158,9 @@ padding-left: 20px;font-size: 16px;}
 #sourceEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 200px;}
 
 #leftNewSource{width: 100%;height: 350px;position: absolute;top:200px}
-#NewSourcechart{width: 200px;height: 200px;float: left;z-index: 100;top: 100px;}
+#NewSourcechart{width: 130px;height: 130px;float: left;z-index: 100;top: 19px;left: 29px;}
+.leftNewSource{top: 224px;}
+.leftEchart{top: 430px;z-index: 110;}
 #NewsourceInfo{width: 200px;height: auto;position: absolute;right: 0;}
 #NewsourceInfo .newInfo{width: 100%;float: left;margin-top: 5px;}
 #NewsourceInfo .newInfo .box{width: 20px;height: 20px;border: 1px #000 solid;float: left;}

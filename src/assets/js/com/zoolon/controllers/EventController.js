@@ -206,14 +206,12 @@
 					map[sourceData[i].name] = sourceData[i].value;
 				}
 				var all = map["其他"]+map["事故"]+map["流量"]+map["管制类"]+map["施工类"]+map["路面"];
-				
-				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseInt(map["其他"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
 				$("#widgets #eventType #et2 #count").html("<div class='label0'>"+parseInt(map["事故"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["事故"]+"</div>");
-				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseInt(map["流量"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
-				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseInt(map["管制类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
 				$("#widgets #eventType #et5 #count").html("<div class='label0'>"+parseInt(map["施工类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["施工类"]+"</div>");
+				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseInt(map["管制类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
 				$("#widgets #eventType #et6 #count").html("<div class='label0'>"+parseInt(map["路面"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["路面"]+"</div>");
-
+				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseInt(map["流量"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
+				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseInt(map["其他"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
 				drawEchart();
 				function drawEchart(){
 					var myChart = echarts.init(document.getElementById('rightEchart'));
@@ -246,45 +244,45 @@
 					                }
 					            },
 					            data:[
-					                {value:map["其他"], name:'其他',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#0087f9'
-							                }
-						            	}
-					                },
 					                {value:map["事故"], name:'事故',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#be1e2d'
-							                }
-						            	}
-					                },
-					                {value:map["流量"], name:'流量',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#58595b'
-							                }
-						            	}
-					                },
-					                {value:map["管制类"], name:'管制类',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#8dc63f'
+							                    color: '#c93f3f'
 							                }
 						            	}
 					                },
 					                {value:map["施工类"], name:'施工类',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#00bf31'
+							                    color: '#be721e'
+							                }
+						            	}
+					                },
+					                {value:map["管制类"], name:'管制类',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#b8ab65'
 							                }
 						            	}
 					                },
 					                {value:map["路面"], name:'路面',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#f39800'
+							                    color: '#2ea19e'
+							                }
+						            	}
+					                },
+					                {value:map["流量"], name:'流量',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#1e87b6'
+							                }
+						            	}
+					                },
+					                {value:map["其他"], name:'其他',
+					                	itemStyle: {
+							                normal: {
+							                    color: '#084c9f'
 							                }
 						            	}
 					                }
@@ -474,7 +472,6 @@
 					}
 				}
 				if(!exist){
-					console.log("清除事件： " + obj);
 					viewer.entities.remove(lastTimeEntites[obj]);
 					eventMap[obj]=undefined;
 					lastTimeEntites[obj]=undefined;  

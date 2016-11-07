@@ -46,9 +46,8 @@ define("BarController",function(exporter){
 					$("#NewsourceInfo").html("");
 					$("#NewSourcechart").hide();
 				}else{
-					
 					$("#NewSourcechart").show();
-					self.drawSourceBars(url,dataSourcetype,type,vars);
+					self.drawSourceBars(url,dataSourcetype,type,[]);
 					
 				}
 				
@@ -61,14 +60,14 @@ define("BarController",function(exporter){
 			}
 			$at.get(url,undefined,function(barData){
 				if(type == 1){
-					var max = proMax;
-					var all = proAll;
+					var max = proMax*2;
+					var all = proAll*2;
 				}else if(type == 2){
-					var max = cityMax;
-					var all = cityAll;
+					var max = cityMax*2;
+					var all = cityAll*2;
 				}else if(type == 3){
-					var max = cityMax;
-					var all = cityAll;
+					var max = cityMax*2;
+					var all = cityAll*2;
 				}
 				var barDataChild = barData.children;
 				newChart(barData.validMileage,all)
@@ -97,15 +96,15 @@ define("BarController",function(exporter){
 			var index="";
 			
 			var staticColors = [
-					"#669999",
-					"#FFFF00",
-					"#FF0000",
-					"#3399FF",
-					"#00FFFF",
-					"#33CC33",
-					"#9999CC",
-					"#999966",
-					"#CC6699",
+					"#b8ab65",
+					"#bfa536",
+					"#be721e",
+					"#c93f3f",
+					"#2ea19e",
+					"#1e87b6",
+					"#2c68a6",
+					"#2c68a6",
+					"#2c68a6",
 					"#FF9999",
 					"#669999"
 				];
@@ -128,7 +127,7 @@ define("BarController",function(exporter){
 				index+='<div class="newInfo"><div class="box" style="background-color: '+staticColors[i]+'";></div><p style="color: '+staticColors[i]+'">'+label+'</p><span class="label1" style="color: '+staticColors[i]+'">'+data[x]+'</span><span class="label0" style="color: '+staticColors[i]+'">'+par+'%</span></div>';
 				i++;
 			}
-			index+='<div class="newInfo"><div class="box" style="background-color: #000";></div><p style="color: #000">总计</p><span class="label1" style="color: #000">'+all+'</span><span class="label0" style="color: #000">100%</span></div>';
+			index+='<div class="newInfo"><div class="box" style="background-color: #fff";></div><p style="color: #fff">总计</p><span class="label1" style="color: #fff">'+all+'</span><span class="label0" style="color: #fff">100%</span></div>';
 			$("#NewsourceInfo").html(index);
 			
 			drawEchart(datas);
@@ -200,25 +199,27 @@ define("BarController",function(exporter){
 			 var Box,wid,hei,colors;
 			 if(dataType == "pro"){
 			 	wid = 20000.0;
-			 	colors = '#0c6bad';
+			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.5);
 			 }else if(dataType == "proSource"){
-			 	wid = 22000.0;
-			 	colors = '#fff';
+			 	wid = 18000.0;
+			 	colors = Cesium.Color.fromCssColorString("#002D59")
 			 }else if(dataType == "city"){
-			 	wid = 8000.0;
-			 	colors = '#0c6bad';
-			 }else if(dataType == "citySource"){
 			 	wid = 10000.0;
-			 	colors = '#fff';
+			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.5);
+			 }else if(dataType == "citySource"){
+			 	wid = 8000.0;
+			 	colors = Cesium.Color.fromCssColorString("#002D59")
 			 }
 			 
 			 hei = barParse[2]/max*wid*50;
 			 var box = entities.add({
 		        position : Cesium.Cartesian3.fromDegrees(parseFloat(barParse[0]),parseFloat(barParse[1]),hei/2),
-		        box : {
-		            dimensions : new Cesium.Cartesian3(wid, wid, hei),
-		            material : Cesium.Color.fromCssColorString(colors)
-		        }
+		        cylinder : {
+			        length : hei,
+			        topRadius : wid,
+			        bottomRadius : wid,
+			        material : colors
+			    }
 		   	});
 		   	
 		   	cityArr.push(box);

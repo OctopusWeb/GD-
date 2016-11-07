@@ -356,7 +356,7 @@ define("CongestionController",function(exporter){
 				var citycode = cur_cityCode;
 				var eventId = $(this).attr("class");
 				$(this).siblings().css({"background":"none"})
-				$(this).css({"background":"#fff"})
+				$(this).css({"background":"rgba(0,0,0,0.4)"})
 //				var xy = $(this).find("h6").text();
 //				var x=xy.substring(0,xy.indexOf(","));
 //				var y=xy.substring(xy.indexOf(",")+1,xy.length);

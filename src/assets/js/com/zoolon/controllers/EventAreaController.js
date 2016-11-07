@@ -58,10 +58,8 @@ define("eventAreaController",function(exporter){
 				if(InducedBol){
 					if($(this).hasClass("mapSelect")){
 						$(this).removeClass("mapSelect");
-						$(this).find("img").attr({"src":"src/assets/images/dataSource/sourceIcon9.png"})
 					}else{
 						$(this).addClass("mapSelect");
-						$(this).find("img").attr({"src":"src/assets/images/dataSource/sourceIcon91.png"})
 					}
 					e.stopPropagation();
 					if(Induceds.show){
@@ -76,11 +74,9 @@ define("eventAreaController",function(exporter){
 			$("#addMap div").eq(1).click(function(e){
 				e.stopPropagation();
 				if($(this).hasClass("mapSelect")){
-					$(this).find("img").attr({"src":"src/assets/images/dataSource/sourceIcon6.png"})
 					$(this).removeClass("mapSelect");
 				}else{
 					$(this).addClass("mapSelect");
-					$(this).find("img").attr({"src":"src/assets/images/dataSource/sourceIcon61.png"})
 				}
 				self.changeMap();
 			});
@@ -125,11 +121,6 @@ define("eventAreaController",function(exporter){
 				$(".tabList").eq(0).hide()
 			})
 			
-			navTime = setInterval(navHide,1000);
-			$("#navShow").click(function(){
-				navShow();
-				navTime = setInterval(navHide,1000);
-			})
 			$(".UserPic").click(function(e){
 				e.stopPropagation();
 				$(".UserPic").fadeOut()
@@ -155,39 +146,19 @@ define("eventAreaController",function(exporter){
 				if(num==se.length){$(".customCheckBox").eq(i).show()}
 			}
 		}
-		function navHide(){
-			navNum--
-			if(navNum==0){
-				$("#nav").animate({"left":"-80px"})
-				$("#leftSource").animate({"left":"30px"})
-				$("#jam").animate({"left":"30px"})
-				$(".jamBk1").animate({"left":"-80px"})
-				clearInterval(navTime);
-				$("#navShow").fadeIn()
-			}
-		}
-		function navShow(){
-			navNum=10;
-			$("#navShow").fadeOut()
-			$("#nav").animate({"left":"0px"})
-			$("#leftSource").animate({"left":"110px"})
-			$("#jam").animate({"left":"110px"})
-			$(".jamBk1").animate({"left":"0px"})
-		}
 		handler.setInputAction(function (movement) {
 	    	ClickEvent(movement)
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-	    
 		
 		function contryBar(vars){
-			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
-//			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
+//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
+			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
 		}
 		function cityBar(cityCode,vars){
 				
 				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
-//				var cityUrl = "src/assets/data/省份-不分源.json";
-				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
+				var cityUrl = "src/assets/data/省份-不分源.json";
+//				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
 		function Induced(parse,imgUrl,parents){
