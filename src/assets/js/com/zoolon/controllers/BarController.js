@@ -96,17 +96,17 @@ define("BarController",function(exporter){
 			var index="";
 			
 			var staticColors = [
-					"#b8ab65",
+					"#c93e3e",
+					"#c55a4c",
+					"#bf721c",
 					"#bfa536",
-					"#be721e",
-					"#c93f3f",
-					"#2ea19e",
-					"#1e87b6",
-					"#2c68a6",
-					"#2c68a6",
-					"#2c68a6",
-					"#FF9999",
-					"#669999"
+					"#b7ab64",
+					"#2ea19d",
+					"#1e87b5",
+					"#24669f",
+					"#265497",
+					"#064c9f",
+					"#b5b5b5"
 				];
 			for(x in data){
 				var label;
