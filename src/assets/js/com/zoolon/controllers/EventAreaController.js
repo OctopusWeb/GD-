@@ -134,7 +134,7 @@ define("eventAreaController",function(exporter){
 				e.stopPropagation();
 				$(".UserPic").fadeOut()
 			})
-			var induced = new Induced(InducedParse);
+			var induced = new Induced(InducedParse,"src/assets/images/dataSource/Induceds.jpg",Induceds);
 			parseCityInfo();
 			borderController.show(true);
 			Induceds.show = false;
@@ -190,15 +190,15 @@ define("eventAreaController",function(exporter){
 				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
-		function Induced(parse){
+		function Induced(parse,imgUrl,parents){
 			for(var i=0;i<parse.length;i++){
 				var lat = parse[i][1].split(",");
 				var bluePin = viewer.entities.add({
-					parent : Induceds,
+					parent : parents,
 				    position : Cesium.Cartesian3.fromDegrees(lat[0],lat[1]),
 				    name : "I"+parse[i][2],
 				    billboard : {
-				        image : "src/assets/images/dataSource/Induceds.jpg",
+				        image : imgUrl,
 				        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
 		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.6, 0.5, 0.4)
 				    }
@@ -308,33 +308,33 @@ define("eventAreaController",function(exporter){
 			})
 		}
 		function bindCity(dom){
-				dom.click(function(e){
-					borderController.show(false)
-					e.stopPropagation()
-					dom.parent().fadeOut();
-					dom.parent().parent().find("h1").html($(this).html())
-					var cityTxt = $(this).html();
-					cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length);
-					$(".quanguo  p").html(cityTxt);
-					$("#cities span").html(cityTxt);
-					var adCode = $(this).attr("class").toString();
-					cur_cityCode = adCode;
-					if(Floating){
-						ExternalCall(JSON.stringify({cmd:"goCity",cityCode:adCode}));
-					}else{
-						var city = CesiumController.getInfoByCityCode(cur_cityCode);
-						$("#city").html(city.name)
-						viewer.camera.flyTo({
-							destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
-						});
-						
-					}
-					if(traffiBol){
-						eventController.clear();
-						eventController.active = true;
-						eventController.loadEvent(this.cityCode);
-					}
-				})
+			dom.click(function(e){
+				borderController.show(false)
+				e.stopPropagation()
+				dom.parent().fadeOut();
+				dom.parent().parent().find("h1").html($(this).html())
+				var cityTxt = $(this).html();
+				cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length);
+				$(".quanguo  p").html(cityTxt);
+				$("#cities span").html(cityTxt);
+				var adCode = $(this).attr("class").toString();
+				cur_cityCode = adCode;
+				if(Floating){
+					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:adCode}));
+				}else{
+					var city = CesiumController.getInfoByCityCode(cur_cityCode);
+					$("#city").html(city.name)
+					viewer.camera.flyTo({
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+					});
+					
+				}
+				if(traffiBol){
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(this.cityCode);
+				}
+			})
 		}
 		function initCityInfo(cityCode){
 			var obj = {
