@@ -360,6 +360,23 @@
 			//console.log("loadAllCountryEvents");
 			loadEventCitysCount();
 		}
+		var picUrl = {
+				'1':'src/assets/images/dataSource/npt2.png',
+				'2':'src/assets/images/dataSource/npt5.png',
+				'8':'src/assets/images/dataSource/npt4.png',
+				'3':'src/assets/images/dataSource/npt6.png',
+				'5':'src/assets/images/dataSource/npt1.png',
+				'6':'src/assets/images/dataSource/npt0.png'
+		};
+		
+		var picUrlCamera = {
+				'1':'src/assets/images/dataSource/nct2.png',
+				'2':'src/assets/images/dataSource/nct5.png',
+				'8':'src/assets/images/dataSource/nct4.png',
+				'3':'src/assets/images/dataSource/nct6.png',
+				'5':'src/assets/images/dataSource/nct1.png',
+				'6':'src/assets/images/dataSource/nct0.png'
+		};
 		var eventFlagPic = {
 				'1':'../../../../images/dataSource/pt2.png',
 				'2':'../../../../images/dataSource/pt5.png',
@@ -511,9 +528,11 @@
 					if(eventObj.pic){
 						size = 40;
 						height = 100;
-						url = Cesium.buildModuleUrl(eventFlagPicCamera[eventObj.type]);
+//						url = Cesium.buildModuleUrl(eventFlagPicCamera[eventObj.type]);
+						url = picUrlCamera[eventObj.type];
 					}else{
-						url = Cesium.buildModuleUrl(eventFlagPic[eventObj.type]);
+//						url = Cesium.buildModuleUrl(eventFlagPic[eventObj.type]);
+						url = picUrl[eventObj.type];
 					}
 					var color = eventFlagColor[eventObj.type];
 					
@@ -540,7 +559,8 @@
 								id:eventPinId,
 								position : Cesium.Cartesian3.fromDegrees(pos[0],pos[1],height),
 								billboard : {
-									image : pinBuilder.fromUrl(url,color, size),
+//									image : pinBuilder.fromUrl(url,color, size),picUrl
+									image : url,
 									verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 								}
 							});
