@@ -124,7 +124,7 @@ define("BarController",function(exporter){
 					if(x == -1)label="合计"
 				}
 				var par = parseInt(data[x]/all*10000)/100
-				index+='<div class="newInfo"><div class="box" style="background-color: '+staticColors[i]+'";></div><p style="color: '+staticColors[i]+'">'+label+'</p><span class="label1" style="color: '+staticColors[i]+'">'+data[x]+'</span><span class="label0" style="color: '+staticColors[i]+'">'+par+'%</span></div>';
+				index+='<div class="newInfo"><div class="box" style="background-color: '+staticColors[i]+'";></div><p style="color: #fff">'+label+'</p><span class="label1" style="color: #fff">'+data[x]+'</span><span class="label0" style="color:  #fff">'+par+'%</span></div>';
 				i++;
 			}
 			index+='<div class="newInfo"><div class="box" style="background-color: #fff";></div><p style="color: #fff">总计</p><span class="label1" style="color: #fff">'+all+'</span><span class="label0" style="color: #fff">100%</span></div>';
@@ -199,16 +199,16 @@ define("BarController",function(exporter){
 			 var Box,wid,hei,colors;
 			 if(dataType == "pro"){
 			 	wid = 20000.0;
-			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.5);
+			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.3);
 			 }else if(dataType == "proSource"){
-			 	wid = 18000.0;
-			 	colors = Cesium.Color.fromCssColorString("#002D59")
+			 	wid = 10000.0;
+			 	colors = Cesium.Color.fromCssColorString("#009eff")
 			 }else if(dataType == "city"){
 			 	wid = 10000.0;
-			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.5);
+			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.3);
 			 }else if(dataType == "citySource"){
-			 	wid = 8000.0;
-			 	colors = Cesium.Color.fromCssColorString("#002D59")
+			 	wid = 5000.0;
+			 	colors = Cesium.Color.fromCssColorString("#009eff")
 			 }
 			 
 			 hei = barParse[2]/max*wid*50;

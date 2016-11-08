@@ -333,7 +333,7 @@
 						position : position,
 						id:cityPinId,
 						billboard : {
-							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.BLACK,
+							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.fromCssColorString("#c93f3f"),
 									100).toDataURL(),
 
 							verticalOrigin : Cesium.VerticalOrigin.BOTTOM
@@ -730,17 +730,13 @@
 				{
 					var htmlStr = "";
 					//console.log(info);
-					htmlStr+="<div style='font-size:20px;'><label style='font-weight:bold;'>【事件类型】</label></div>";
-					htmlStr+="<div style='font-size:20px;'>"+getEventTypeName(info.eventType)+"</div>";
-					htmlStr+="<div style='font-size:20px;'><label style='font-weight:bold;'>【事件详情】</label></div>";
-					htmlStr+="<div style='font-size:20px;'>"+info.eventDesc+"</div>";
-					htmlStr+="<div style='font-size:20px;'><label style='font-weight:bold;'>【事件时间】</label></div>";
-					htmlStr+="<div style='font-size:20px;'>"+getTimeDesc(info.timePeriod)+"</div>";
-					htmlStr+="<div style='font-size:20px;'><label style='font-weight:bold;'>【事件来源】</label></div>";
-					htmlStr+="<div style='font-size:20px;'>"+getEventSourceName(info)+"</div>";
+					htmlStr+="<div style='font-size:18px;border-top:1px #202020 solid;padding-top:10px'>"+info.eventDesc+"</div>";
+					htmlStr+="<div style='font-size:18px;border-bottom:1px #202020 solid;padding-bottom:10px'>"+getTimeDesc(info.timePeriod)+"</div>";
+					htmlStr+="<div style='font-size:18px;margin-bottom:10px;color:#fff'>"+getEventTypeName(info.eventType)+"</div>";
+					htmlStr+="<div style='font-size:18px;margin-bottom:10px;color:#fff'>"+getEventSourceName(info)+"</div>";
 					
 					if(info.picture && info.picture!=""){
-						htmlStr+="<div style='font-size:20px;'><img style='height:200px;width:auto;' src='"+info.picture+"'></div>";
+						htmlStr+="<div style='font-size:18px;'><img style='height:200px;width:auto;' src='"+info.picture+"'></div>";
 
 					}
 					body.html(htmlStr);
@@ -756,7 +752,7 @@
 				
 				this.view.css("display","block");
 				exporter.mouseChildren(this.view,true);
-				TweenLite.to(this.view,0.5,{left:540,ease:Expo.easeInOut});
+				TweenLite.to(this.view,0.5,{left:500,ease:Expo.easeInOut});
 			}
 			
 			this.close = function()
@@ -812,7 +808,7 @@
 				var strArr = [];
 				switch (data.daySel){
 					case 0:
-						strArr.push("从");
+						strArr.push("");
 						var startDate = new Date(data.startDate*1000);
 						var startDateStr = startDate.format("yyyy-MM-dd");
 						strArr.push(startDateStr);
@@ -827,7 +823,7 @@
 		
 						break;
 					case 127:
-						strArr.push("从");
+						strArr.push("");
 						var startDate = new Date(data.startDate*1000);
 						var startDateStr = startDate.format("yyyy-MM-dd");
 						strArr.push(startDateStr);

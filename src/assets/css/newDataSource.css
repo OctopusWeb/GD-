@@ -57,14 +57,14 @@ top: 0px;left: 0;height: 30px;width: 385px;padding-left: 130px;}
 #widgets  #w3Title span{position: absolute;top: 10px;left: 340px;color: #b4b4b6;font-size: 14px;width: 200px;}
 
 #widgets .w0{float: left;position: relative;top: 0;left: 20px;width: 345px;height: 105px;border-top: 1px #a0a0a0 solid;background: none !important;}
-#widgets .w0 .progress{float: left;width: 270px;position: relative;height: 30px;margin-left: 40px;box-shadow: #ccc 2px 2px;}
-#widgets .w0 .progress0{margin-top: 15px;}
+#widgets .w0 .progress{float: left;width: 340px;position: relative;height: 30px;}
+#widgets .w0 .progress0{margin-top: 40px;}
 #widgets .w0 .progress1{margin-top: -30px;}
-#widgets .w0 .progress p{position: absolute;color: #565656;font-size: 14px;left: -40px;top: 5px;font-weight: 400;}
-#widgets .w0 .progress1 p{position: absolute;left: 280px;width: 30px;}
+#widgets .w0 .progress p{position: absolute;color: #fff;font-size: 18px;top: -28px;font-weight: 400;}
+#widgets .w0 .progress1 p{position: absolute;left: 280px;width: 40px;margin-left: 20px;}
 #widgets .w0 #info{background: none;float: left;}
-#widgets .w0 #info0{position: relative;background: #920783;}
-#widgets .w0 #info1{position: relative;background: #f39800;}
+#widgets .w0 #info0{position: relative;background: linear-gradient( to right,#2ea19e,#064d9f);}
+#widgets .w0 #info1{position: relative;background: linear-gradient( to right,#c93f3d,#b7aa64);}
 #widgets .w0 #info0 div{font-size: 16px;margin: 0;padding: 0;left: 10px;top: 5px;}
 #widgets .w0 #info1 div{font-size: 16px;margin: 0;padding: 0;left: 0;right: 10px;text-align: right;}
 
@@ -147,8 +147,7 @@ top: 0px;left: 0;height: 30px;width: 385px;padding-left: 130px;}
 #sourceData h2{width: 366px;float: left;height: 50px;background: #0087f9;color: #fff;line-height: 50px;
 padding-left: 20px;font-size: 16px;}
 #sourceData h3{width: 100%;float: left;color: #5d5d5d;font-weight: 500;padding: 10px;padding-left: 20px;line-height: 35px;    color: #565656;
-    font-size: 14px;
-    width: 200px;}
+    font-size: 14px;width: 200px;}
 #sourceData span{position: absolute;right: 30px;font-size: 30px;line-height: 30px;color: #565656;font-family: "微软雅黑";}
 #sourceData h4 span{right: 10px;}
 #sourceData p{position: absolute;right: 10px;font-size: 14px;line-height: 10px;color: #565656;font-family: "微软雅黑";margin-top: -20px;}
@@ -158,14 +157,14 @@ padding-left: 20px;font-size: 16px;}
 #sourceEchart{position: absolute;width: 200px;height: 200px;z-index: 100;top: 200px;}
 
 #leftNewSource{width: 100%;height: 350px;position: absolute;top:200px}
-#NewSourcechart{width: 130px;height: 130px;float: left;z-index: 100;top: 19px;left: 29px;}
-.leftNewSource{top: 224px;}
+#NewSourcechart{width: 130px;height: 130px;float: left;z-index: 100;top: 0px;left: 29px;}
+.leftNewSource{top: 204px;}
 .leftEchart{top: 430px;z-index: 110;}
-#NewsourceInfo{width: 200px;height: auto;position: absolute;right: 0;}
-#NewsourceInfo .newInfo{width: 100%;float: left;margin-top: 5px;}
-#NewsourceInfo .newInfo .box{width: 20px;height: 20px;border: 1px #000 solid;float: left;}
-#NewsourceInfo .newInfo p{float: left;font-size: 16px;margin-left: 5px;}
-#NewsourceInfo .newInfo span{float: left;font-size: 16px;margin-left: 5px;}
+#NewsourceInfo{width: 200px;height: auto;position: absolute;right: 0;top: -30px;}
+#NewsourceInfo .newInfo{width: 100%;float: left;margin-top: 2px;}
+#NewsourceInfo .newInfo .box{width: 15px;height: 15px;;float: left;}
+#NewsourceInfo .newInfo p{float: left;font-size: 14px;margin-left: 5px;}
+#NewsourceInfo .newInfo span{float: left;font-size: 14px;margin-left: 5px;}
 
 #cesiumBk{position: absolute;width: 1920px;height: 1080px;background: rgba(255.255.255.0.5);z-index: 100;display: none;}
 #cesiumBk h1{width: 100%;text-align: center;top: 45%;color: #fff;position: absolute;}
