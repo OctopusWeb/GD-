@@ -32,6 +32,8 @@ color: #565656;}
 
 #addMap{width: 146px;height: auto;position: absolute;left: 1750px;top: 100px;}
 #addMap div{float: left;width: 146px;height: 38px;position: relative;cursor: pointer;margin-top: 15px;background: url(../images/dataSource/navBk1.png)}
+#addMap div:hover{background:url(../images/dataSource/navBk2.png);}
+#addMap div:active{opacity: 0.5;}
 #addMap div span{line-height: 38px;color: #fff;float: left;font-size: 14px;}
 #addMap div img{float: left;margin: 10px;margin-left: 20px;}
 
@@ -129,6 +131,8 @@ top: 0px;left: 0;height: 30px;width: 385px;padding-left: 130px;}
 #nav{width: 150px;height: 500px;position: absolute;left: 1750px;top: 250px;}
 #nav ul li{float: left;width: 146px;margin-top: 15px;height: 38px;text-align: center;list-style: none;background: url(../images/dataSource/navBk1.png);cursor: pointer;position: relative;}
 #nav ul .selected{background: url(../images/dataSource/navBk2.png)}
+#nav ul li:hover{background: url(../images/dataSource/navBk2.png);}
+#nav ul li:active{opacity: 0.5;}
 #nav ul li img{float: left;margin: 10px;margin-left: 20px;}
 #nav ul li p{color: #fff;font-size: 14px;font-weight: 600;float: left;line-height: 38px;}
 
@@ -168,4 +172,6 @@ padding-left: 20px;font-size: 16px;}
 
 #cesiumBk{position: absolute;width: 1920px;height: 1080px;background: rgba(255.255.255.0.5);z-index: 100;display: none;}
 #cesiumBk h1{width: 100%;text-align: center;top: 45%;color: #fff;position: absolute;}
+
+
 

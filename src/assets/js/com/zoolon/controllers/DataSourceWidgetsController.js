@@ -177,7 +177,7 @@ define("NumController",function(exporter){
 				var str = String(_value);
 				str = str.split("").reverse().join("");
 				if(!numShow){
-					str = str.substring(0,str.length-2)+"??"
+					str = str.substring(0,str.length-2)+"XX"
 				}
 				for(var i=0;i<len;i++)
 				{

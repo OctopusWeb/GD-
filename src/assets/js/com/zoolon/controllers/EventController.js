@@ -304,7 +304,6 @@
 		//获得全国的事件概况
 		
 		var loadEventCitysCount = function() {
-			
 			for(var i=0;i<countEntities.length;i++){
 				viewer.entities.remove(countEntities[i]);
 			}
@@ -324,20 +323,22 @@
 				
 				for(var i=0;i<sourceData.length;i++){
 					var cityInfo = self.getInfoByCityCode(sourceData[i].code);
-					
 					var pinBuilder = new Cesium.PinBuilder();
 					var position = Cesium.Cartesian3.fromDegrees(cityInfo.lat,cityInfo.lng);
 					var cityPinId = "cityPin"+i;
+					var pic = drawPic(sourceData[i].value);
 					var cityPin = viewer.entities.add({
 						name : sourceData[i].name,
 						position : position,
 						id:cityPinId,
 						billboard : {
-							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.fromCssColorString("#c93f3f"),
-									100).toDataURL(),
-
+//							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.fromCssColorString("#c93f3f"),
+//									100).toDataURL(),
+//				            rotation : Cesium.Math.PI_OVER_FOUR,
+//							horizontalOrigin : Cesium.HorizontalOrigin.RIGHT,
+							image : pic,
+							scale : 0.4,
 							verticalOrigin : Cesium.VerticalOrigin.BOTTOM
-
 						}
 					});
 					entityId.push(cityPinId);
@@ -353,6 +354,18 @@
 				}  
 				countEntities = [];
 			});
+		}
+		function drawPic(text){
+			var imgs = new Image();
+			var canvas = document.getElementById('myCanvas');
+			var img = document.getElementById("img");
+			var ctx=canvas.getContext('2d');
+			ctx.font="60px Arial";
+			ctx.fillStyle="#fff";
+			ctx.drawImage(img,0,0);
+			ctx.fillText(text,23,62);
+			imgs.src = canvas.toDataURL()
+			return imgs;
 		}
 
 		var loadAllCountryEvents = function() {
@@ -561,6 +574,7 @@
 								billboard : {
 //									image : pinBuilder.fromUrl(url,color, size),picUrl
 									image : url,
+									scale : 0.2, // default: 1.0
 									verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 								}
 							});
@@ -617,11 +631,11 @@
 					if (Cesium.defined(pickedObject) && pickedObject.primitive instanceof Cesium.Billboard) {
 						var selectedPin = pickedObject.primitive;
 	
-						selectedPin.id.billboard.scale = 2;
+						selectedPin.id.billboard.scale = 0.4;
 						var timerPin;
 						timerPin = setTimeout(function(){
 							clearTimeout(timerPin);
-							selectedPin.id.billboard.scale = 1;
+							selectedPin.id.billboard.scale = 0.2;
 						}, 1000 * 10 * 1)
 						
 						
@@ -779,7 +793,6 @@
 			{
 				removeLine();
 				flyToCurrentCity(function(){
-					console.log(city)
 //					console.log(city)
 					viewer.camera.flyTo({
 						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)

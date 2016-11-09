@@ -38,6 +38,7 @@
   <script type="text/javascript" src="src/assets/js/com/zoolon/controllers/BarController.js" ></script>
   <script type="text/javascript" src="src/assets/js/com/zoolon/controllers/BorderController.js" ></script>
   <script type="text/javascript" src="src/assets/js/com/zoolon/controllers/CongestionController.js" ></script>
+  <script type="text/javascript" src="src/assets/js/com/zoolon/controllers/PositionCarController.js" ></script>
   <script type="text/javascript" src="src/assets/data/offlinelist.js" ></script>
   
   <script src="src/assets/js/com/zoolon/controllers/TopBarController.js"></script>
@@ -363,7 +364,7 @@
 				<li><img src="src/assets/images/dataSource/sourceIcon3.png"/><p>异常拥堵</p></li>
 				<li><img src="src/assets/images/dataSource/sourceIcon4.png"/><p>常规拥堵</p></li>
 				<li><img src="src/assets/images/dataSource/sourceIcon7.png"/><p>实时浮动车</p></li>
-<!--		<li><img src="src/assets/images/dataSource/sourceIcon8.png"/><p>数据源</p></li>-->
+				<li><img src="src/assets/images/dataSource/sourceIcon8.png"/><p>定位浮动车</p></li>
 			</ul>
 			<div id="dataSour">
 				
@@ -373,5 +374,7 @@
 			</div>
 		</div>
 	</div>
+	<canvas id="myCanvas" style="display: none;" width="153" height="98"></canvas>
+	<img src="src/assets/images/dataSource/proEvent.png" id="img" style="display: none;"/>
 </body>
 </html>
