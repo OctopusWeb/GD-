@@ -15,6 +15,7 @@ define("eventAreaController",function(exporter){
 		var dsCodes = undefined;
 		handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 		var cesiumType=1;
+		var cityBorder;
 		
 		var proArr=[];
 		var proCenter=[];
@@ -89,6 +90,7 @@ define("eventAreaController",function(exporter){
 			function returnGuo(){
 				cur_cityCode = 100000;
 				cesiumType=1;
+				viewer.entities.remove(cityBorder)
 				if(Floating)contryBar();
 				$("#leftBk").hide()
 				codeIndex = false;
@@ -96,7 +98,6 @@ define("eventAreaController",function(exporter){
 				InducedBol = false;
 				$("#leftEchart").hide();
 				$("#addMap div").eq(2).removeClass("mapSelect");
-//				barController.clear
 				CesiumController.clear(false);
 				borderController.show(true);
 				$(".quanguo p").html("全国");
@@ -156,9 +157,9 @@ define("eventAreaController",function(exporter){
 		}
 		function cityBar(cityCode,vars){
 				
-				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
 				var cityUrl = "src/assets/data/省份-不分源.json";
-//				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
+				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
 		function Induced(parse,imgUrl,parents){
@@ -210,13 +211,13 @@ define("eventAreaController",function(exporter){
 				    }
 				});
 			}else if(type == "c"){
-
 				cesiumType=3;
 				barController.CityClear();
 				borderController.show(false)
 				InducedBol = true;
 				$(".quanguo  p").html(cityName);
 				cur_cityCode = cityCode;
+				drcwCityborder(cur_cityCode)
 				if(Floating){
 					cityBar(cityCode);
 					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
@@ -428,6 +429,40 @@ define("eventAreaController",function(exporter){
 				road.alpha = 0.5;
 			}
 			mapArea=!mapArea;
+		}
+		
+		function drcwCityborder(cityCode){
+			$at.get("src/assets/data/cityArea.json").then(function(data){
+				for(var i=0;i<data.features.length;i++){
+					if(data.features[i].properties.AD_CODE == cityCode){
+						Border(data.features[i].geometry.coordinates)
+					}
+				}
+			})
+		}
+		function Border(data){
+			var positions=[]
+			var positionArr = [];
+			if(typeof(data[0][0]) == "number"){
+				positionArr.push(data);	
+			}else{
+				positionArr = data;
+			}
+			for(var m=0;m<positionArr.length;m++){
+				for(var i=0;i<positionArr[m].length;i++){
+					positions.push(positionArr[m][i][0],positionArr[m][i][1])
+				}
+				cityBorder = viewer.entities.add({
+			        polygon : {
+				        hierarchy : Cesium.Cartesian3.fromDegreesArray(positions),
+				        material : Cesium.Color.fromCssColorString('#0c6bad').withAlpha(0.01),
+				        outline : true,
+				        outlineColor : Cesium.Color.fromCssColorString('#0c6bad'),
+				        outlineWidth : 3
+				    }
+			    });
+			}
+			
 		}
 		
 		function indexOf(arr, str){
