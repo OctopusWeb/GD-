@@ -27,6 +27,9 @@ define("CesiumController",function(exporter){
 		    });
 //		}
 		var viewer = new Cesium.Viewer(divId,option);
+//		var globe = new Cesium.Globe();
+//		globe.baseColor = Cesium.Color.fromBytes(9,31,52,255);
+//		globe.titleCacheSize = 999999999;
 		this.cesiumViewer = viewer;
 		var DataType = {
 			realTime:0,
