@@ -1,5 +1,5 @@
 /**
- * sslsslsll
+ * 
  */
 define("eventAreaController",function(exporter){
 	var eventAreaController  = function(controller){
@@ -90,7 +90,8 @@ define("eventAreaController",function(exporter){
 			function returnGuo(){
 				cur_cityCode = 100000;
 				cesiumType=1;
-				viewer.entities.remove(cityBorder)
+				viewer.entities.remove(cityBorder);
+				$(".leftEchart").hide();
 				if(Floating)contryBar();
 				$("#leftBk").hide()
 				codeIndex = false;
@@ -126,7 +127,7 @@ define("eventAreaController",function(exporter){
 				e.stopPropagation();
 				$(".UserPic").fadeOut()
 			})
-			var induced = new Induced(InducedParse,"src/assets/images/dataSource/Induceds.jpg",Induceds);
+			var induced = new Induced(InducedParse,"src/assets/images/dataSource/Induceds.jpg");
 			parseCityInfo();
 			borderController.show(true);
 			Induceds.show = false;
@@ -147,26 +148,32 @@ define("eventAreaController",function(exporter){
 				if(num==se.length){$(".customCheckBox").eq(i).show()}
 			}
 		}
+		viewer.screenSpaceEventHandler.setInputAction(function (movement) {
+	    	
+	    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 		handler.setInputAction(function (movement) {
 	    	ClickEvent(movement)
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+	    handler.setInputAction(function (movement) {
+	    	console.log("null")
+	    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK );
 		
 		function contryBar(vars){
-//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
-			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
+			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
+//			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
 		}
 		function cityBar(cityCode,vars){
 				
-//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
-				var cityUrl = "src/assets/data/省份-不分源.json";
+				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+//				var cityUrl = "src/assets/data/省份-不分源.json";
 				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
-		function Induced(parse,imgUrl,parents){
+		function Induced(parse,imgUrl){
 			for(var i=0;i<parse.length;i++){
 				var lat = parse[i][1].split(",");
 				var bluePin = viewer.entities.add({
-					parent : parents,
+					parent : Induceds,
 				    position : Cesium.Cartesian3.fromDegrees(lat[0],lat[1]),
 				    name : "I"+parse[i][2],
 				    billboard : {
@@ -217,7 +224,7 @@ define("eventAreaController",function(exporter){
 				InducedBol = true;
 				$(".quanguo  p").html(cityName);
 				cur_cityCode = cityCode;
-				drcwCityborder(cur_cityCode)
+//				drcwCityborder(cur_cityCode)
 				if(Floating){
 					cityBar(cityCode);
 					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
@@ -364,7 +371,7 @@ define("eventAreaController",function(exporter){
 		});
 		
 		
-		this.trafficEvent = {}
+		this.trafficEvent = {};
 		this.trafficEvent.show = function(){
 			traffiBol=true;
 			$("#rightSource").fadeIn();
@@ -372,7 +379,13 @@ define("eventAreaController",function(exporter){
 			$("#eventType").fadeIn();
 			eventController.clear();
 			eventController.active = true;
-			eventController.loadEvent(this.cityCode);
+			if(cesiumType == 2){
+				console.log(111)
+				eventController.loadEvent(undefined);
+			}else{
+				eventController.loadEvent(this.cityCode);
+			}
+			
 		}
 		this.trafficEvent.clear = function(){
 			traffiBol=false;
@@ -381,7 +394,7 @@ define("eventAreaController",function(exporter){
 			eventController.active = false;
 		}
 
-		this.Floatingcar = {}
+		this.Floatingcar = {};
 		this.Floatingcar.show = function(){
 			Floating=true;
 			$("#leftSource").fadeIn()

@@ -7,20 +7,26 @@ define("PositionCarController",function(exporter){
 		var scene = viewer.scene;
 		var positonArr = [];
 		var start = Cesium.JulianDate.fromDate(new Date(2015, 12, 16, 16));
-	    var stop = Cesium.JulianDate.addSeconds(start, 200, new Cesium.JulianDate());
+	    var stop = Cesium.JulianDate.addSeconds(start, 2000, new Cesium.JulianDate());
 	    var Floating2 = false;
 	    viewer.clock.startTime = Cesium.JulianDate.addSeconds(start, 1, new Cesium.JulianDate());
-	    viewer.clock.stopTime = stop.clone();
+	    viewer.clock.stopTime = Cesium.JulianDate.addSeconds(start, 1000, new Cesium.JulianDate());
 	    viewer.clock.currentTime = start.clone();
 	    viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; 
-	    viewer.clock.multiplier = 1;
+	    viewer.clock.multiplier = 10;
+	    var m=0;
+	    
+	    var winWidth =  parseInt(document.body.clientWidth);
+	    var winHeight = parseInt(document.body.clientHeight);
 	    
 	    $("#nav ul li").eq(5).click(function(e){
 			e.stopPropagation();
+			$(viewer.animation.container).show();
+			$(viewer.timeline.container).show();
 			$(this).toggleClass("selected");
 			Floating2=!Floating2;
 			if(Floating2){
-				var pos = new Cesium.Cartesian2(0, 0);
+				var pos = new Cesium.Cartesian2(parseInt(winWidth/4), parseInt(winHeight/4));
 				var cartesian = viewer.camera.pickEllipsoid(pos, scene.globe.ellipsoid);
 				if (cartesian) {
 		            var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
@@ -28,10 +34,10 @@ define("PositionCarController",function(exporter){
 		            var latitude = Cesium.Math.toDegrees(cartographic.latitude);
 
 		        }
-				var pos1 = new Cesium.Cartesian2(1920, 1080);
+				var pos1 = new Cesium.Cartesian2(parseInt(winWidth/4*3), parseInt(winHeight/4*3));
 				var cartesian1 = viewer.camera.pickEllipsoid(pos1, scene.globe.ellipsoid);
 				if (cartesian1) {
-		            var cartographic1 = Cesium.Cartographic.fromCartesian(cartesian);
+		            var cartographic1 = Cesium.Cartographic.fromCartesian(cartesian1);
 		            var longitude1 = Cesium.Math.toDegrees(cartographic1.longitude);
 		            var latitude1 = Cesium.Math.toDegrees(cartographic1.latitude);
 		        }
@@ -40,13 +46,22 @@ define("PositionCarController",function(exporter){
 				month>9?month=month:month="0"+month;
 				var day=nowDate.getDate();
 				day>9?day=day : day = "0"+day;
-				var hours = nowDate.getHours();
-				hours>9?hours = hours :hours = "0"+hours;
+				var hours = nowDate.getHours()-1;
 				var minutes = nowDate.getMinutes();
 				minutes>9?minutes = minutes :minutes = "0"+minutes;
-				minutes>50?minutes=50:minutes=minutes;
-				var time1 = nowDate.getFullYear()+""+month+day+hours+minutes+"00";
-				var time2 = parseInt(time1)+1000;
+				if(minutes<16){
+					minutes="59";
+					hours=hours-1;
+					var num=5500;
+				}else{
+					var num=1500;
+				}
+				hours>9?hours = hours :hours = "0"+hours;
+				var time2 = nowDate.getFullYear()+""+month+day+hours+minutes+"00";
+				var time1 = parseInt(time2)-num;
+				firstPath = time1+"";
+				firstPath = firstPath.substr(8,firstPath.length)
+				
 				add(longitude,longitude1,latitude,latitude1,time1,time2,1000);
 			}else{
 				for(var i=0;i<positonArr.length;i++){
@@ -57,46 +72,62 @@ define("PositionCarController",function(exporter){
 		});
 	    
 	    function add(x1,x2,y1,y2,time1,time2,num){
-	    	console.log("http://dipper-fp.amap.com/fp/getmeshfp?minx="+x1+"&miny="+x2+"&maxx="+y1+"&maxy="+y2+"&starttime="+time1+"&endtime="+time1+"&limit="+num)
 			 $.ajax({
 	             type: "get",
-	             async: false,
-	             url: "http://dipper-fp.amap.com/fp/getmeshfp?minx="+x1+"&miny="+x2+"&maxx="+y1+"&maxy="+y2+"&starttime="+time1+"&endtime="+time1+"&limit="+num,
+	             async: true,
+	             url: "http://dipper-fp.amap.com/fp/getmeshfp?minx="+x1+"&miny="+y2+"&maxx="+x2+"&maxy="+y1+"&starttime="+time1+"&endtime="+time2+"&limit="+num,
 	             dataType: "jsonp",
 	             jsonp: "callback",
 	             success: function(json){
 	                 for(var i=0;i<json.length;i++){
-	                 	getById(json[i].split(",")[3],json[i].split(",")[2],x1,x2,y1,y2,time1,time2,num)
+	                 	if(json[i].split(",")[1] >= parseInt(firstPath)){
+	                 		console.log(json[i])
+//	                 		demo(json[i].split(",")[4],json[i].split(",")[5]);
+	                 		getById(json[i].split(",")[3],json[i].split(",")[2],x1,x2,y1,y2,time1,time2,num)
+	                 	}
+	                 	
+//	                 	getById(json[i].split(",")[3],json[i].split(",")[2],x1,x2,y1,y2,time1,time2,num)
 	                 }
 	             },
 	             error: function(){
-	                 console.log('fail');
+	                 alert('fail');
 	             }
 	        });
 		}
+	    
+	    function demo(x,y){
+	    	viewer.entities.add({
+	            position : Cesium.Cartesian3.fromDegrees(x,y),
+	            point : {
+		            pixelSize : 5,
+		            color : Cesium.Color.RED
+		        }
+	        }); 
+	    }
+	    
 		function getById(id,dscode,x1,x2,y1,y2,time1,time2,num){
 			$.ajax({
 	             type: "get",
-	             async: false,
+	             async: true,
 	             url: "http://dipper-fp.amap.com/fp/getuserfp?dscode="+dscode+"&userid="+id+"&starttime="+time1+"&endtime="+time2,
 	             dataType: "jsonp",
 	             jsonp: "callback",
 	             success: function(data){
 	             	 var path=[];
 	             	 if(data.length == 0)return
-	             	 
 	                 for (var i=0;i<data.length;i++) {
 						var positionArr=[];
+						
 						var la=parseFloat(data[i].split(",")[4]);
 						var ln=parseFloat(data[i].split(",")[5]);
 						var time = parseInt(data[i].split(",")[1]);
-						if(la>=x1 && la<=x2 && ln>=y1 && ln<=y2){
+//						if(la>=x1&&la<=x2){
 							positionArr.push(la,ln,time);
-							path.push(positionArr);
-						}
-						
+							path.push(positionArr);	
+//						}				
 					}
-//						path.sort(compare(2))
+	              
+//					path.sort(compare(2))
 					Path(path);
 	             },
 	             error: function(err){
@@ -107,42 +138,40 @@ define("PositionCarController",function(exporter){
 		
 		
 		function Path(paths){
-			var myPosition = [];
-			var myTime = [];
-			for(var i=0;i<paths.length;i++){
-				var la = parseFloat(paths[i][0]);
-				var ln = parseFloat(paths[i][1]);
-				var time = parseInt(paths[i][2])-151233;
-					myPosition[i] = Cesium.Cartesian3.fromDegrees(la,ln);
-					myTime[i] = Cesium.JulianDate.addSeconds(start,time, new Cesium.JulianDate());
+			if(paths.length ==0)return
+				var myPosition = [];
+				var myTime = [];
+//				var firstPath = paths[0][2];
+				for(var i=0;i<paths.length;i++){
+					var la = parseFloat(paths[i][0]);
+					var ln = parseFloat(paths[i][1]);
+					var time = parseInt(paths[i][2])-firstPath;
+						myPosition[i] = Cesium.Cartesian3.fromDegrees(la,ln);
+						myTime[i] = Cesium.JulianDate.addSeconds(start,time, new Cesium.JulianDate());
+				}
+				function computeCirclularFlight() {
+                    var property = new Cesium.SampledPositionProperty();
+                    property.addSamples(myTime, myPosition);
+                    return property;
+                }
+				
+				pathMethod(computeCirclularFlight());
+				
+				function pathMethod(myPosition){
+					var positon = viewer.entities.add({
+			            availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
+			                start : start,
+			                stop : stop
+			            })]),
+			            position : myPosition,
+			            point : {
+				            pixelSize : 10,
+				            color : Cesium.Color.WHITE
+				        }
+			        }); 
+			        positonArr.push(positon);
+				}
 			}
-			function computeCirclularFlight() {
-                var property = new Cesium.SampledPositionProperty();
-                property.addSamples(myTime, myPosition);
-                return property;
-            }
-			
-			pathMethod(computeCirclularFlight());
-			
-			function pathMethod(myPosition){
-				var positon = viewer.entities.add({
-		            availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
-		                start : start,
-		                stop : stop
-		            })]),
-		            position : myPosition,
-		            point : {
-			            pixelSize : 5,
-			            color : Cesium.Color.RED
-			        },
-		            path : {
-		                material:Cesium.Color.BLUE.withAlpha(0.01),
-		                width:2
-		            }
-		        }); 
-		        positonArr.push(positon);
-			}
-		}
 		
 		function compare(property){
 		    return function(a,b){

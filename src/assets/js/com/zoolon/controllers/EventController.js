@@ -293,6 +293,7 @@
 			
 			        // 使用刚指定的配置项和数据显示图表。
 			        myChart.setOption(option);
+			        $(".rightEchart").show();
 				}
 				
 			});
@@ -356,6 +357,7 @@
 			});
 		}
 		function drawPic(text){
+			console.log(text)
 			var imgs = new Image();
 			var canvas = document.getElementById('myCanvas');
 			var img = document.getElementById("img");
@@ -574,7 +576,7 @@
 								billboard : {
 //									image : pinBuilder.fromUrl(url,color, size),picUrl
 									image : url,
-									scale : 0.2, // default: 1.0
+									scale : 1, // default: 1.0
 									verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 								}
 							});
@@ -631,11 +633,11 @@
 					if (Cesium.defined(pickedObject) && pickedObject.primitive instanceof Cesium.Billboard) {
 						var selectedPin = pickedObject.primitive;
 	
-						selectedPin.id.billboard.scale = 0.4;
+						selectedPin.id.billboard.scale = 2;
 						var timerPin;
 						timerPin = setTimeout(function(){
 							clearTimeout(timerPin);
-							selectedPin.id.billboard.scale = 0.2;
+							selectedPin.id.billboard.scale = 1;
 						}, 1000 * 10 * 1)
 						
 						
@@ -658,7 +660,7 @@
 								}
 								var sourceData = JSON.parse(data);
 								//console.log(sourceData);
-								
+
 								infoBoxController.updateInfo(sourceData);
 								infoBoxController.open();
 								//console.log("var: "+sourceData);

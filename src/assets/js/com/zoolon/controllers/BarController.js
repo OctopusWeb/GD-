@@ -47,7 +47,7 @@ define("BarController",function(exporter){
 					$("#NewSourcechart").hide();
 				}else{
 					$("#NewSourcechart").show();
-					self.drawSourceBars(url,dataSourcetype,type,[]);
+					self.drawSourceBars(url,dataSourcetype,type,vars);
 					
 				}
 				
@@ -60,14 +60,14 @@ define("BarController",function(exporter){
 			}
 			$at.get(url,undefined,function(barData){
 				if(type == 1){
-					var max = proMax*2;
-					var all = proAll*2;
+					var max = proMax;
+					var all = proAll;
 				}else if(type == 2){
-					var max = cityMax*2;
-					var all = cityAll*2;
+					var max = cityMax;
+					var all = cityAll;
 				}else if(type == 3){
-					var max = cityMax*2;
-					var all = cityAll*2;
+					var max = cityMax;
+					var all = cityAll;
 				}
 				var barDataChild = barData.children;
 				newChart(barData.validMileage,all)
@@ -168,6 +168,8 @@ define("BarController",function(exporter){
 		
 		        // 使用刚指定的配置项和数据显示图表。
 		        myChart.setOption(option);
+		        $(".leftNewSource").show();
+		         $("#leftSource").css({"height":"380px"})
 			}
 		}
 		
@@ -199,19 +201,23 @@ define("BarController",function(exporter){
 			 var Box,wid,hei,colors;
 			 if(dataType == "pro"){
 			 	wid = 20000.0;
+			 	hei = barParse[2]/max*20000*50;
 			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.3);
 			 }else if(dataType == "proSource"){
 			 	wid = 10000.0;
+			 	hei = barParse[2]/max*20000*50;
 			 	colors = Cesium.Color.fromCssColorString("#009eff")
 			 }else if(dataType == "city"){
-			 	wid = 10000.0;
+			 	wid = 8000.0;
+			 	 hei = barParse[2]/max*8000*50;
 			 	colors = new Cesium.Color(1.0, 1.0, 1.0, 0.3);
 			 }else if(dataType == "citySource"){
-			 	wid = 5000.0;
+			 	wid = 4000.0;
+			 	 hei = barParse[2]/max*8000*50;
 			 	colors = Cesium.Color.fromCssColorString("#009eff")
 			 }
 			 
-			 hei = barParse[2]/max*wid*50;
+			
 			 var box = entities.add({
 		        position : Cesium.Cartesian3.fromDegrees(parseFloat(barParse[0]),parseFloat(barParse[1]),hei/2),
 		        cylinder : {

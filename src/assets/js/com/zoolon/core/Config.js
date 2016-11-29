@@ -4,7 +4,7 @@
 define("Config",function(exporter){
 	var Config = {};
 	
-	Config.debugMode = true;
+	Config.debugMode = false;
 	
 	Config.pages = [
 		{link:"dataSource.html",enable:true},

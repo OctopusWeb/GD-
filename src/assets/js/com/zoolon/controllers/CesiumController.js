@@ -16,41 +16,41 @@ define("CesiumController",function(exporter){
 //		if(!exporter.Config.debugMode)
 //		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
-		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',
 		        tileMatrixSetID : 'default028mm',
-		        maximumLevel: 18,
+		        maximumLevel: 17,
 		        credit : new Cesium.Credit('U. S. Geological Survey')
 		    });
 //		}
 		var viewer = new Cesium.Viewer(divId,option);
-//		var globe = new Cesium.Globe();
-//		globe.baseColor = Cesium.Color.fromBytes(9,31,52,255);
-//		globe.titleCacheSize = 999999999;
 		this.cesiumViewer = viewer;
 		var DataType = {
 			realTime:0,
 			snapshot:1,
 			history:2
 		};
+		var globe = new Cesium.Globe();
+		globe.baseColor = Cesium.Color.fromBytes(9,31,52,255);
+		globe.titleCacheSize=999999999;
 		
 		//隐藏cesium的logo
 		$(".cesium-viewer-bottom").hide();
 		
 		//加载区域轮廓
-		var promise = Cesium.GeoJsonDataSource.load('src/assets/data/地市级行政区划抽稀后.json');
+//		var promise = Cesium.GeoJsonDataSource.load('src/assets/data/地市级行政区划抽稀后.json');
 		var self = this;
 		var areaSource;
-		promise.then(function(dataSource){
-			areaSource = dataSource;
-			self.setAreaVisible(false);
-			viewer.dataSources.add(dataSource);
-		}).otherwise(function(error){
-			window.alert(error);
-		});
+//		promise.then(function(dataSource){
+//			areaSource = dataSource;
+//			self.setAreaVisible(false);
+//			viewer.dataSources.add(dataSource);
+//		}).otherwise(function(error){
+//			window.alert(error);
+//		});
 		
 		this.dataType = DataType.snapshot;
 		this.cityCode;
@@ -176,6 +176,7 @@ define("CesiumController",function(exporter){
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#leftEchart").hide()
+			$(".leftEchart").hide();
 			$("#leftBk").show()
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
 				if(data.data == "404")
@@ -420,21 +421,21 @@ define("CesiumController",function(exporter){
 				var colorItems = [];
 				var datas=[];
 				var staticColors = [
-					"#669999",
-					"#FFFF00",
-					"#FF0000",
-					"#3399FF",
-					"#00FFFF",
-					"#33CC33",
-					"#9999CC",
-					"#999966",
-					"#CC6699",
-					"#FF9999",
-					"#669999"
+					"#c93e3e",
+					"#c55a4c",
+					"#bf721c",
+					"#bfa536",
+					"#b7ab64",
+					"#2ea19d",
+					"#1e87b5",
+					"#24669f",
+					"#265497",
+					"#064c9f",
+					"#b5b5b5"
 				];
 				for(var i=0;i<list.length;i++)
 				{
-					var item = new ColorItem(list[i]);
+					var item = new ColorItem(list[i],i);
 					if(item.data.rank && item.data.label){
 						datas.push({value:item.data.rank, name:item.data.label,
 					                	itemStyle: {
@@ -476,22 +477,26 @@ define("CesiumController",function(exporter){
 					item.view.trigger("click");
 				}
 				
-				function ColorItem(obj)
+				function ColorItem(obj,i)
 				{
 					this.data = obj;
 					var htmlStr  =  '<div class="item">'+
 									'	<div class="colorBox"></div>'+
-									'	<label class="label0"></label><label class="label1"></label>'+
+									'	<div class="label label2"></div>'+
+									'	<div class="label0 label"></div><div class="label1 label"></div>'+
 									'</div>';
 					this.view = $(htmlStr);
 					var colorBox = this.view.find(".colorBox");
-					colorBox.css("background-color",obj.color);
+					colorBox.css("background-color",staticColors[i]);
 					var label0 = this.view.find(".label0");
 					var label1 = this.view.find(".label1");
+					var label = this.view.find(".label2");
 					var pointsLen = _self.getPointsLengthOf(obj.value);
-					label0.text(obj.label+"("+parseInt(pointsLen/_self.collection.length*100)+"%)");
+					label.text(obj.label);
+					label.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
+					label0.text("("+parseFloat(pointsLen/_self.collection.length*100).toFixed(2)+"%)");
 					label0.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
-					label1.text(obj.label+"("+pointsLen+")");
+					label1.text("("+pointsLen+")");
 					label1.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
 					var toggled = true;
 					this.view.click(function(){
@@ -573,6 +578,7 @@ define("CesiumController",function(exporter){
 		        myChart.setOption(option);
 		        $("#leftBk").hide();
 		        $("#leftEchart").show();
+		        $(".leftEchart").show();
 			}
 			
 			this.getPointsLengthOf = function(value)
@@ -639,17 +645,17 @@ define("CesiumController",function(exporter){
 		function ColorMap()
 		{
 			var staticColors = [
-				"#669999",
-				"#FFFF00",
-				"#FF0000",
-				"#3399FF",
-				"#00FFFF",
-				"#33CC33",
-				"#9999CC",
-				"#999966",
-				"#CC6699",
-				"#FF9999",
-				"#669999"
+				"#c93e3e",
+				"#c55a4c",
+				"#bf721c",
+				"#bfa536",
+				"#b7ab64",
+				"#2ea19d",
+				"#1e87b5",
+				"#24669f",
+				"#265497",
+				"#064c9f",
+				"#b5b5b5"
 			];
 			
 			var colorMapList;

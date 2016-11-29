@@ -422,8 +422,8 @@
 
 #sourceColors .item
 {
-	padding: 5px;
-	height: 20px;
+/*	padding: 5px;
+*/	height: 20px;
 }
 
 #sourceColors .item.selected
@@ -438,19 +438,27 @@
 
 #sourceColors .item .colorBox
 {
-	width: 20px;
-	height: 20px;
-	border: solid 1px #000000;
+	width: 15px;
+	height: 15px;
 	background-color: #000000;
 	position: absolute;
 }
 
-#sourceColors .item label
+#sourceColors .item .label
 {
 	margin-left: 25px;
 	color: #ffffff;
 	word-break:keep-all;
 	white-space:nowrap;
+	float: left;
+}
+#sourceColors .item .label2
+{
+	width: 80px;
+	white-space:nowrap; 
+	text-overflow:ellipsis; 
+	-o-text-overflow:ellipsis; 
+	overflow: hidden; 
 }
 
 

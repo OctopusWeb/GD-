@@ -73,9 +73,9 @@ define("BorderController",function(exporter){
 			   		name:citycode,
 			        polygon : {
 				        hierarchy : Cesium.Cartesian3.fromDegreesArray(positions),
-				        material : Cesium.Color.fromCssColorString('#0c6bad').withAlpha(0.05),
+				        material : Cesium.Color.fromCssColorString('#0c6bad').withAlpha(0.005),
 				        outline : true,
-				        outlineColor : Cesium.Color.fromCssColorString('#0c6bad')
+				        outlineColor : Cesium.Color.fromCssColorString('#0c6bad').withAlpha(0.1)
 				    }
 			    });
 			}
