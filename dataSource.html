@@ -57,12 +57,13 @@
 	<div id="cesiumContainer"></div>
 	
 	<div class="app">
-		<div id="cesiumBk"><h1>正在加载，请稍候......</h1></div>
+		<div id="cesiumBk"></div>
 		<div class="UserPic">
 			<img src=""/>
 		</div>
 		<div id="widgets">
 	<div id="leftSource">
+			<h1 class="leftNewSource leftNewSourceH">里程占比</h1>
 			<img src="src/assets/images/dataSource/echartBk.png" class="echartBk leftNewSource"/>
 			<div id="leftNewSource">
 				<div id="NewSourcechart">
@@ -72,6 +73,7 @@
 				</div>
 			</div>
 			<div id="leftBk"><h1>正在加载，请稍候......</h1></div>
+			<h1 class="leftEchart leftEchartH">在线用户占比</h1>
 			<img src="src/assets/images/dataSource/echartBk.png" class="echartBk leftEchart"/>
 			<div id="leftEchart">
 				
@@ -216,28 +218,28 @@
 					<div>当前有效事件</div>
 				</div>
 				<div id="et2" class="et">
-					<img src="src/assets/images/dataSource/rightIcon1.png"/>
+					<img src="src/assets/images/dataSource/npt2.png"/>
 					<div>事故</div>
 					<div id="count" class="count">100</div>
 				</div>
 				<div id="et5" class="et">
-					<img src="src/assets/images/dataSource/rightIcon2.png"/>
+					<img src="src/assets/images/dataSource/npt5.png"/>
 					<div>施工类</div>
 					<div id="count" class="count">100</div>
 				</div>
 				<div id="et4" class="et">
-					<img src="src/assets/images/dataSource/rightIcon3.png"/>
-					<div>管制类</div>
-					<div id="count" class="count">100</div>
-				</div>
-				<div id="et6" class="et">
-					<img src="src/assets/images/dataSource/rightIcon4.png"/>
+					<img src="src/assets/images/dataSource/npt6.png"/>
 					<div>关闭类</div>
 					<div id="count" class="count">100</div>
 				</div>
+				<div id="et6" class="et">
+					<img src="src/assets/images/dataSource/npt4.png"/>
+					<div>管制类</div>
+					<div id="count" class="count">100</div>
+				</div>
 				<div id="et1" class="et">
-					<img src="src/assets/images/dataSource/rightIcon5.png"/>
-					<div>交通流量</div>
+					<img src="src/assets/images/dataSource/npt1.png"/>
+					<div>公告</div>
 					<div id="count" class="count">100</div>
 				</div>
 				<div id="et3" class="et">
@@ -341,9 +343,15 @@
 				</div>
 			</div>
 			<div id="addMap">
-				<div style="display: none;"><img src="src/assets/images/dataSource/sourceIcon5.png" alt="" /><span>视频监控</span></div>
+				<div class=""><img src="src/assets/images/dataSource/sourceIcon5.png" alt="" /><span>时空图</span></div>
 				<div class=""><img src="src/assets/images/dataSource/sourceIcon6.png" alt="" /><span>路况</span></div>
 				<div class=""><img src="src/assets/images/dataSource/sourceIcon9.png" alt="" /><span>诱导屏</span></div>
+			</div>
+			<div id="spanTime">
+				<h2>道路时空图</h2>
+				<ul>
+					
+				</ul>
 			</div>
 		<div id="infoBox">
 			<div class="header">
@@ -376,5 +384,6 @@
 	</div>
 	<canvas id="myCanvas" style="display: none;" width="153" height="98"></canvas>
 	<img src="src/assets/images/dataSource/proEvent.png" id="img" style="display: none;"/>
+	<img src="http://cn-shanghai.oss.aliyun-inc.com/homeroute/daimler-test/PicFolder/20161111/201611111001_dongsanhuannanlu_sanyuanqiao.png" id="spaceTime" style="display: none;"/>
 </body>
 </html>

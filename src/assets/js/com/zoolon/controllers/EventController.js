@@ -191,7 +191,6 @@
 					return;
 				}
 				var sourceData = eval(data);
-				
 
 				var map = {
 					"事故" : 0,
@@ -357,7 +356,6 @@
 			});
 		}
 		function drawPic(text){
-			console.log(text)
 			var imgs = new Image();
 			var canvas = document.getElementById('myCanvas');
 			var img = document.getElementById("img");
@@ -576,7 +574,7 @@
 								billboard : {
 //									image : pinBuilder.fromUrl(url,color, size),picUrl
 									image : url,
-									scale : 1, // default: 1.0
+									scale : 0.5, // default: 1.0
 									verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 								}
 							});
@@ -586,10 +584,10 @@
 						
 						function tweenPin(pin)
 						{
-							var obj = {scale:1};
-							TweenMax.to(obj,1,{scale:3,onUpdate:function(_pin){
+							var obj = {scale:0.5};
+							TweenMax.to(obj,1,{scale:1,onUpdate:function(_pin){
 								_pin.billboard.scale = obj.scale;
-							},onUpdateParams:[pin],yoyo:true,repeat:3});
+							},onUpdateParams:[pin],yoyo:true,repeat:1});
 						}
 					}
 					
@@ -633,11 +631,11 @@
 					if (Cesium.defined(pickedObject) && pickedObject.primitive instanceof Cesium.Billboard) {
 						var selectedPin = pickedObject.primitive;
 	
-						selectedPin.id.billboard.scale = 2;
+						selectedPin.id.billboard.scale = 1;
 						var timerPin;
 						timerPin = setTimeout(function(){
 							clearTimeout(timerPin);
-							selectedPin.id.billboard.scale = 1;
+							selectedPin.id.billboard.scale = 0.5;
 						}, 1000 * 10 * 1)
 						
 						

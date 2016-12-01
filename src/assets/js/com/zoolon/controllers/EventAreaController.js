@@ -20,7 +20,7 @@ define("eventAreaController",function(exporter){
 		var proArr=[];
 		var proCenter=[];
 		var navNum=10;
-		var mapArea,traffiBol,Floating,Floating1,InducedBol,codeIndex = false;
+		var mapArea,traffiBol,Floating,Floating1,InducedBol,codeIndex,Spacebol = false;
 		var Induceds = viewer.entities.add(new Cesium.Entity());
 		
 		eventInit();
@@ -46,7 +46,6 @@ define("eventAreaController",function(exporter){
 				Floating1 ? self.FloatingcarTime.clear() : self.FloatingcarTime.show();
 			});
 			
-			
 			$("#search").click(function(){
 				var search = $("#chooseSource").val()
 				screening(search);
@@ -68,9 +67,7 @@ define("eventAreaController",function(exporter){
 					}else{
 						Induceds.show = true;
 					}
-					
 				}
-				
 			});
 			$("#addMap div").eq(1).click(function(e){
 				e.stopPropagation();
@@ -81,7 +78,17 @@ define("eventAreaController",function(exporter){
 				}
 				self.changeMap();
 			});
-			
+			$("#addMap div").eq(0).click(function(e){
+				e.stopPropagation();
+				if(cesiumType !=3 ){return}
+				if($(this).hasClass("mapSelect")){
+					$(this).removeClass("mapSelect");
+					self.SpaceTime.clear();
+				}else{
+					$(this).addClass("mapSelect");
+					self.SpaceTime.show();
+				}
+			});
 			
 			$(".quanguo").click(function(e){
 				e.stopPropagation();
@@ -91,13 +98,15 @@ define("eventAreaController",function(exporter){
 				cur_cityCode = 100000;
 				cesiumType=1;
 				viewer.entities.remove(cityBorder);
-				$(".leftEchart").hide();
+				$("#addMap div").eq(0).removeClass("mapSelect");
+				self.SpaceTime.clear();
 				if(Floating)contryBar();
 				$("#leftBk").hide()
 				codeIndex = false;
 				Induceds.show = false;	
 				InducedBol = false;
 				$("#leftEchart").hide();
+				$(".leftEchart").hide();
 				$("#addMap div").eq(2).removeClass("mapSelect");
 				CesiumController.clear(false);
 				borderController.show(true);
@@ -154,9 +163,9 @@ define("eventAreaController",function(exporter){
 		handler.setInputAction(function (movement) {
 	    	ClickEvent(movement)
 	    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-	    handler.setInputAction(function (movement) {
-	    	console.log("null")
-	    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK );
+//	    handler.setInputAction(function (movement) {
+//	    	console.log("null")
+//	    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK );
 		
 		function contryBar(vars){
 			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
@@ -178,8 +187,9 @@ define("eventAreaController",function(exporter){
 				    name : "I"+parse[i][2],
 				    billboard : {
 				        image : imgUrl,
+				        scale : 0.5,
 				        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
-		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.6, 0.5, 0.4)
+		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 1, 0.8, 0.6)
 				    }
 				});
 			}
@@ -248,6 +258,31 @@ define("eventAreaController",function(exporter){
 				var urls = "http://10.101.83.99/UserPic?picid="+pickID.substring(1,pickID.length);
 				$(".UserPic").fadeIn();
 				$(".UserPic img").attr({"src":urls});
+			}else if(type == "o"){
+				cesiumType=3;
+				InducedBol = true;
+				$(".quanguo  p").html(cityName);
+				cur_cityCode = cityCode;
+//				drcwCityborder(cur_cityCode)
+				if(Floating){
+					cityBar(cityCode);
+					ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cityCode}));
+				}else{
+					var city = CesiumController.getInfoByCityCode(cur_cityCode);
+					$("#city").html(city.name)
+					viewer.camera.flyTo({
+						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+					});
+				}
+				if(traffiBol){
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(this.cityCode);
+				}
+				if(Floating1){
+					var dsList =CesiumController.getDsList(cur_cityCode);
+					CesiumController.loadDataSource1(cur_cityCode,dsList);
+				}
 			}
 		}
 		
@@ -380,7 +415,6 @@ define("eventAreaController",function(exporter){
 			eventController.clear();
 			eventController.active = true;
 			if(cesiumType == 2){
-				console.log(111)
 				eventController.loadEvent(undefined);
 			}else{
 				eventController.loadEvent(this.cityCode);
@@ -409,7 +443,9 @@ define("eventAreaController",function(exporter){
 		this.Floatingcar.clear = function(){
 			Floating=false;
 			barController.CityClear();
-			$("#leftSource").fadeOut()
+			$("#leftSource").fadeOut();
+			$("#leftEchart").hide();
+			$(".leftEchart").hide();
 			CesiumController.clear(true);
 		}
 		
@@ -425,6 +461,28 @@ define("eventAreaController",function(exporter){
 			Floating1=true;
 			var dsList =CesiumController.getDsList(cur_cityCode);
 			CesiumController.loadDataSource1(cur_cityCode,dsList);
+		}
+		
+		this.SpaceTime = {};
+		this.SpaceTime.clear = function(){
+			Spacebol = false;
+			$("#spanTime").fadeOut();
+			viewer.entities.removeById("spaceTimeRoad");
+			viewer.entities.removeById("spaceTimeRoad1");
+			viewer.entities.removeById("spaceTimeRoad2");
+			$("#spaceTime").fadeOut();
+		}
+		this.SpaceTime.show = function(){
+			Spacebol=true;
+			$at.get("http://30.28.178.151:8081/spaceTimeDiagram/getCityList?city="+cur_cityCode+"&daytime=20161101",undefined,function(datas){
+				var index="";
+				for(var i=0;i<datas.data.length;i++){
+					index+="<li><h1>"+datas.data[i].roadName+"</h1><h4>"+datas.data[i].startName+"</h4><h5>至</h5><h4>"+datas.data[i].endName+"</h4></li>"
+				}
+				$("#spanTime ul").html(index);
+				spaceBind();
+			})
+			$("#spanTime").fadeIn();
 		}
 		
 		this.changeMap = function(){
@@ -448,13 +506,66 @@ define("eventAreaController",function(exporter){
 			$at.get("src/assets/data/cityArea.json").then(function(data){
 				for(var i=0;i<data.features.length;i++){
 					if(data.features[i].properties.AD_CODE == cityCode){
-						Border(data.features[i].geometry.coordinates)
+						Border(data.features[i].geometry.coordinates);
 					}
 				}
 			})
 		}
+		function spaceBind(){
+			$("#spanTime ul li").on("click",function(){
+				$at.get("http://30.28.178.151:8081/spaceTimeDiagram/getSpaceTimeDiagram?city=110000&id=201611011001&daytime=20161101",undefined,function(datas){
+					var positions = datas.data[0].xys.replace(/\;/g,",");
+					var center = datas.data[0].centerPoint.split(",");
+					spaceRoad(positions,datas.data[0].url,center);
+				})
+			})
+		}
+		function spaceRoad(positions,url,center){
+			var po = positions.split(",")
+			viewer.entities.removeById("spaceTimeRoad");
+			viewer.entities.removeById("spaceTimeRoad1");
+			viewer.entities.removeById("spaceTimeRoad2");
+			positions = eval("["+positions+"]");
+			viewer.camera.flyTo({
+				destination:Cesium.Cartesian3.fromDegrees(center[0],center[1],30000)
+			});
+			$("#spaceTime").attr({"src":url})
+			$("#spaceTime").fadeIn();
+			spaceTimeRoad = viewer.entities.add({
+				id : "spaceTimeRoad",
+	            polyline : {
+			        positions : Cesium.Cartesian3.fromDegreesArray(positions),
+			        width : 3,
+			        material : new Cesium.PolylineOutlineMaterialProperty({
+			            color : Cesium.Color.DODGERBLUE,
+			            outlineWidth : 2,
+			            outlineColor : Cesium.Color.LIGHTSLATEGRAY   
+			        })
+			    }
+		    });
+		    spaceTimeRoad1 = viewer.entities.add({
+		   		id : "spaceTimeRoad1",
+				position : Cesium.Cartesian3.fromDegrees(po[0],po[1],0),
+				billboard : {
+					image : "src/assets/images/dataSource/spaceTime.png",
+					scale : 0.2, 
+					verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+				}
+			});
+			spaceTimeRoad2 = viewer.entities.add({
+				id : "spaceTimeRoad2",
+				position : Cesium.Cartesian3.fromDegrees(po[po.length-2],po[po.length-1],0),
+				billboard : {
+					image : "src/assets/images/dataSource/spaceTime.png",
+					scale : 0.2, 
+					verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+				}
+			});
+			
+		}
+		
 		function Border(data){
-			var positions=[]
+			var positions=[];
 			var positionArr = [];
 			if(typeof(data[0][0]) == "number"){
 				positionArr.push(data);	
@@ -463,7 +574,7 @@ define("eventAreaController",function(exporter){
 			}
 			for(var m=0;m<positionArr.length;m++){
 				for(var i=0;i<positionArr[m].length;i++){
-					positions.push(positionArr[m][i][0],positionArr[m][i][1])
+					positions.push(positionArr[m][i][0],positionArr[m][i][1]);
 				}
 				cityBorder = viewer.entities.add({
 			        polygon : {

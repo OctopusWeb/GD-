@@ -2,7 +2,10 @@
 define("CesiumController",function(exporter){
 	var CesiumController = function(divId)
 	{
+		var globe = new Cesium.Globe();
+		globe.tileCacheSize=10000;
 		var option = {
+			globe : globe,
 			baseLayerPicker:false,
 			navigationHelpButton:false,
 			homeButton:false,
@@ -33,9 +36,7 @@ define("CesiumController",function(exporter){
 			snapshot:1,
 			history:2
 		};
-		var globe = new Cesium.Globe();
-		globe.baseColor = Cesium.Color.fromBytes(9,31,52,255);
-		globe.titleCacheSize=999999999;
+		
 		
 		//隐藏cesium的logo
 		$(".cesium-viewer-bottom").hide();
@@ -177,7 +178,7 @@ define("CesiumController",function(exporter){
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#leftEchart").hide()
 			$(".leftEchart").hide();
-			$("#leftBk").show()
+//			$("#leftBk").show()
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
 				if(data.data == "404")
 				{
@@ -482,7 +483,7 @@ define("CesiumController",function(exporter){
 					this.data = obj;
 					var htmlStr  =  '<div class="item">'+
 									'	<div class="colorBox"></div>'+
-									'	<div class="label label2"></div>'+
+									'	<div class="label label2" title="数据源"></div>'+
 									'	<div class="label0 label"></div><div class="label1 label"></div>'+
 									'</div>';
 					this.view = $(htmlStr);
@@ -493,10 +494,11 @@ define("CesiumController",function(exporter){
 					var label = this.view.find(".label2");
 					var pointsLen = _self.getPointsLengthOf(obj.value);
 					label.text(obj.label);
+					label.attr({"title":obj.label})
 					label.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
-					label0.text("("+parseFloat(pointsLen/_self.collection.length*100).toFixed(2)+"%)");
+					label0.text(parseFloat(pointsLen/_self.collection.length*100).toFixed(2)+"%");
 					label0.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
-					label1.text("("+pointsLen+")");
+					label1.text(pointsLen);
 					label1.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
 					var toggled = true;
 					this.view.click(function(){
@@ -794,36 +796,36 @@ define("CesiumController",function(exporter){
 			//画出轨迹
 			function drawPaths()
 			{
-				for (var i=0;i<len;i++)
-				{
-					var line = {
-						"polyline":{
-							"positions":{
-								"cartesian":getCartesianFromPath(i,true,false)
-							},
-							"width" : 2,
-					        "material":{
-					        	"solidColor":{
-					        		"color":{"rgba": [255, 255, 0, 30]}
-					        	} 
-					        }
-						}
-					};
-					
-					if(self.dataType == DataType.history)
-					{
-						line.polyline.show = [];
-						line.polyline.show.push({
-							"boolean":false
-						});
-						line.polyline.show.push({
-							interval:getIntervalForPath(i),
-							"boolean":true
-						});
-					}
-					
-					czml.push(line);
-				}
+//				for (var i=0;i<len;i++)
+//				{
+//					var line = {
+//						"polyline":{
+//							"positions":{
+//								"cartesian":getCartesianFromPath(i,true,false)
+//							},
+//							"width" : 2,
+//					        "material":{
+//					        	"solidColor":{
+//					        		"color":{"rgba": [255, 255, 0, 30]}
+//					        	} 
+//					        }
+//						}
+//					};
+//					
+//					if(self.dataType == DataType.history)
+//					{
+//						line.polyline.show = [];
+//						line.polyline.show.push({
+//							"boolean":false
+//						});
+//						line.polyline.show.push({
+//							interval:getIntervalForPath(i),
+//							"boolean":true
+//						});
+//					}
+//					
+//					czml.push(line);
+//				}
 			}
 		
 			function getIntervalForPath(idx)
@@ -856,7 +858,7 @@ define("CesiumController",function(exporter){
 						"availability":data.timeRange,
 						"point":{
 							"color": { "rgba": [255, 255, 255, 255] },
-				            "pixelSize" : 3,
+				            "pixelSize" : 5,
 				            "outlineColor" : { "rgba": [0, 0, 255, 50] },
 							"outlineWidth" : 1
 						},

@@ -454,6 +454,7 @@
 }
 #sourceColors .item .label2
 {
+	margin-top: -4px;
 	width: 80px;
 	white-space:nowrap; 
 	text-overflow:ellipsis; 

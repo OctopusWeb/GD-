@@ -5,6 +5,7 @@ define("BorderController",function(exporter){
 		var viewer = controller.cesiumController.cesiumViewer;
 		var entities = viewer.entities;
 		var proBorder = [];
+		var cityBorder = entities.add(new Cesium.Entity());
 		var self = this;
 		this.citys = [110000,120000,130000,140000,150000,210000,220000,230000,
 						310000,320000,330000,340000,350000,360000,370000,410000,430000,
@@ -31,9 +32,11 @@ define("BorderController",function(exporter){
 			for (var m=0;m<parseBorder.length;m++) {
 				var areaCode = parseInt(parseBorder[m].properties.AD_CODE/10000)*10000;
 				var areaInfo = "c"+parseBorder[m].properties.AD_CODE+parseBorder[m].properties.NAME+"-"+m
+				var cityIcon = "o"+parseBorder[m].properties.AD_CODE+parseBorder[m].properties.NAME+"-"+m
 				var index = indexOf(self.citys, areaCode);
 				parseBorders = parseBorder[m].geometry.coordinates[0]
 				var border = new Border(parseBorders,proBorder[index],areaInfo);
+				var icon = new Icon(parseBorder[m].properties.X_COORD,parseBorder[m].properties.Y_COORD,cityBorder,cityIcon);
 				
 			}
 		})
@@ -79,8 +82,21 @@ define("BorderController",function(exporter){
 				    }
 			    });
 			}
-			
 		}
+		function Icon(x,y,parent,names){
+			viewer.entities.add({
+				parent : parent,
+			    position : Cesium.Cartesian3.fromDegrees(x,y),
+			    name : names,
+			    billboard : {
+			        image : "src/assets/images/dataSource/webwxgetmsgimg.png",
+			        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+			        scale : 0.5,
+	            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.3, 0.2, 0.1)
+			    }
+			});
+		}
+		
 		this.show = function(bol1,bol2,num){
 			pro.show = bol1;
 			for(var i=0;i<proBorder.length;i++){
@@ -90,6 +106,9 @@ define("BorderController",function(exporter){
 			if(num != undefined){
 				proBorder[num].show = bol2;
 			}
+			if(!bol1 && !bol2){
+				setTimeout(function(){cityBorder.show = true},2000)
+			}else{cityBorder.show = false}
 		}
 		
 		function indexOf(arr, str){

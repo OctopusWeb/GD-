@@ -15,61 +15,83 @@ define("PositionCarController",function(exporter){
 	    viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; 
 	    viewer.clock.multiplier = 10;
 	    var m=0;
+	    var self = this;
 	    
 	    var winWidth =  parseInt(document.body.clientWidth);
 	    var winHeight = parseInt(document.body.clientHeight);
 	    
+	    viewer.screenSpaceEventHandler.setInputAction(function (movement) {
+	    	if(!Floating2)return
+	    	var cartesian0 = viewer.camera.pickEllipsoid(movement.position);
+	        if (cartesian0) {
+	            var cartographic0 = Cesium.Cartographic.fromCartesian(cartesian0);
+	            var longitudeString0 = Cesium.Math.toDegrees(cartographic0.longitude);
+	            var latitudeString0 = Cesium.Math.toDegrees(cartographic0.latitude);
+	        };
+	        viewer.camera.flyTo({
+				destination:Cesium.Cartesian3.fromDegrees(longitudeString0, latitudeString0, 2000.0),
+			    complete:function(){self.floatCar2.show()}
+			});
+	    	
+	    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 	    $("#nav ul li").eq(5).click(function(e){
 			e.stopPropagation();
-			$(viewer.animation.container).show();
-			$(viewer.timeline.container).show();
 			$(this).toggleClass("selected");
 			Floating2=!Floating2;
-			if(Floating2){
-				var pos = new Cesium.Cartesian2(parseInt(winWidth/4), parseInt(winHeight/4));
-				var cartesian = viewer.camera.pickEllipsoid(pos, scene.globe.ellipsoid);
-				if (cartesian) {
-		            var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-		            var longitude = Cesium.Math.toDegrees(cartographic.longitude);
-		            var latitude = Cesium.Math.toDegrees(cartographic.latitude);
-
-		        }
-				var pos1 = new Cesium.Cartesian2(parseInt(winWidth/4*3), parseInt(winHeight/4*3));
-				var cartesian1 = viewer.camera.pickEllipsoid(pos1, scene.globe.ellipsoid);
-				if (cartesian1) {
-		            var cartographic1 = Cesium.Cartographic.fromCartesian(cartesian1);
-		            var longitude1 = Cesium.Math.toDegrees(cartographic1.longitude);
-		            var latitude1 = Cesium.Math.toDegrees(cartographic1.latitude);
-		        }
-				var nowDate = new Date();
-				var month = nowDate.getMonth()+1;
-				month>9?month=month:month="0"+month;
-				var day=nowDate.getDate();
-				day>9?day=day : day = "0"+day;
-				var hours = nowDate.getHours()-1;
-				var minutes = nowDate.getMinutes();
-				minutes>9?minutes = minutes :minutes = "0"+minutes;
-				if(minutes<16){
-					minutes="59";
-					hours=hours-1;
-					var num=5500;
-				}else{
-					var num=1500;
-				}
-				hours>9?hours = hours :hours = "0"+hours;
-				var time2 = nowDate.getFullYear()+""+month+day+hours+minutes+"00";
-				var time1 = parseInt(time2)-num;
-				firstPath = time1+"";
-				firstPath = firstPath.substr(8,firstPath.length)
-				
-				add(longitude,longitude1,latitude,latitude1,time1,time2,1000);
-			}else{
-				for(var i=0;i<positonArr.length;i++){
-					entities.removeById(positonArr[i].id);
-				}
-				positonArr=[];
-			}
+			if(!Floating2)self.floatCar2.clear();
 		});
+		this.floatCar2={};
+		this.floatCar2.show=function(){
+			$(viewer.animation.container).show();
+			$(viewer.timeline.container).show();
+			var pos = new Cesium.Cartesian2(parseInt(winWidth/4), parseInt(winHeight/4));
+			var cartesian = viewer.camera.pickEllipsoid(pos, scene.globe.ellipsoid);
+			if (cartesian) {
+	            var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+	            var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+	            var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+
+	        }
+			var pos1 = new Cesium.Cartesian2(parseInt(winWidth/4*3), parseInt(winHeight/4*3));
+			var cartesian1 = viewer.camera.pickEllipsoid(pos1, scene.globe.ellipsoid);
+			if (cartesian1) {
+	            var cartographic1 = Cesium.Cartographic.fromCartesian(cartesian1);
+	            var longitude1 = Cesium.Math.toDegrees(cartographic1.longitude);
+	            var latitude1 = Cesium.Math.toDegrees(cartographic1.latitude);
+	        }
+			var nowDate = new Date();
+			var month = nowDate.getMonth()+1;
+			month>9?month=month:month="0"+month;
+			var day=nowDate.getDate();
+			day>9?day=day : day = "0"+day;
+			var hours = nowDate.getHours()-1;
+			var minutes = nowDate.getMinutes();
+			minutes>9?minutes = minutes :minutes = "0"+minutes;
+			if(minutes<16){
+				minutes="59";
+				hours=hours-1;
+				var num=5500;
+			}else{
+				var num=1500;
+			}
+			hours>9?hours = hours :hours = "0"+hours;
+			var time2 = nowDate.getFullYear()+""+month+day+hours+minutes+"00";
+			var time1 = parseInt(time2)-num;
+			firstPath = time1+"";
+			firstPath = firstPath.substr(8,firstPath.length)
+			
+			add(longitude,longitude1,latitude,latitude1,time1,time2,1000);
+		}
+		this.floatCar2.clear=function(){
+			$(viewer.animation.container).hide();
+			$(viewer.timeline.container).hide();
+			for(var i=0;i<positonArr.length;i++){
+				entities.removeById(positonArr[i].id);
+			}
+			positonArr=[];
+		}
+		
+		
 	    
 	    function add(x1,x2,y1,y2,time1,time2,num){
 			 $.ajax({
@@ -90,7 +112,7 @@ define("PositionCarController",function(exporter){
 	                 }
 	             },
 	             error: function(){
-	                 alert('fail');
+	                 console.log('fail');
 	             }
 	        });
 		}
@@ -106,6 +128,7 @@ define("PositionCarController",function(exporter){
 	    }
 	    
 		function getById(id,dscode,x1,x2,y1,y2,time1,time2,num){
+			console.log("http://dipper-fp.amap.com/fp/getuserfp?dscode="+dscode+"&userid="+id+"&starttime="+time1+"&endtime="+time2)
 			$.ajax({
 	             type: "get",
 	             async: true,
@@ -147,7 +170,7 @@ define("PositionCarController",function(exporter){
 					var ln = parseFloat(paths[i][1]);
 					var time = parseInt(paths[i][2])-firstPath;
 						myPosition[i] = Cesium.Cartesian3.fromDegrees(la,ln);
-						myTime[i] = Cesium.JulianDate.addSeconds(start,time, new Cesium.JulianDate());
+						myTime[i] = Cesium.JulianDate.addSeconds(start,i/20, new Cesium.JulianDate());
 				}
 				function computeCirclularFlight() {
                     var property = new Cesium.SampledPositionProperty();
