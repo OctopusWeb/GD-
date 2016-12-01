@@ -136,6 +136,10 @@ define("eventAreaController",function(exporter){
 				e.stopPropagation();
 				$(".UserPic").fadeOut()
 			})
+			
+			$("#spaceTime").click(function(){
+				$("#spaceTime").hide();
+			})
 			var induced = new Induced(InducedParse,"src/assets/images/dataSource/Induceds.jpg");
 			parseCityInfo();
 			borderController.show(true);
@@ -262,6 +266,8 @@ define("eventAreaController",function(exporter){
 				cesiumType=3;
 				InducedBol = true;
 				$(".quanguo  p").html(cityName);
+				$("#leftEchart").hide();
+				$(".leftEchart").hide();
 				cur_cityCode = cityCode;
 //				drcwCityborder(cur_cityCode)
 				if(Floating){
@@ -283,6 +289,8 @@ define("eventAreaController",function(exporter){
 					var dsList =CesiumController.getDsList(cur_cityCode);
 					CesiumController.loadDataSource1(cur_cityCode,dsList);
 				}
+			}else if(type == "s"){
+				$("#spaceTime").show();
 			}
 		}
 		
@@ -474,10 +482,10 @@ define("eventAreaController",function(exporter){
 		}
 		this.SpaceTime.show = function(){
 			Spacebol=true;
-			$at.get("http://30.28.178.151:8081/spaceTimeDiagram/getCityList?city="+cur_cityCode+"&daytime=20161101",undefined,function(datas){
+			$at.get("http://100.81.154.179:8080/spacetimeDiagram/getCityList?city="+cur_cityCode+"&daytime=20161101",undefined,function(datas){
 				var index="";
 				for(var i=0;i<datas.data.length;i++){
-					index+="<li><h1>"+datas.data[i].roadName+"</h1><h4>"+datas.data[i].startName+"</h4><h5>至</h5><h4>"+datas.data[i].endName+"</h4></li>"
+					index+="<li class="+datas.data[i].id+"><h1>"+datas.data[i].roadName+"</h1><h4>"+datas.data[i].startName+"</h4><h5>至</h5><h4>"+datas.data[i].endName+"</h4></li>"
 				}
 				$("#spanTime ul").html(index);
 				spaceBind();
@@ -513,7 +521,9 @@ define("eventAreaController",function(exporter){
 		}
 		function spaceBind(){
 			$("#spanTime ul li").on("click",function(){
-				$at.get("http://30.28.178.151:8081/spaceTimeDiagram/getSpaceTimeDiagram?city=110000&id=201611011001&daytime=20161101",undefined,function(datas){
+				var id = $(this).attr("class")
+				$at.get("http://100.81.154.179:8080/spacetimeDiagram/getSpaceTimeDiagram?city="+cur_cityCode+"&id="+id+"&daytime=20161101",undefined,function(datas){
+					console.log(datas)
 					var positions = datas.data[0].xys.replace(/\;/g,",");
 					var center = datas.data[0].centerPoint.split(",");
 					spaceRoad(positions,datas.data[0].url,center);
@@ -527,17 +537,18 @@ define("eventAreaController",function(exporter){
 			viewer.entities.removeById("spaceTimeRoad2");
 			positions = eval("["+positions+"]");
 			viewer.camera.flyTo({
-				destination:Cesium.Cartesian3.fromDegrees(center[0],center[1],30000)
+				destination:Cesium.Cartesian3.fromDegrees(parseFloat(center[0])+0.01,parseFloat(center[1])+0.01,30000)
 			});
 			$("#spaceTime").attr({"src":url})
 			$("#spaceTime").fadeIn();
 			spaceTimeRoad = viewer.entities.add({
+				name : "spaceTimeRoad",
 				id : "spaceTimeRoad",
 	            polyline : {
 			        positions : Cesium.Cartesian3.fromDegreesArray(positions),
-			        width : 3,
+			        width : 4,
 			        material : new Cesium.PolylineOutlineMaterialProperty({
-			            color : Cesium.Color.DODGERBLUE,
+			            color : Cesium.Color.ORANGE,
 			            outlineWidth : 2,
 			            outlineColor : Cesium.Color.LIGHTSLATEGRAY   
 			        })
@@ -547,7 +558,7 @@ define("eventAreaController",function(exporter){
 		   		id : "spaceTimeRoad1",
 				position : Cesium.Cartesian3.fromDegrees(po[0],po[1],0),
 				billboard : {
-					image : "src/assets/images/dataSource/spaceTime.png",
+					image : "src/assets/images/dataSource/start.png",
 					scale : 0.2, 
 					verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 				}
@@ -556,7 +567,7 @@ define("eventAreaController",function(exporter){
 				id : "spaceTimeRoad2",
 				position : Cesium.Cartesian3.fromDegrees(po[po.length-2],po[po.length-1],0),
 				billboard : {
-					image : "src/assets/images/dataSource/spaceTime.png",
+					image : "src/assets/images/dataSource/stop.png",
 					scale : 0.2, 
 					verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 				}

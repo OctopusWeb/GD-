@@ -205,12 +205,12 @@
 					map[sourceData[i].name] = sourceData[i].value;
 				}
 				var all = map["其他"]+map["事故"]+map["流量"]+map["管制类"]+map["施工类"]+map["路面"];
-				$("#widgets #eventType #et2 #count").html("<div class='label0'>"+parseInt(map["事故"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["事故"]+"</div>");
-				$("#widgets #eventType #et5 #count").html("<div class='label0'>"+parseInt(map["施工类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["施工类"]+"</div>");
-				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseInt(map["管制类"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
-				$("#widgets #eventType #et6 #count").html("<div class='label0'>"+parseInt(map["路面"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["路面"]+"</div>");
-				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseInt(map["流量"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
-				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseInt(map["其他"]/all*100)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
+				$("#widgets #eventType #et2 #count").html("<div class='label0'>"+parseFloat(map["事故"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["事故"]+"</div>");
+				$("#widgets #eventType #et5 #count").html("<div class='label0'>"+parseFloat(map["施工类"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["施工类"]+"</div>");
+				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseFloat(map["管制类"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
+				$("#widgets #eventType #et6 #count").html("<div class='label0'>"+parseInt(map["路面"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["路面"]+"</div>");
+				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseFloat(map["流量"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
+				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseFloat(map["其他"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
 				drawEchart();
 				function drawEchart(){
 					var myChart = echarts.init(document.getElementById('rightEchart'));
@@ -324,7 +324,7 @@
 				for(var i=0;i<sourceData.length;i++){
 					var cityInfo = self.getInfoByCityCode(sourceData[i].code);
 					var pinBuilder = new Cesium.PinBuilder();
-					var position = Cesium.Cartesian3.fromDegrees(cityInfo.lat,cityInfo.lng);
+					var position = Cesium.Cartesian3.fromDegrees(parseFloat(cityInfo.lat),parseFloat(cityInfo.lng));
 					var cityPinId = "cityPin"+i;
 					var pic = drawPic(sourceData[i].value);
 					var cityPin = viewer.entities.add({
@@ -335,7 +335,7 @@
 //							image : pinBuilder.fromText(sourceData[i].value, Cesium.Color.fromCssColorString("#c93f3f"),
 //									100).toDataURL(),
 //				            rotation : Cesium.Math.PI_OVER_FOUR,
-//							horizontalOrigin : Cesium.HorizontalOrigin.RIGHT,
+							horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
 							image : pic,
 							scale : 0.4,
 							verticalOrigin : Cesium.VerticalOrigin.BOTTOM
@@ -794,9 +794,9 @@
 				removeLine();
 				flyToCurrentCity(function(){
 //					console.log(city)
-					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
-					});	
+//					viewer.camera.flyTo({
+//						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 90000.0)
+//					});	
 				});
 				
 				this.view.css("display","none");

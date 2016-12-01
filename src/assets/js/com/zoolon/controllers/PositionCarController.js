@@ -42,8 +42,7 @@ define("PositionCarController",function(exporter){
 		});
 		this.floatCar2={};
 		this.floatCar2.show=function(){
-			$(viewer.animation.container).show();
-			$(viewer.timeline.container).show();
+			viewer.clock.shouldAnimate = true;
 			var pos = new Cesium.Cartesian2(parseInt(winWidth/4), parseInt(winHeight/4));
 			var cartesian = viewer.camera.pickEllipsoid(pos, scene.globe.ellipsoid);
 			if (cartesian) {

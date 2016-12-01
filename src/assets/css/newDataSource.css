@@ -32,7 +32,7 @@ padding: 10px 20px;overflow: auto;display: none;top: 55px;}
 #cities ul li{width: 150px;float: left;font-size: 14px;cursor: pointer;line-height: 24px;height: 24px;overflow: hidden;
 color: #565656;}
 
-#addMap{width: 146px;height: auto;position: absolute;left: 1750px;top: 100px;font-weight: 600;font-family: "微软雅黑";}
+#addMap{width: 146px;height: auto;position: absolute;left: 1750px;top: 110px;font-weight: 600;font-family: "微软雅黑";}
 #addMap div{float: left;width: 146px;height: 38px;position: relative;cursor: pointer;margin-top: 15px;background: url(../images/dataSource/navBk1.png);background-size: 100% 100%;}
 #addMap div:hover{background:url(../images/dataSource/navBk2.png);background-size: 100% 100%;}
 #addMap div:active{opacity: 0.5;}

@@ -64,6 +64,7 @@ define("CesiumController",function(exporter){
 		
 		this.loadDataSource = function(cityCode,dsCodes)
 		{
+			
 			this.cityCode = cityCode;
 			this.dsCodes = dsCodes;
 			this.clear(true);
@@ -140,14 +141,15 @@ define("CesiumController",function(exporter){
 		//显示实时数据
 		function showRealTime()
 		{
-			$(viewer.animation.container).show();
-			$(viewer.timeline.container).show();
+//			$(viewer.animation.container).show();
+//			$(viewer.timeline.container).show();
 			loadRealTimeData();
 		}
 		
 		function loadRealTimeData()
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
+			$("#cesiumBk").show();
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,undefined,function(data){
 				if(data.data == "404")
 				{
@@ -157,9 +159,10 @@ define("CesiumController",function(exporter){
 				if(customDataSource1!=undefined)customDataSource1.destroy();
 				customDataSource1 = new CustomDataSource(data,false);
 				viewer.dataSources.add(customDataSource1.czmlDataSource);
-				viewer.clock.multiplier = 30;
+				viewer.clock.multiplier = 10;
 				viewer.clock.shouldAnimate = true;
 				clearTimeout(timer);
+				$("#cesiumBk").hide();
 				timer = setTimeout(loadRealTimeData,1000*60*5);
 			});
 		}
@@ -176,9 +179,9 @@ define("CesiumController",function(exporter){
 		function loadSnapshotData()
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
-			$("#leftEchart").hide()
 			$(".leftEchart").hide();
 //			$("#leftBk").show()
+			$("#cesiumBk").show();
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
 				if(data.data == "404")
 				{
@@ -187,6 +190,7 @@ define("CesiumController",function(exporter){
 				}
 				if(customDataSource!=undefined)customDataSource.destroy();
 				customDataSource = new SnapshotDataSource(data);
+				$("#cesiumBk").hide();
 				clearTimeout(timer);
 				timer = setTimeout(loadSnapshotData,1000*120);
 			});
