@@ -195,5 +195,7 @@ width: 366px;font-size: 16px;line-height: 36px;padding-left: 20px;}
 .leftEchartH{position: absolute;display: none;font-size: 18px;left: 40px;top: 400px;color: #fff;}
 #spaceTime{position: absolute;width: 600px;height: auto;left: 1100px;top: 100px;background: #fff;}
 
-
+#menu .title{width: 366px;height: 36px;float: left;color: #fff;background: url(../images/dataSource/tabTitle.png);}
+#menu .title h2{font-size: 16px;line-height: 36px;margin-left: 20px;}
+#menu .menuBk{background: rgba(0,45,89,0.8);position: absolute;width: 366px;height: 400px;left: 0;top: 36px;}
 
