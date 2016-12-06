@@ -108,12 +108,12 @@ define("CitySelector",function(exporter){
 			box.css("background-image","none");
 			var info = $("#widgets #w1 #info0");
 			TweenLite.to(info,0.5,{alpha:0});
-			TweenLite.to(box,0.5,{width:500,height:400,x:-500+122,y:-400+86,ease:Cubic.easeInOut});
+			TweenLite.to(box,0.5,{width:366,height:400,x:-366+122,y:-400+86,ease:Cubic.easeInOut});
 			
 			exporter.mouseChildren(view,false);
 	   		view.show();
 	   		TweenLite.set(view,{alpha:0,width:122,height:86,x:0,y:0});
-	   		TweenLite.to(view,0.5,{alpha:1,width:500,height:400,x:-500+122,y:-400+86,ease:Cubic.easeInOut,onComplete:function(){
+	   		TweenLite.to(view,0.5,{alpha:1,width:366,height:400,x:-366+122,y:-400+86,ease:Cubic.easeInOut,onComplete:function(){
 	   			exporter.mouseChildren(view,true);
 	   		}});
 	   		isOpen = true;
@@ -281,7 +281,7 @@ define("CitySelector",function(exporter){
    		rows.shift();
    		rows.shift();
    		this.dic = {};
-   		rows.unshift("100000,100000,china,0,0,全国");
+// 		rows.unshift("100000,100000,china,0,0,全国");
    		for(var i=0;i<rows.length;i++)
    		{
    			var row = rows[i];

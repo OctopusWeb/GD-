@@ -90,8 +90,7 @@ define("eventAreaController",function(exporter){
 				}
 			});
 			
-			$(".quanguo").click(function(e){
-				e.stopPropagation();
+			$("#widgets #w1 #menu #searchIcon").click(function(e){
 				returnGuo();
 			})
 			function returnGuo(){
