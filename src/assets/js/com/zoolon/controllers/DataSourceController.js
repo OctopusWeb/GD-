@@ -12,7 +12,7 @@ define("DataSourceController",function(exporter){
 		function init()
 		{
 			widgetsController.controllers.widget0.onSubmit = selectSourcesHandler;
-			widgetsController.controllers.widget1.onSelectCity = selectCityHandler;
+//			widgetsController.controllers.widget1.onSelectCity = selectCityHandler;
 			widgetsController.controllers.widget1.ontoggle = areaVisibleToggleHandler;
 			widgetsController.controllers.widget7.onSelect = switchDataSourceHandler;
 			cesiumController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
@@ -55,6 +55,7 @@ define("DataSourceController",function(exporter){
 		
 		function selectCityHandler(info)
 		{
+			$(".quanguo").html(info.name)
 			loadDataSource(info.citycode);
 		}
 		

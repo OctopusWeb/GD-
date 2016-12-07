@@ -10,8 +10,12 @@ define("CitySelector",function(exporter){
 		var toggled = false;
 		var self = this;
 		var view = $("#widgets #w1");
-		var openBt = view.find("#bt0");
+		var openBt = $(".quanguo");
 		var winController = new WinController(view.find("#menu"),selectCity);
+		
+		$("#widgets #w1 #menu #searchIcon").click(function(){
+			winController.close();
+		})
 		
 		openBt.mousedown(function(e){
 			var tl = setTimeout(function(){
@@ -281,7 +285,7 @@ define("CitySelector",function(exporter){
    		rows.shift();
    		rows.shift();
    		this.dic = {};
-// 		rows.unshift("100000,100000,china,0,0,全国");
+ 		rows.unshift("100000,100000,china,0,0,全国");
    		for(var i=0;i<rows.length;i++)
    		{
    			var row = rows[i];

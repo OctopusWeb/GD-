@@ -6,6 +6,8 @@ define("eventAreaController",function(exporter){
 		var eventController = controller.eventController;
 		var CesiumController = controller.cesiumController;
 		var widgetsController = controller.widgetsController;
+		widgetsController.controllers.widget1.onSelectCity = selectCityHandler;
+
 		var viewer = controller.cesiumController.cesiumViewer;
 		var barController = new $at.BarController(controller);
 		var borderController = new $at.BorderController(controller);
@@ -41,6 +43,7 @@ define("eventAreaController",function(exporter){
 			})
 			
 			navLi.eq(4).click(function(e){
+				if($("#nav ul li").eq(5).attr("class") == "selected")$("#nav ul li").eq(5).trigger("click");
 				e.stopPropagation();
 				$(this).toggleClass("selected");
 				Floating1 ? self.FloatingcarTime.clear() : self.FloatingcarTime.show();
@@ -109,7 +112,7 @@ define("eventAreaController",function(exporter){
 				$("#addMap div").eq(2).removeClass("mapSelect");
 				CesiumController.clear(false);
 				borderController.show(true);
-				$(".quanguo p").html("全国");
+				$(".quanguo").html("全国");
 				$("#guo span").html("全国");
 				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:"100000"}));
 				if(traffiBol && $("#rightSource").css("display") == "block"){
@@ -217,7 +220,7 @@ define("eventAreaController",function(exporter){
 			if(type == "p"){
 				cesiumType=2;
 				$("#city").html(cityName);
-				$(".quanguo  p").html(cityName);
+				$(".quanguo").html(cityName);
 				codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
 				borderController.show(false,true,codeIndex);
 				if(Floating)cityBar(parseInt(cityCode/10000)*10000);
@@ -233,9 +236,9 @@ define("eventAreaController",function(exporter){
 			}else if(type == "c"){
 				cesiumType=3;
 				barController.CityClear();
-				borderController.show(false)
+				borderController.show(false);
 				InducedBol = true;
-				$(".quanguo  p").html(cityName);
+				$(".quanguo").html(cityName);
 				cur_cityCode = cityCode;
 //				drcwCityborder(cur_cityCode)
 				if(Floating){
@@ -264,7 +267,7 @@ define("eventAreaController",function(exporter){
 			}else if(type == "o"){
 				cesiumType=3;
 				InducedBol = true;
-				$(".quanguo  p").html(cityName);
+				$(".quanguo").html(cityName);
 				$("#leftEchart").hide();
 				$(".leftEchart").hide();
 				cur_cityCode = cityCode;
@@ -292,6 +295,36 @@ define("eventAreaController",function(exporter){
 				$("#spaceTime").show();
 			}
 		}
+		function selectCityHandler(info)
+		{
+			cesiumType=3;
+			InducedBol = true;
+			borderController.show(false)
+			$(".quanguo").html(info.name);
+			$("#leftEchart").hide();
+			$(".leftEchart").hide();
+			cur_cityCode = info.citycode;
+			if(Floating){
+				cityBar(info.citycode);
+				ExternalCall(JSON.stringify({cmd:"goCity",cityCode:cur_cityCode}));
+			}else{
+				var city = CesiumController.getInfoByCityCode(cur_cityCode);
+				$("#city").html(info.name)
+				viewer.camera.flyTo({
+					destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
+				});
+			}
+			if(traffiBol){
+				eventController.clear();
+				eventController.active = true;
+				eventController.loadEvent(info.citycode);
+			}
+			if(Floating1){
+				var dsList =CesiumController.getDsList(cur_cityCode);
+				CesiumController.loadDataSource1(cur_cityCode,dsList);
+			}
+//			loadDataSource(info.citycode);
+		}
 		
 		function parseCityInfo(){
 			initCityInfo("100000").then(function(data,citycode){
@@ -310,7 +343,7 @@ define("eventAreaController",function(exporter){
 				var cityTxt = $(this).html();
 				cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length)
 				$("#city").html(cityTxt);
-				$(".quanguo  p").html(cityTxt);
+				$(".quanguo").html(cityTxt);
 				var cityCode = $(this).attr("class").toString();
 				var codeIndex = indexOf(borderController.citys, parseInt(cityCode/10000)*10000);
 				borderController.show(false,true,codeIndex);
@@ -336,7 +369,7 @@ define("eventAreaController",function(exporter){
 				dom.parent().parent().find("h1").html($(this).html())
 				var cityTxt = $(this).html();
 				cityTxt = cityTxt.substr(cityTxt.indexOf(".")+1,cityTxt.length);
-				$(".quanguo  p").html(cityTxt);
+				$(".quanguo").html(cityTxt);
 				$("#cities span").html(cityTxt);
 				var adCode = $(this).attr("class").toString();
 				cur_cityCode = adCode;
@@ -558,7 +591,7 @@ define("eventAreaController",function(exporter){
 				position : Cesium.Cartesian3.fromDegrees(po[0],po[1],0),
 				billboard : {
 					image : "src/assets/images/dataSource/start.png",
-					scale : 0.2, 
+					scale : 0.4, 
 					verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 				}
 			});
@@ -567,7 +600,7 @@ define("eventAreaController",function(exporter){
 				position : Cesium.Cartesian3.fromDegrees(po[po.length-2],po[po.length-1],0),
 				billboard : {
 					image : "src/assets/images/dataSource/stop.png",
-					scale : 0.2, 
+					scale : 0.4, 
 					verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 				}
 			});

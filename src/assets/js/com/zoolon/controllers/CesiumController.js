@@ -19,8 +19,8 @@ define("CesiumController",function(exporter){
 //		if(!exporter.Config.debugMode)
 //		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
-		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',
@@ -143,6 +143,8 @@ define("CesiumController",function(exporter){
 		{
 //			$(viewer.animation.container).show();
 //			$(viewer.timeline.container).show();
+			viewer.clock.shouldAnimate = true;
+			viewer.clock.multiplier = 30;
 			loadRealTimeData();
 		}
 		
@@ -179,7 +181,8 @@ define("CesiumController",function(exporter){
 		function loadSnapshotData()
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
-			$(".leftEchart").hide();
+//			$("#leftEchart").hide()
+//			$(".leftEchart").hide();
 //			$("#leftBk").show()
 			$("#cesiumBk").show();
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
@@ -445,7 +448,7 @@ define("CesiumController",function(exporter){
 						datas.push({value:item.data.rank, name:item.data.label,
 					                	itemStyle: {
 							                normal: {
-							                    color: staticColors[i]
+							                    color: item.data.color
 							                }
 						            	}
 					                })
@@ -461,7 +464,7 @@ define("CesiumController",function(exporter){
 						datas.push({value:totalSum, name:'其他',
 					                	itemStyle: {
 							                normal: {
-							                    color: "#669999"
+							                    color: "#fff"
 							                }
 						            	}})
 					}
@@ -492,7 +495,7 @@ define("CesiumController",function(exporter){
 									'</div>';
 					this.view = $(htmlStr);
 					var colorBox = this.view.find(".colorBox");
-					colorBox.css("background-color",staticColors[i]);
+					colorBox.css("background-color",obj.color);
 					var label0 = this.view.find(".label0");
 					var label1 = this.view.find(".label1");
 					var label = this.view.find(".label2");
@@ -540,8 +543,9 @@ define("CesiumController",function(exporter){
 				function TotalItem()
 				{
 					this.view = $("<div>",{style:"padding:5px;color:#ffffff;font-size:16px;font-family:黑体;"});
-//					this.view.text("总计:"+_self.collection.length);
-					this.view.text("");
+					this.view.text("总计:"+_self.collection.length);
+					this.view.html("<div class='all'>总计:</div><div class='label1 all'>"+_self.collection.length+"</div>"+"<div class='label0 all'>100%</div>");
+					
 				}
 			}
 			function drawEchart(datas){
@@ -651,17 +655,17 @@ define("CesiumController",function(exporter){
 		function ColorMap()
 		{
 			var staticColors = [
-				"#c93e3e",
-				"#c55a4c",
-				"#bf721c",
-				"#bfa536",
-				"#b7ab64",
-				"#2ea19d",
-				"#1e87b5",
-				"#24669f",
-				"#265497",
-				"#064c9f",
-				"#b5b5b5"
+					"#c93e3e",
+					"#c55a4c",
+					"#bf721c",
+					"#bfa536",
+					"#b7ab64",
+					"#2ea19d",
+					"#1e87b5",
+					"#24669f",
+					"#265497",
+					"#064c9f",
+					"#b5b5b5"
 			];
 			
 			var colorMapList;
