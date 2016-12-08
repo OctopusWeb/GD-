@@ -4,6 +4,8 @@ define("CesiumController",function(exporter){
 	{
 		var globe = new Cesium.Globe();
 		globe.tileCacheSize=10000;
+		var isStart = false;
+		var begin = 0;
 		var option = {
 			globe : globe,
 			baseLayerPicker:false,
@@ -19,8 +21,8 @@ define("CesiumController",function(exporter){
 //		if(!exporter.Config.debugMode)
 //		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
-//		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',
@@ -41,17 +43,8 @@ define("CesiumController",function(exporter){
 		//隐藏cesium的logo
 		$(".cesium-viewer-bottom").hide();
 		
-		//加载区域轮廓
-//		var promise = Cesium.GeoJsonDataSource.load('src/assets/data/地市级行政区划抽稀后.json');
 		var self = this;
 		var areaSource;
-//		promise.then(function(dataSource){
-//			areaSource = dataSource;
-//			self.setAreaVisible(false);
-//			viewer.dataSources.add(dataSource);
-//		}).otherwise(function(error){
-//			window.alert(error);
-//		});
 		
 		this.dataType = DataType.snapshot;
 		this.cityCode;
@@ -141,33 +134,79 @@ define("CesiumController",function(exporter){
 		//显示实时数据
 		function showRealTime()
 		{
-//			$(viewer.animation.container).show();
-//			$(viewer.timeline.container).show();
 			viewer.clock.shouldAnimate = true;
 			viewer.clock.multiplier = 30;
-			loadRealTimeData();
+			begin = Contrail.Tools.timestamp();
+        	loadRealTimeData(contrail);
 		}
 		
-		function loadRealTimeData()
+		function loadRealTimeData(contrail)
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#cesiumBk").show();
-			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,undefined,function(data){
-				if(data.data == "404")
+			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,undefined,function(datas){
+				if(datas.data == "404")
 				{
 					loadRealTimeData();
 					return;
 				}
-				if(customDataSource1!=undefined)customDataSource1.destroy();
-				customDataSource1 = new CustomDataSource(data,false);
-				viewer.dataSources.add(customDataSource1.czmlDataSource);
-				viewer.clock.multiplier = 10;
-				viewer.clock.shouldAnimate = true;
-				clearTimeout(timer);
+				var timestamp = Contrail.Tools.timestamp();
+		        var timeRange = {
+		            start: timestamp - 5 * 60 * 1000,
+		            end: timestamp,
+		        }
+		        contrail.start();
+		    	isStart = true;
+		        var dataset = new Contrail.DataSet(timestamp, timeRange);
+		
+		        if (datas.data.indexOf("&#9;") > -1) {
+		            var rows = datas.data.split("&#9;");
+		            if (rows.length > 0) {
+		                while (rows[rows.length - 1].length == 0) {
+		                    rows.pop();
+		                }
+		            }
+		
+		            for (var i = 0; i < rows.length; i++) {
+		                var row = rows[i];
+		                var pData = row.split(",");
+		                if (pData.length != 4) {
+		                    continue;
+		                }
+		                var time = Contrail.Tools.stringToTimestamp(pData[3]);
+		                dataset.addTick(pData[0], pData[2], pData[1], time, {})
+		            }
+		        }
+		
+		        dataset.build(function () {
+		            contrail.shift(dataset);
+		            if (isStart == false) {
+		                contrail.start();
+		                isStart = true;
+		            }
+		
+		        });
 				$("#cesiumBk").hide();
-				timer = setTimeout(loadRealTimeData,1000*60*5);
+		        setTimeout(function () {
+		            loadRealTimeData(contrail);
+		        }, 1000*5*60);
 			});
 		}
+		var contrail = new Contrail(viewer, {
+	        timeline: {
+	            speed: 30,
+	        },
+	        runner: {
+	            autoHide: true,
+	            show: false,
+	            style: {
+	                color: [255, 255, 0, 255],
+	                pixelSize: 3,
+	                outlineColor: [0, 0, 255, 50],
+	                outlineWidth: 0
+	            },
+	        }
+	    });
 		
 		//显示快照模式
 		function showSnapshot()
@@ -181,9 +220,6 @@ define("CesiumController",function(exporter){
 		function loadSnapshotData()
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
-//			$("#leftEchart").hide()
-//			$(".leftEchart").hide();
-//			$("#leftBk").show()
 			$("#cesiumBk").show();
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
 				if(data.data == "404")
@@ -217,7 +253,6 @@ define("CesiumController",function(exporter){
 				viewer.clock.shouldAnimate = true;
 			});
 		}
-		
 		this.clear=function(type)
 		{
 			if(timer!=undefined)
@@ -234,11 +269,7 @@ define("CesiumController",function(exporter){
 					customDataSource = undefined;
 				}
 			}else{
-				if(customDataSource1!=undefined)
-				{
-					customDataSource1.destroy();
-					customDataSource1 = undefined;
-				}
+				contrail.clear();
 			}
 			
 			exporter.DebugTool.clear();

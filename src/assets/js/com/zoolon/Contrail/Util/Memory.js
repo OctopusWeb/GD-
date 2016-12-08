@@ -1,0 +1,3 @@
+Contrail.Cache = {
+
+};

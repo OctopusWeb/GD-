@@ -492,8 +492,6 @@ define("eventAreaController",function(exporter){
 		this.FloatingcarTime = {};
 		this.FloatingcarTime.clear = function(){
 			Floating1 = false;
-			$(viewer.animation.container).hide();
-			$(viewer.timeline.container).hide();
 			CesiumController.clear(false);
 			
 		}
@@ -524,20 +522,28 @@ define("eventAreaController",function(exporter){
 			})
 			$("#spanTime").fadeIn();
 		}
-		
+		var inter = "";
+		var road = "";
 		this.changeMap = function(){
 			if(mapArea){
+				clearInterval(inter);
 				layers.remove(road, true);
 			}else{
-				road = layers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({
-				    url: 'http://restapi.amap.com/v3/raster?key=a17abd213251a15c878156e9003aaacc&x={TileCol}&y={TileRow}&z={TileMatrix}',
-			        layer: 'USGSShadedReliefOnly',
-			        style: 'default',
-			        format: 'image/jpeg',
-			        tileMatrixSetID: 'default028mm',
-			        maximumLevel: 20,
-				}));
-				road.alpha = 0.5;
+				addMap();
+				inter = setInterval(addMap,5*60*1000)
+				function addMap(){
+					if(road != "")layers.remove(road, true);
+					road = layers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({
+					    url: 'http://restapi.amap.com/v3/raster?key=a17abd213251a15c878156e9003aaacc&x={TileCol}&y={TileRow}&z={TileMatrix}',
+				        layer: 'USGSShadedReliefOnly',
+				        style: 'default',
+				        format: 'image/jpeg',
+				        tileMatrixSetID: 'default028mm',
+				        maximumLevel: 20,
+					}));
+					road.alpha = 0.5;
+				}
+				
 			}
 			mapArea=!mapArea;
 		}

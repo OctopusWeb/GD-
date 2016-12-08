@@ -202,3 +202,10 @@ width: 366px;font-size: 16px;line-height: 36px;padding-left: 20px;}
 .searchItem:first-child{display: none;}
 #widgets #w1 #info0,#widgets #w1 #box{display: none;}
 .all{float: left;}
+
+.positionCar{position: absolute;top: 810px;left: 20px;width: 366px;display: none;}
+.positionCar h2{width: 350px;background: url(../images/dataSource/tabTitle.png) no-repeat;color: #fff;line-height: 36px;font-size: 16px;padding-left: 16px;}
+.positionCar ul{float: left;width: 183px;background: rgba(0,45,89,0.8);list-style: none;float: left;padding-top: 30px;padding-bottom: 30px;}
+.positionCar ul li{float: left;width: 183px;height: 30px;padding-left: 30px;}
+.positionCar ul li img{width: 20px;float: left;padding-top: 3px;}
+.positionCar ul li h3{float: left;color: #fff;margin-left: 10px;width: 120px;white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden; }
