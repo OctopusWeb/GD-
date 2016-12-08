@@ -35,9 +35,9 @@ define("PositionCarController",function(exporter){
 			});
 	    	
 	    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-	    $("#nav ul li").eq(5).click(function(e){
-			if($("#nav ul li").eq(4).attr("class") == "selected")$("#nav ul li").eq(4).trigger("click");
-			$(this).toggleClass("selected");
+	    $("#nav ul li").eq(4).click(function(e){
+//			if($("#nav ul li").eq(4).attr("class") == "selected")$("#nav ul li").eq(4).trigger("click");
+//			$(this).toggleClass("selected");
 			Floating2=!Floating2;
 			if(!Floating2)self.floatCar2.clear();
 		});

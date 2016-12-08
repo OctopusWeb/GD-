@@ -144,6 +144,7 @@ define("CesiumController",function(exporter){
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#cesiumBk").show();
+			$(".positionCar").hide();
 			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,undefined,function(datas){
 				if(datas.data == "404")
 				{
