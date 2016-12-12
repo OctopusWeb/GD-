@@ -45,8 +45,9 @@ define("BarController",function(exporter){
 					$("#cesiumBk").hide();
 					$("#NewsourceInfo").html("");
 					$("#NewSourcechart").hide();
+					$("#leftSource").css({"height":"180px"})
 				}else{
-					$("#NewSourcechart").show();
+					
 					self.drawSourceBars(url,dataSourcetype,type,vars);
 					
 				}
@@ -94,7 +95,6 @@ define("BarController",function(exporter){
 			var i=0;
 			var datas=[];
 			var index="";
-			
 			var staticColors = [
 					"#c93e3e",
 					"#c55a4c",
@@ -129,7 +129,7 @@ define("BarController",function(exporter){
 			}
 			index+='<div class="newInfo"><div class="box" style="background-color: #fff";></div><p style="color: #fff">总计</p><span class="label1" style="color: #fff">'+all+'</span><span class="label0" style="color: #fff">100%</span></div>';
 			$("#NewsourceInfo").html(index);
-			
+			$("#NewSourcechart").show();
 			drawEchart(datas);
 			function drawEchart(datas){
 				var myChart = echarts.init(document.getElementById('NewSourcechart'));
@@ -169,7 +169,7 @@ define("BarController",function(exporter){
 		        // 使用刚指定的配置项和数据显示图表。
 		        myChart.setOption(option);
 		        $(".leftNewSource").show();
-		         $("#leftSource").css({"height":"380px"})
+		        $("#leftSource").css({"height":"380px"})
 			}
 		}
 		

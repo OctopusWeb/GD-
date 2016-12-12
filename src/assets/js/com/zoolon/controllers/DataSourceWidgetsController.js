@@ -276,7 +276,14 @@ define("controllers.dataSource.Widget0",function(exporter){
 			var values = self.getSelectedValues();
 			cur_dsCodesArr = self.getSelectedValuesArr();
 			$("#info").trigger("source",JSON.stringify(values));
-			if(values.length == 0)return;
+			if(values.length == 0){
+				self.close(function(){
+					
+					$(".leftNewSource ").hide();
+					$(".leftNewSource").hide()
+				});
+				return
+			};
 			self.close(function(){
 				if(widget.onSubmit!=undefined)widget.onSubmit(values);
 			});

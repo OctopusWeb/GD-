@@ -26,7 +26,8 @@ define("Config",function(exporter){
 		getPulseResult:Config.debugMode ? "src/assets/data/getPulseResult.json" : "http://140.205.57.130/portal/diagram/bi!getPulseResult.action",
 		getRouteAvoidJamResult:Config.debugMode ? "src/assets/data/getRouteAvoidJamResult.json" : "http://140.205.57.130/portal/diagram/bi!getRouteAvoidJamResult.action",
 		
-		getTrafficFpData:Config.debugMode ? "src/assets/data/201511041845_110000/201511041845_110000.txt" :"/dc/api/snapshot",
+		getTrafficFpData:Config.debugMode ? "src/assets/data/201511041845_110000/201511041845_110000.txt" :"../../dc/api/snapshot",
+		getTrafficFpData1:Config.debugMode ? "src/assets/data/201511041845_110000/201511041845_110000.txt" :"http://140.205.176.207/TrafficFpData/getData",
 		
 		getDataSources:Config.debugMode ? "src/assets/data/getDSbyCity.json" : "http://140.205.57.130/portal/fp/component!getDSbyCity.action",
 		
@@ -53,3 +54,4 @@ var cur_dsCodes;
 var cur_dsCodesArr;
 var cur_label;
 var numShow=false;
+var timer1;

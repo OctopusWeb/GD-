@@ -246,35 +246,35 @@
 					                {value:map["事故"], name:'事故',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#c93f3f'
+							                    color: '#C93F3F'
 							                }
 						            	}
 					                },
 					                {value:map["施工类"], name:'施工类',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#be721e'
+							                    color: '#BF721D'
 							                }
 						            	}
 					                },
 					                {value:map["管制类"], name:'管制类',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#b8ab65'
+							                    color: '#2EA09D'
 							                }
 						            	}
 					                },
 					                {value:map["路面"], name:'路面',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#2ea19e'
+							                    color: '#B7AB65'
 							                }
 						            	}
 					                },
 					                {value:map["流量"], name:'流量',
 					                	itemStyle: {
 							                normal: {
-							                    color: '#1e87b6'
+							                    color: '#1F87B5'
 							                }
 						            	}
 					                },

@@ -32,6 +32,30 @@
 		},'text');
 	}
 	
+	Server.getTrafficFpData1 = function(citycode,dsCodes,type,onSuccess)
+	{
+		var vars = {};
+		vars.ts = exporter.TimeUtil.getTimestampBefore(0);
+		vars.sign = Server.getSign(vars.ts);
+		vars.citycode = citycode;
+		if(dsCodes!=undefined)vars.dscode = dsCodes.join(',');
+		if(type == 2)
+		{
+			vars.type = type;
+			vars.timeInterval = 5;
+			vars.maxGpsNum = 1000000;
+		}
+		var url = exporter.Config.request.getTrafficFpData1;
+		var timeRange = exporter.TimeUtil.getTimeRangeBefore(5);
+		return exporter.get(url,vars,function(data){
+			var obj = {
+				timeRange:timeRange,
+				data:data
+			};
+			onSuccess(obj);
+		},'text');
+	}
+	
 	Server.getHistoryTrafficFpData = function(citycode,onSuccess)
 	{
 		var vars = {};

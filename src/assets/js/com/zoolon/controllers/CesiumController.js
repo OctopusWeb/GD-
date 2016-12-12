@@ -135,7 +135,7 @@ define("CesiumController",function(exporter){
 		function showRealTime()
 		{
 			viewer.clock.shouldAnimate = true;
-			viewer.clock.multiplier = 30;
+			viewer.clock.multiplier = 15;
 			begin = Contrail.Tools.timestamp();
         	loadRealTimeData(contrail);
 		}
@@ -145,7 +145,7 @@ define("CesiumController",function(exporter){
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#cesiumBk").show();
 			$(".positionCar").hide();
-			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,undefined,function(datas){
+			dataLoader = exporter.Server.getTrafficFpData1(self.cityCode,self.dsCodes,undefined,function(datas){
 				if(datas.data == "404")
 				{
 					loadRealTimeData();
@@ -188,23 +188,23 @@ define("CesiumController",function(exporter){
 		
 		        });
 				$("#cesiumBk").hide();
-		        setTimeout(function () {
+		        timer1 = setTimeout(function () {
 		            loadRealTimeData(contrail);
 		        }, 1000*5*60);
 			});
 		}
 		var contrail = new Contrail(viewer, {
 	        timeline: {
-	            speed: 30,
+	            speed: 15,
 	        },
 	        runner: {
 	            autoHide: true,
 	            show: false,
 	            style: {
-	                color: [255, 255, 0, 255],
-	                pixelSize: 3,
-	                outlineColor: [0, 0, 255, 50],
-	                outlineWidth: 0
+	                color: [255, 255, 255, 255],
+	                pixelSize: 4,
+	                outlineColor: [181,181,181,255],
+	                outlineWidth: 2
 	            },
 	        }
 	    });
@@ -270,6 +270,7 @@ define("CesiumController",function(exporter){
 					customDataSource = undefined;
 				}
 			}else{
+				clearTimeout(timer1);
 				contrail.clear();
 			}
 			
