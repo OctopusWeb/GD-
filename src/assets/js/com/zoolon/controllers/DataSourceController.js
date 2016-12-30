@@ -8,6 +8,8 @@ define("DataSourceController",function(exporter){
 		this.widgetsController = widgetsController;
 		var eventController = new exporter.EventController(cesiumController.cesiumViewer);
 		this.eventController = eventController;
+		var eventVController = new exporter.EventVController(cesiumController.cesiumViewer);
+		this.eventVController = eventVController;
 
 		function init()
 		{
@@ -18,6 +20,7 @@ define("DataSourceController",function(exporter){
 			cesiumController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
 			cesiumController.getDsList = widgetsController.controllers.widget0.dsSelector.getDsList;
 			eventController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
+			eventVController.getInfoByCityCode = widgetsController.controllers.widget1.getInfoByCityCode;
 			$(document).bind("ExternalCall",externalCall);
 			
 			widgetsController.loadDataSource("100000");

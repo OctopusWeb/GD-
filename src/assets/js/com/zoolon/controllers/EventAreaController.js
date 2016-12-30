@@ -4,6 +4,7 @@
 define("eventAreaController",function(exporter){
 	var eventAreaController  = function(controller){
 		var eventController = controller.eventController;
+		var eventVController = controller.eventVController;
 		var CesiumController = controller.cesiumController;
 		var widgetsController = controller.widgetsController;
 		widgetsController.controllers.widget1.onSelectCity = selectCityHandler;
@@ -22,7 +23,7 @@ define("eventAreaController",function(exporter){
 		var proArr=[];
 		var proCenter=[];
 		var navNum=10;
-		var mapArea,traffiBol,Floating,Floating1,InducedBol,codeIndex,Spacebol = false;
+		var mapArea,traffiBol,Floating,Floating1,InducedBol,codeIndex,Spacebol,traffiBolV = false;
 		var Induceds = viewer.entities.add(new Cesium.Entity());
 		
 		eventInit();
@@ -40,6 +41,11 @@ define("eventAreaController",function(exporter){
 				e.stopPropagation();
 				$(this).toggleClass("selected");
 				traffiBol ? self.trafficEvent.clear() : self.trafficEvent.show();
+			})
+			navLi.eq(6).on("click",function(e){
+				e.stopPropagation();
+				$(this).toggleClass("selected");
+				traffiBolV ? self.trafficVideo.clear() : self.trafficVideo.show();
 			})
 			
 			navLi.eq(4).click(function(e){
@@ -120,6 +126,11 @@ define("eventAreaController",function(exporter){
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
 				}
+				if(traffiBolV && $("#rightSource").css("display") == "block"){
+					eventVController.clear();
+					eventVController.active = true;
+					eventVController.loadEvent(this.cityCode);
+				}
 			}
 			$(".tabClick li").eq(0).click(function(){
 				$(".tabClick li").eq(0).addClass("active")
@@ -193,7 +204,7 @@ define("eventAreaController",function(exporter){
 				    name : "I"+parse[i][2],
 				    billboard : {
 				        image : imgUrl,
-				        scale : 0.5,
+				        scale : 0.4,
 				        verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
 		            	scaleByDistance : new Cesium.NearFarScalar(1.5e2, 1, 0.8, 0.6)
 				    }
@@ -225,7 +236,17 @@ define("eventAreaController",function(exporter){
 				borderController.show(false,true,codeIndex);
 				if(Floating)cityBar(parseInt(cityCode/10000)*10000);
 				cur_cityCode = parseInt(cityCode/10000)*10000;
-				$(document).trigger("loadList",cur_cityCode)
+				$(document).trigger("loadList",cur_cityCode);
+				if(traffiBol){
+					eventController.clear();
+					eventController.active = true;
+					eventController.loadEvent(cur_cityCode,true);
+				}
+				if(traffiBolV){
+					eventVController.clear();
+					eventVController.active = true;
+					eventVController.loadEvent(cur_cityCode,true);
+				}
 				viewer.camera.flyTo({
 					destination : Cesium.Cartesian3.fromDegrees(proCenter[index][0], proCenter[index][1]-6, 800000.0),
 					orientation : {
@@ -255,6 +276,11 @@ define("eventAreaController",function(exporter){
 					eventController.clear();
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
+				}
+				if(traffiBolV){
+					eventVController.clear();
+					eventVController.active = true;
+					eventVController.loadEvent(this.cityCode);
 				}
 				if(Floating1){
 					var dsList =CesiumController.getDsList(cur_cityCode);
@@ -287,10 +313,17 @@ define("eventAreaController",function(exporter){
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
 				}
+				if(traffiBolV){
+					eventVController.clear();
+					eventVController.active = true;
+					eventVController.loadEvent(this.cityCode);
+				}
 				if(Floating1){
 					var dsList =CesiumController.getDsList(cur_cityCode);
 					CesiumController.loadDataSource1(cur_cityCode,dsList);
 				}
+				self.SpaceTime.clear();
+				$("#addMap div").eq(0).removeClass("mapSelect");
 			}else if(type == "s"){
 				$("#spaceTime").show();
 			}
@@ -318,6 +351,11 @@ define("eventAreaController",function(exporter){
 				eventController.clear();
 				eventController.active = true;
 				eventController.loadEvent(info.citycode);
+			}
+			if(traffiBolV){
+				eventVController.clear();
+				eventVController.active = true;
+				eventVController.loadEvent(info.citycode);
 			}
 			if(Floating1){
 				var dsList =CesiumController.getDsList(cur_cityCode);
@@ -388,6 +426,11 @@ define("eventAreaController",function(exporter){
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
 				}
+				if(traffiBolV){
+					eventVController.clear();
+					eventVController.active = true;
+					eventVController.loadEvent(this.cityCode);
+				}
 			})
 		}
 		function initCityInfo(cityCode){
@@ -455,7 +498,9 @@ define("eventAreaController",function(exporter){
 			eventController.clear();
 			eventController.active = true;
 			if(cesiumType == 2){
-				eventController.loadEvent(undefined);
+				eventController.clear();
+				eventController.active = true;
+				eventController.loadEvent(cur_cityCode,true);
 			}else{
 				eventController.loadEvent(this.cityCode);
 			}
@@ -466,6 +511,26 @@ define("eventAreaController",function(exporter){
 			$("#rightSource").fadeOut()
 			eventController.clear();
 			eventController.active = false;
+		}
+		
+		this.trafficVideo = {};
+		this.trafficVideo.show = function(){
+			traffiBolV=true;
+			eventVController.clear();
+			eventVController.active = true;
+			if(cesiumType == 2){
+				eventVController.clear();
+				eventVController.active = true;
+				eventVController.loadEvent(cur_cityCode,true);
+			}else{
+				eventVController.loadEvent(this.cityCode);
+			}
+			
+		}
+		this.trafficVideo.clear = function(){
+			traffiBolV=false;
+			eventVController.clear();
+			eventVController.active = false;
 		}
 
 		this.Floatingcar = {};

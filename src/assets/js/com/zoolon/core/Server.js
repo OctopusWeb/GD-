@@ -101,6 +101,17 @@
 			onSuccess(data);
 		},'text');
 	}
+	Server.queryEventByCityV = function(citycode,onSuccess)
+	{
+		var vars = {};
+		vars.city = citycode;
+		var url = exporter.Config.request.queryEventByCity+"?screenshot=true";
+		
+		return exporter.get(url,vars,function(data){
+			
+			onSuccess(data);
+		},'text');
+	}
 	
 	Server.countEventByType = function(citycode,onSuccess)
 	{
@@ -131,6 +142,28 @@
 		var vars = {};
 		vars.city = citys;
 		var url = exporter.Config.request.countEventByCity;
+		
+		return exporter.get(url,vars,function(data){
+			
+			onSuccess(data);
+		},'text');
+	}
+	Server.countEventByCityV = function(citys,onSuccess)
+	{
+		var vars = {};
+		vars.city = citys;
+		var url = exporter.Config.request.countEventByCity+"?screenshot=true";
+		
+		return exporter.get(url,vars,function(data){
+			
+			onSuccess(data);
+		},'text');
+	}
+	Server.countEventByCityV = function(citys,onSuccess)
+	{
+		var vars = {};
+		vars.city = citys;
+		var url = exporter.Config.request.countEventByCity+"?screenshot=true";
 		
 		return exporter.get(url,vars,function(data){
 			

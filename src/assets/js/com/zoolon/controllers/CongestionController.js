@@ -3,24 +3,29 @@ define("CongestionController",function(exporter){
 	var CongestionController = function(controller,eventArea)
 	{
 		var viewer = controller.cesiumController.cesiumViewer;
+		var scene = viewer.scene;
 		var firstUrl = "https://tp-restapi.amap.com/gate?";
 		var key = "&serviceKey=53F229EBD6394D42D5714FA621FB1584";
 		var showType = 0;
 		var entities = viewer.entities;
+		var isStart = false;
+		var begin = 0;
 		var roadLink;
 		var roadCar=[];
+		var colorMap = {};
+		var winWidth =  parseInt(document.body.clientWidth);
+	    var winHeight = parseInt(document.body.clientHeight);
 //		tapEvent();
 		$("#nav ul li").eq(2).on("click",function(){
-			for(var m=0;m<roadCar.length;m++){
-				entities.remove(roadCar[m]);
-			}
+			contrail.clear();
 			if(roadLink){
 				entities.remove(roadLink);
 			}
 			eventArea.trafficEvent.clear();
 			eventArea.Floatingcar.clear();
 			eventArea.FloatingcarTime.clear();
-			UnmommonNow(cur_cityCode);
+			CommonNow(cur_cityCode);
+			$(".tabTitle").html("异常拥堵");
 			$(".tabLiList").fadeOut();
 			if(showType == 0){
 				$(".jamBk").toggle();
@@ -38,9 +43,7 @@ define("CongestionController",function(exporter){
 			showType = 0;
 		});
 		$("#nav ul li").eq(3).click(function(){
-			for(var m=0;m<roadCar.length;m++){
-				entities.remove(roadCar[m]);
-			}
+			contrail.clear();
 			if(roadLink){
 				entities.remove(roadLink);
 			}
@@ -48,7 +51,8 @@ define("CongestionController",function(exporter){
 			eventArea.trafficEvent.clear();
 			eventArea.Floatingcar.clear();
 			eventArea.FloatingcarTime.clear();
-			CommonNow(cur_cityCode);
+			$(".tabTitle").html("常规拥堵");
+			UnmommonNow(cur_cityCode);
 			$(".tabLiList").fadeOut();
 			if(showType == 1){
 				$(".jamBk").toggle();
@@ -134,6 +138,31 @@ define("CongestionController",function(exporter){
 				return data;
 			})
 		}
+		var contrail = new Contrail(viewer, {
+
+	        timeline: {
+	            speed: 4,
+	        },
+	        runner: {
+	            autoHide: true,
+	            show: false,
+	            style: function (data) {
+	                var source = data.source;
+	                var b = colorMap[source];
+	                if (b == undefined) {
+	                    b = {
+	                    	pixelSize : 5,
+				            color : [255, 255, 255, 255],
+				            outline : true,
+				       		outlineColor : [181,181,181,255],
+				       		outlineWidth : 2
+	                    };
+	                    colorMap[source] = b;
+	                }
+	                return b;
+	            },
+	        }
+	    });
 		
 		function MommonEvent(citycode,eventId,insertTime){
 			var data = {"city":citycode,
@@ -145,138 +174,111 @@ define("CongestionController",function(exporter){
 			getData("10002",JSON.stringify(data)).then(function(json){
 				var index = roadInfo(json);
 				$(".tabLiList ul").eq(0).html(index);
-				var linkId = drawCarPath(json.data.rows);
-				var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
-				var myDate = new Date();
-				var year = myDate.getYear().toString()
-				var time1 = "20"+year.substring(1,year.length);
-				var time2 = parseInt(myDate.getMonth())+1;
-				var time5 = parseInt(myDate.getMinutes())-15;
-				if(time5<0){
-					time5=time5+59
-					var time4 = parseInt(myDate.getHours())-1;
-				}else{
-					var time4 = myDate.getHours()
-				}
-				time5%2==0?time5=time5:time5=time5-1;
-				if(time4<0){time4=0};
-				time2<10 ? time2 ="0" + time2:time2 =time2
-				myDate.getDate()<10 ? time3 ="0" + myDate.getDate():time3 =myDate.getDate()
-				time4<10 ? time4 ="0" + time4: time4 =time4
-				time5<10 ? time5 ="0" + time5:time5 =time5
-				var newTime = time1+""+time2+""+time3+""+time4+""+time5+"00";
-				var datas = {
-					"roadId":linkId,
-					"time":newTime,
-					"cityCode":citycode
-				}
-				parseCar(datas).then(function(json){
-					console.log(json)
-					var x = json.rows[0].gpsInfos[0].coord[0];
-					var y = json.rows[0].gpsInfos[0].coord[1];
-					viewer.camera.flyTo({
-						destination : Cesium.Cartesian3.fromDegrees(parseFloat(x)-0.001, parseFloat(y)-0.001, 10000.0)
-					});
-					
-					var start = Cesium.JulianDate.fromDate(new Date(2016, 9, 7, 9));
-					var stop = Cesium.JulianDate.addSeconds(start, 300, new Cesium.JulianDate());
-					
-					viewer.clock.startTime = start.clone();
-					viewer.clock.stopTime = stop.clone();
-					viewer.clock.currentTime = start.clone();
-					viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
-					viewer.clock.multiplier = 1;
-					viewer.clock.canAnimate  = true;
-					viewer.clock.shouldAnimate = true;
-					
-					viewer.timeline.zoomTo(start, stop);
-					for(var m=0;m<roadCar.length;m++){
-						entities.remove(roadCar[m]);
-					}
-					roadCar=[];
-					var jsonParse = new JsonParse(json);
-					for(var i=0;i<jsonParse.length;i++){
-						var moveCar = new MoveCar(jsonParse[i],start,stop);
-					}
-				});
+				drawCarPath(json.data.rows);
 			})
 		}
-		function JsonParse(json){
-			var carArr = [];
-			var self = this;
-			self.SortByWeight = function(array, key) {
-			    return array.sort(function(a, b) {
-			        var x = a[key]; var y = b[key];
-			        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-			    });
-			}
-			for(var i=0;i<json.rows.length;i++){
-				var carData = [];
-				var gpsArr = json.rows[i].gpsInfos;
-				self.SortByWeight(gpsArr,"gpsTime")
-				for(var m=0;m<gpsArr.length;m++){
-					var coord=gpsArr[m].coord;
-					coord.push(gpsArr[m].gpsTime)
-					carData.push(coord);
-				}
-				carArr.push(carData);
-			}
-			
-				
-			return carArr;
-		}
-		function MoveCar(jsonParse,start,stop){
-			var myPosition = [];
-			var myTime = [];
-			var firstTime = jsonParse[0][2].split(':').join('');
-			for(var i=0;i<jsonParse.length;i++){
-				var carTime = jsonParse[i][2].split(':').join('');
-				var showtime = (carTime-firstTime)%100+parseInt((carTime-firstTime)/100)*60;
-				myPosition[i] = Cesium.Cartesian3.fromDegrees(jsonParse[i][0], jsonParse[i][1],10);
-				myTime[i] = Cesium.JulianDate.addSeconds(start, showtime, new Cesium.JulianDate());
-			}
-			this.computeCirclularFlight = function() {
-                var property = new Cesium.SampledPositionProperty();
-                property.addSamples(myTime, myPosition);
-                return property;
-            }
-			var Position = this.computeCirclularFlight();
-			
-			var car = viewer.entities.add({
-	            availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
-	                start : start,
-	                stop : stop
-	            })]),
-	            position : Position,
-	            point : {
-		            color : Cesium.Color.WHITE, // default: WHITE
-		            pixelSize : 10, // default: 1
-		            outlineColor : Cesium.Color.BLUE, // default: BLACK
-		            outlineWidth : 3, // default: 0
-		            scaleByDistance : new Cesium.NearFarScalar(1.5e2, 0.4, 0.3, 0.2)
-		        }
-//	           	billboard :{
-//		            image : 'src/assets/images/dataSource/car.png',
-//		            sizeInMeters : true
-//		        },
-//	            path : {
-//	                material:Cesium.Color.RED.withAlpha(0.1)
-//	            }
+		
+		function getData1(contrail,url1) {
+//	        url: "http://tongji.amap.com/dipper-fp-srv/fp/getmeshuserfp?minx="+x1+"&miny="+y2+"&maxx="+x2+"&maxy="+y1+"&starttime="+time1+"&endtime="+time2,
+		    sourceArrN=[];
+		    $.ajax({
+	             type: "get",
+	             async: true,
+	             url: url1,
+	             dataType: "jsonp",
+	             jsonp: "callback",
+	             success: function(text){
+			        var timestamp = Contrail.Tools.timestamp();
+			        //    timestamp = 1481014104 * 1000;
+//			        var timeRange = {
+//			            start: timestamp - 5 * 60 * 1000,
+//			            end: timestamp,
+//			        }
+			        
+			        contrail.start();
+			    	isStart = true;
+			        timeRange = undefined;
+			        var dataset = new Contrail.DataSet(timestamp, timeRange);
 
-	        }); 
-	        roadCar.push(car);
+			        for (var key in text) {
+			            var ps = text[key];
+			            for (var d in ps) {
+			                var pp = ps[d];
+			                for (var i = 0; i < pp.length; i++) {
+			                    var pData = pp[i].split(",");
+			
+			                    var time = Contrail.Tools.stringToTimestamp(pData[0]);
+			                    dataset.addTick(d, pData[2], pData[1], time, {
+			                        source: key,
+			                    })
+			                }
+			            }
+			        }
+			
+			
+			        dataset.build(function () {
+			            contrail.addDataSet(dataset);
+			            if (isStart == false) {
+		                    contrail.start();
+		                    isStart = true;
+			            }
+			            trace("done!");
+			        })
+			        
+			    }
+		    });
 		}
-		
-		function parseCar(datas){
-			var urls = "http://140.205.57.130/portal/pr/gps-service!getGpsInfo.action";
-//			var urls = "src/assets/data/roadCar.json"
-			return $at.get(urls,datas,function(json){	
-				return json;
-			})
+		function floatCarshow(){
+			contrail.clear();
+			
+			var pos = new Cesium.Cartesian2(-100, -100);
+			var cartesian = viewer.camera.pickEllipsoid(pos, scene.globe.ellipsoid);
+			if (cartesian) {
+	            var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+	            var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+	            var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+
+	        }
+			var pos1 = new Cesium.Cartesian2(parseInt(winWidth)+100, parseInt(winHeight)+100);
+			var cartesian1 = viewer.camera.pickEllipsoid(pos1, scene.globe.ellipsoid);
+			if (cartesian1) {
+	            var cartographic1 = Cesium.Cartographic.fromCartesian(cartesian1);
+	            var longitude1 = Cesium.Math.toDegrees(cartographic1.longitude);
+	            var latitude1 = Cesium.Math.toDegrees(cartographic1.latitude);
+	        }
+			var nowDate = new Date();
+			var month = nowDate.getMonth()+1;
+			month>9?month=month:month="0"+month;
+			var day=nowDate.getDate();
+			day>9?day=day : day = "0"+day;
+			var hours = nowDate.getHours();
+			var minutes = nowDate.getMinutes();
+			
+			if(minutes<16){
+				minutes="59";
+				hours=hours-1;
+				var num=1000;
+			}else{
+				var num=1000;
+			}
+			hours>9?hours = hours :hours = "0"+hours;
+			var time2 = nowDate.getFullYear()+""+month+day+hours+minutes+"00";
+			var time1 = parseInt(time2)-num;			
+			
+			var url = "http://140.205.244.212/fp/getmeshuserfp?minx="+longitude+"&miny="+latitude1+"&maxx="+longitude1+"&maxy="+latitude+"&starttime="+time1+"&endtime="+time2
+			begin = Contrail.Tools.timestamp();
+       		getData1(contrail,url);
+			viewer.clock.shouldAnimate = true;
+			
 		}
-		
+
 		function drawCarPath(rows){
 			var positions = "["+rows[maxLength()].xys.replace(/;/g,',')+"]";
+			var center = rows[maxLength()].xy.split(",")
+			viewer.camera.flyTo({
+				destination : Cesium.Cartesian3.fromDegrees(parseFloat(center[0])-0.001, parseFloat(center[1])-0.001, 2000.0),
+				complete:function(){floatCarshow()}
+			});
 			positions = JSON.parse(positions);
 			if(roadLink){
 				entities.remove(roadLink);
@@ -357,14 +359,7 @@ define("CongestionController",function(exporter){
 				var eventId = $(this).attr("class");
 				$(this).siblings().css({"background":"none"})
 				$(this).css({"background":"rgba(0,0,0,0.4)"})
-//				var xy = $(this).find("h6").text();
-//				var x=xy.substring(0,xy.indexOf(","));
-//				var y=xy.substring(xy.indexOf(",")+1,xy.length);
 				var insertTime = $(this).find(".roadInfo h4").eq(3).text();
-//				viewer.camera.flyTo({
-//					destination : Cesium.Cartesian3.fromDegrees(x, y, 10000.0)
-//				});
-				
 				MommonEvent(citycode,eventId,insertTime);
 				$(".tabLiList").fadeOut();
 				$(".tabLiList").fadeIn();

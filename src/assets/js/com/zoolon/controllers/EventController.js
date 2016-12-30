@@ -55,10 +55,21 @@
 		}
 			
 		//cur_cityCode = "100000";
-		this.loadEvent = function(cityCode) {
-			
+		this.loadEvent = function(cityCode,types) {
 			$(viewer.animation.container).hide();
 			$(viewer.timeline.container).hide();
+			if(types){
+				if(eventSourceLoader!=undefined)eventSourceLoader.abort();
+				if(eventTypeLoader!=undefined)eventTypeLoader.abort();
+				if(eventCitysLoader!=undefined)eventCitysLoader.abort();
+				if(eventCityLoader!=undefined)eventCityLoader.abort();
+				
+	        	
+				loadEventSourceCount();
+				loadEventTypeCount();
+				loadEventCitys()
+				return
+			}
 			flyToCurrentCity(function(){
 				loadData();
 				if (cur_cityCode == "100000") {
@@ -355,6 +366,52 @@
 				countEntities = [];
 			});
 		}
+		
+		var loadEventCitys = function() {
+			for(var i=0;i<countEntities.length;i++){
+				viewer.entities.remove(countEntities[i]);
+			}
+			//console.log("loadEventCitysCount");
+			
+			eventCitysLoader = exporter.Server.countEventByCity(cur_cityCode, function(data) {
+				//console.log(data);
+				if (data == "404") {
+					loadEventCitys();
+					return;
+				}
+				//console.log("countEventByCity");
+				var sourceData = eval(data);
+				for(var i=0;i<sourceData.length;i++){
+					var cityInfo = self.getInfoByCityCode(sourceData[i].code);
+					var pinBuilder = new Cesium.PinBuilder();
+					var position = Cesium.Cartesian3.fromDegrees(parseFloat(cityInfo.lat),parseFloat(cityInfo.lng));
+					var cityPinId = "cityPin"+i;
+					var pic = drawPic(sourceData[i].value);
+					var cityPin = viewer.entities.add({
+						name : sourceData[i].name,
+						position : position,
+						id:cityPinId,
+						billboard : {
+							horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+							image : pic,
+							scale : 0.4,
+							verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+						}
+					});
+					entityId.push(cityPinId);
+					countEntities.push(cityPin);
+				}
+				
+				if(self.active){
+					
+				}else{
+					for(var i=0;i<countEntities.length;i++){
+						viewer.entities.remove(countEntities[i]);
+					}
+				}  
+				countEntities = [];
+			});
+		}
 		function drawPic(text){
 			var imgs = new Image();
 			var canvas = document.getElementById('myCanvas');
@@ -508,6 +565,7 @@
 				}
 				
 			}
+			lastTimeEntites = tmpLast;
 		}
 		
 		//获得城市的事件概况
@@ -574,7 +632,7 @@
 								billboard : {
 //									image : pinBuilder.fromUrl(url,color, size),picUrl
 									image : url,
-									scale : 0.5, // default: 1.0
+									scale : 0.3, // default: 1.0
 									verticalOrigin : Cesium.VerticalOrigin.BOTTOM
 								}
 							});
@@ -584,7 +642,7 @@
 						
 						function tweenPin(pin)
 						{
-							var obj = {scale:0.5};
+							var obj = {scale:0.3};
 							TweenMax.to(obj,1,{scale:1,onUpdate:function(_pin){
 								_pin.billboard.scale = obj.scale;
 							},onUpdateParams:[pin],yoyo:true,repeat:1});
@@ -610,7 +668,7 @@
 		function flyToEvent(position,onComplete){
 			removeLine();
 			viewer.camera.flyTo({
-				destination : Cesium.Cartesian3.fromDegrees(parseFloat(position.lng)-0.001, parseFloat(position.lat)-0.001, 3000.0),
+				destination : Cesium.Cartesian3.fromDegrees(parseFloat(position.lng)-0.001, parseFloat(position.lat)-0.001, 2000.0),
 				complete:onComplete
 			});
 		}
@@ -635,7 +693,7 @@
 						var timerPin;
 						timerPin = setTimeout(function(){
 							clearTimeout(timerPin);
-							selectedPin.id.billboard.scale = 0.5;
+							selectedPin.id.billboard.scale = 0.3;
 						}, 1000 * 10 * 1)
 						
 						

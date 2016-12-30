@@ -21,8 +21,8 @@ define("CesiumController",function(exporter){
 //		if(!exporter.Config.debugMode)
 //		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
-		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',
@@ -222,18 +222,35 @@ define("CesiumController",function(exporter){
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#cesiumBk").show();
-			dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
-				if(data.data == "404")
-				{
-					loadSnapshotData();
-					return;
-				}
-				if(customDataSource!=undefined)customDataSource.destroy();
-				customDataSource = new SnapshotDataSource(data);
-				$("#cesiumBk").hide();
-				clearTimeout(timer);
-				timer = setTimeout(loadSnapshotData,1000*120);
-			});
+			
+			if(self.cityCode == "110000" || self.cityCode == "440100" || self.cityCode == "440300" ||self.cityCode == "310000"){
+				dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
+					if(data.data == "404")
+					{
+						loadSnapshotData();
+						return;
+					}
+					if(customDataSource!=undefined)customDataSource.destroy();
+					customDataSource = new SnapshotDataSource(data);
+					$("#cesiumBk").hide();
+					clearTimeout(timer);
+					timer = setTimeout(loadSnapshotData,1000*120);
+				});
+			}else{
+				dataLoader = exporter.Server.getTrafficFpData1(self.cityCode,self.dsCodes,2,function(data){
+					if(data.data == "404")
+					{
+						loadSnapshotData();
+						return;
+					}
+					if(customDataSource!=undefined)customDataSource.destroy();
+					customDataSource = new SnapshotDataSource(data);
+					$("#cesiumBk").hide();
+					clearTimeout(timer);
+					timer = setTimeout(loadSnapshotData,1000*120);
+				});
+			}
+			
 		}
 		
 		//显示历史数据
@@ -575,7 +592,7 @@ define("CesiumController",function(exporter){
 				
 				function TotalItem()
 				{
-					this.view = $("<div>",{style:"padding:5px;color:#ffffff;font-size:16px;font-family:黑体;"});
+					this.view = $("<div>",{style:"color:#ffffff;font-size:16px;font-family:黑体;"});
 					this.view.text("总计:"+_self.collection.length);
 					this.view.html("<div class='all'>总计:</div><div class='label1 all'>"+_self.collection.length+"</div>"+"<div class='label0 all'>100%</div>");
 					

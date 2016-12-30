@@ -5,10 +5,7 @@ define("PositionCarController",function(exporter){
 		var viewer = controller.cesiumController.cesiumViewer;
 	    var Floating2 = false;
 	    var scene = viewer.scene;
-	    var m=0;
-	    var colornum = 0;
 	    var self = this;
-	    var startTime;
 	    
 	    var isStart = false;
 		var begin = 0;
@@ -17,12 +14,23 @@ define("PositionCarController",function(exporter){
 	    
 	    var winWidth =  parseInt(document.body.clientWidth);
 	    var winHeight = parseInt(document.body.clientHeight);
-	    $.getJSON("src/assets/data/getDSbyCity.json",function(data){
-	    	sourceValue = data;
-	    })
-	    
+	    var staticColors = [
+			"rgba(181,181,181,255)",
+			"rgba(201,62,62,255)",
+			"rgba(38,84,151,255)",
+			"rgba(0,255,0,255)"
+		];
 	    viewer.screenSpaceEventHandler.setInputAction(function (movement) {
 	    	if(!Floating2)return
+	    	$.getJSON("http://tongji.amap.com/portal/diagram/fp!getTopDsGroupByCity.action?params.cityCodes="+cur_cityCode,function(data){
+		    	sourceValue = data;
+		    	for(x in data){
+		    		$(".positionCar ul li").eq(parseInt(data[x].rank)-1).find("h3").html(data[x].ds_name);
+		    		var color = staticColors[sourceValue[x].category/1000]
+		    		$(".positionCar ul li").eq(parseInt(data[x].rank)-1).find("h2").css({"background":color});
+		    	}
+		    	
+		    })
 	    	clearTimeout(timer1);
 	    	viewer.clock.multiplier = 4;
 	    	var cartesian0 = viewer.camera.pickEllipsoid(movement.position);
@@ -47,7 +55,7 @@ define("PositionCarController",function(exporter){
 		this.floatCar2.show=function(){
 			self.floatCar2.clear();
 			
-			var pos = new Cesium.Cartesian2(0, 0);
+			var pos = new Cesium.Cartesian2(-100, -100);
 			var cartesian = viewer.camera.pickEllipsoid(pos, scene.globe.ellipsoid);
 			if (cartesian) {
 	            var cartographic = Cesium.Cartographic.fromCartesian(cartesian);
@@ -55,7 +63,7 @@ define("PositionCarController",function(exporter){
 	            var latitude = Cesium.Math.toDegrees(cartographic.latitude);
 
 	        }
-			var pos1 = new Cesium.Cartesian2(parseInt(winWidth), parseInt(winHeight));
+			var pos1 = new Cesium.Cartesian2(parseInt(winWidth)+100, parseInt(winHeight)+100);
 			var cartesian1 = viewer.camera.pickEllipsoid(pos1, scene.globe.ellipsoid);
 			if (cartesian1) {
 	            var cartographic1 = Cesium.Cartographic.fromCartesian(cartesian1);
@@ -67,7 +75,7 @@ define("PositionCarController",function(exporter){
 			month>9?month=month:month="0"+month;
 			var day=nowDate.getDate();
 			day>9?day=day : day = "0"+day;
-			var hours = nowDate.getHours()-1;
+			var hours = nowDate.getHours();
 			var minutes = nowDate.getMinutes();
 			
 			if(minutes<16){
@@ -81,7 +89,7 @@ define("PositionCarController",function(exporter){
 			var time2 = nowDate.getFullYear()+""+month+day+hours+minutes+"00";
 			var time1 = parseInt(time2)-num;			
 			
-			var url = "http://tongji.amap.com/dipper-fp-srv/fp/getmeshuserfp?minx="+longitude+"&miny="+latitude1+"&maxx="+longitude1+"&maxy="+latitude+"&starttime="+time1+"&endtime="+time2
+			var url = "http://140.205.244.212/fp/getmeshuserfp?minx="+longitude+"&miny="+latitude1+"&maxx="+longitude1+"&maxy="+latitude+"&starttime="+time1+"&endtime="+time2
 			begin = Contrail.Tools.timestamp();
        		getData(contrail,url);
 			viewer.clock.shouldAnimate = true;
@@ -89,33 +97,15 @@ define("PositionCarController",function(exporter){
 		}
 		this.floatCar2.clear=function(){
 			contrail.clear();
+			clearTimeout(timer1);
 			$(".positionCar").hide();
 		}
-		var staticColors = [
-			"#c93e3e",
-			"#c55a4c",
-			"#bf721c",
-			"#bfa536",
-			"#b7ab64",
-			"#2ea19d",
-			"#1e87b5",
-			"#24669f",
-			"#265497",
-			"#064c9f",
-			"#b5b5b5"
-		];
+		
 		var staticColors1 = [
 			[181,181,181,255],
-			[6,76,159,255],
+			[201,62,62,255],
 			[38,84,151,255],
-			[36,102,159,255],
-			[30,135,181,255],
-			[183,171,100,255],
-			[46,161,157,255],
-			[191,165,54,255],
-			[191,114,28,255],
-			[197,90,76,255],
-			[201,62,62,255]	
+			[0,255,0,255]
 		];
 		var sourceArrN=[];
 		
@@ -130,10 +120,9 @@ define("PositionCarController",function(exporter){
 	            style: function (data) {
 	                var source = data.source;
 	                var b = colorMap[source];
-	                var color=10;
-	                for(var i=0;i<10;i++){
-	                	if(data.source == sourceArrN[i]){
-	                		color = i
+	                for(x in sourceValue){
+	                	if(data.source == x){
+	                		color = sourceValue[x].category/1000;
 	                	}
 	                }
 	                if (b == undefined) {
@@ -155,7 +144,7 @@ define("PositionCarController",function(exporter){
 		
 		function getData(contrail,url1) {
 //	        url: "http://tongji.amap.com/dipper-fp-srv/fp/getmeshuserfp?minx="+x1+"&miny="+y2+"&maxx="+x2+"&maxy="+y1+"&starttime="+time1+"&endtime="+time2,
-		    
+		    sourceArrN=[];
 		    $.ajax({
 	             type: "get",
 	             async: true,
@@ -166,33 +155,15 @@ define("PositionCarController",function(exporter){
 			        var timestamp = Contrail.Tools.timestamp();
 			        //    timestamp = 1481014104 * 1000;
 			        var timeRange = {
-			            start: timestamp - 5 * 60 * 1000,
+			            start: timestamp - 10 * 60 * 1000,
 			            end: timestamp,
 			        }
 			        
 			        contrail.start();
 			    	isStart = true;
-			
 			        timeRange = undefined;
-			
 			        var dataset = new Contrail.DataSet(timestamp, timeRange);
-			
-			        var ret = "";
-			        var sourceArr=[];
-			        for (var key in text) {
-			        	sourceArr.push([key,JSON.stringify(text[key]).length])
-			        }
-			        sourceArr.sort(compare(1));
-			        for (var i=0;i<10;i++) {
-			        	sourceArrN.push(sourceArr[i][0]);
-			        	for(var j=0;j<sourceValue.length;j++){
-			        		console.log(sourceValue[j].value+"=============="+sourceArr[i][0])
-			        		if(sourceArr[i][0] == sourceValue[j].value){
-			        			$(".positionCar ul li").eq(i).find("h3").html(sourceValue[j].label);
-			        		}
-			        	}
-			        	
-			        }
+
 			        for (var key in text) {
 			            var ps = text[key];
 			            for (var d in ps) {
@@ -221,43 +192,9 @@ define("PositionCarController",function(exporter){
 			        clearTimeout(timer1);
 			        timer1 = setTimeout(function () {
 			            self.floatCar2.show()
-			        }, 1000*60*5);
+			        }, 1000*60*2);
 			    }
 		    });
-		}
-	    
-
-		function getById(x1,x2,y1,y2,time1,time2,num){
-			$.ajax({
-	             type: "get",
-	             async: true,
-//	             url: "http://tongji.amap.com/dipper-fp-srv/fp/getmeshuserfp?minx="+x1+"&miny="+y2+"&maxx="+x2+"&maxy="+y1+"&starttime="+time1+"&endtime="+time2,
-//	             dataType: "jsonp",
-//	             jsonp: "callback",
-	             url:"src/assets/data/a.json",
-	             dataType: "json",
-	             success: function(data){
-	             	
-	             	for(x in data){
-	             		for(y in data[x]){
-	             			var path=[];
-	             			var info = data[x][y];
-	             			for (var i =0;i<info.length;i++) {
-	             				var positionArr=[];
-	             				var point = info[i].split(",");
-	             				positionArr.push(point[1],point[2],point[0]);
-	             				path.push(positionArr)
-	             			}
-	             			Path(path,staticColors[colornum]);
-	             			colornum++;
-	             			colornum==10?colornum = 0:colornum=colornum;
-	             		}
-	             	}
-	             },
-	             error: function(err){
-	             	console.log(JSON.stringify(err))
-	             }
-	         });
 		}
 		function compare(property){
 		    return function(a,b){
