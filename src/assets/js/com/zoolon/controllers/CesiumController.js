@@ -21,8 +21,8 @@ define("CesiumController",function(exporter){
 //		if(!exporter.Config.debugMode)
 //		{
 			option.imageryProvider = new Cesium.WebMapTileServiceImageryProvider({
-		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
-//		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+//		        url : 'http://30.28.6.130:8888/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
+		        url : 'http://192.168.1.254:8080/png?x={TileCol}&y={TileRow}&z={TileMatrix}',
 		        layer : 'USGSShadedReliefOnly',
 		        style : 'default',
 		        format : 'image/jpeg',

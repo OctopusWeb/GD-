@@ -120,11 +120,75 @@
 	margin-top: 30px;
 }
 
-#infoBox .body
+#infoBox1 .body
 {
 	height: auto;
 	margin-top: 10px;
 	padding: 5px;
 	color: #b4b4b6;
+}
+
+#infoBox1
+{
+	padding: 0 30px;
+	position: absolute;
+	width: 400px;
+	height: auto;
+	background-color: rgba(0,45,89,0.8);
+	left:1920px;
+	top:540px;
+	display: none;
+	font-family: "微软雅黑";
+	line-height: 30px;
+}
+
+#infoBox1 .header
+{
+	height: 50px;
+}
+
+#infoBox1 .header .title
+{
+	color: #bf711c;
+	font-weight: bold;
+	font-size: 20px;
+	float: left;
+	line-height: 70px;
+}
+
+#infoBox1 .header .closeBt
+{
+	background-image: url(../images/dataSource/closeIcon.png);
+	width: 15px;
+	height: 15px;
+	float: right;
+	background-size: contain;
+	margin: 5px;
+	cursor: pointer;
+	margin-top: 30px;
+}
+
+#infoBox1 .body
+{
+	height: auto;
+	margin-top: 10px;
+	padding: 5px;
+	color: #b4b4b6;
+}
+#infoBox1 .infoBoxBk{
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	background: rgba(0,45,89,0.8);
+	top: -50px;
+	right: -50px;
+}
+#infoBox1 .infoBoxBk1{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	background: rgba(0,45,89,0.8);
+	top: -70px;
+	right: -70px;
 }
 

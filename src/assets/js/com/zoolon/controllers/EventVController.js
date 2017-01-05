@@ -91,8 +91,8 @@ define("EventVController", function(exporter) {
 			if(eventCityLoader!=undefined)eventCityLoader.abort();
 			
         	
-			loadEventSourceCount();
-			loadEventTypeCount();
+//			loadEventSourceCount();
+//			loadEventTypeCount();
 			//console.log("cityCode; " +cur_cityCode);
 			if (cur_cityCode == "100000") {
 				
@@ -105,210 +105,6 @@ define("EventVController", function(exporter) {
 			clearTimeout(timer);
 			timer = setTimeout(loadData, 1000 * 60 * 2);
 		}
-		
-		
-		var loadEventSourceCount = function() {
-
-			eventSourceLoader = exporter.Server.countEventBySource(cur_cityCode, function(data) {
-				//console.log(data);
-				if (data == "404") {
-					loadEventSourceCount();
-					return;
-				}
-				var sourceData = JSON.parse(data);
-
-				var es0 = $("#widgets #eventSource #es0");
-				//var es1 = $("#widgets #eventSource #es1");
-				var es2 = $("#widgets #eventSource #es2");
-
-				var t0 = $("#widgets #eventSource #es0 #text");
-				var t02 = $("#widgets #eventSource #es0 #text2");
-				//var t1 = $("#widgets #eventSource #es1 #text");
-				var t2 = $("#widgets #eventSource #es2 #text");
-				var t22 = $("#widgets #eventSource #es2 #text2");
-				var setSource = function(source,sourceC) {
-
-					es0.width(100 + '%');
-					//es1.width(30 + '%');
-					//es1.css('left', 40 + '%');
-					es2.width(100 + '%');
-					es2.css('left', 0+ '%');
-//					t0.text("当前有效："+sourceC[0]+'('+source[0] + '%)');
-					t0.html("<div class='label0'>"+"当前有效："+source[0] + '%'+"</div>"+"<div class='label1'>"+"当前有效："+sourceC[0]+'('+source[0] + '%)'+"</div>");
-					//t1.text(sourceC[1]+'('+source[1] + '%)');
-//					t2.text("当前有效："+sourceC[2]+'('+source[2] + '%)');
-					t2.html("<div class='label0'>"+"当前有效："+source[2] + '%'+"</div>"+"<div class='label1'>"+"当前有效："+sourceC[2]+'('+source[2] + '%)'+"</div>");
-					
-				}
-				var setSource2 = function(source,sourceC) {
-
-					
-//					t02.text("当日累计："+sourceC[0]+'('+source[0] + '%)');
-					t02.text("当日累计："+source[0] + '%');
-					t02.html("<div class='label0'>"+"当日累计："+source[0] + '%'+"</div>"+"<div class='label1'>"+"当日累计："+sourceC[0]+'('+source[0] + '%)'+"</div>");
-					//t1.text(sourceC[1]+'('+source[1] + '%)');
-//					t22.text("当日累计："+sourceC[2]+'('+source[2] + '%)');
-//					t22.text("当日累计："+source[2] + '%');
-					t22.html("<div class='label0'>"+"当日累计："+source[2] + '%'+"</div>"+"<div class='label1'>"+"当日累计："+sourceC[2]+'('+source[2] + '%)'+"</div>");
-					
-				}
-				var dayData = sourceData.dayCumulative;
-				var curData = sourceData.currEffective;
-				if (sourceData && curData) {
-					
-					var s01 = curData[0].value;
-					var s11 = curData[1].value;
-					var s21 = curData[2].value;
-					
-					var total = s01+s11+s21;
-					s01 = s01+s11;
-				
-					var p0 = Math.round(100*s01/total);
-					//var p1 = Math.round(100*s11/total);
-					var p1 = 0;
-					var p2 = Math.round(100*s21/total);
-					if(p0+p1+p2 >100) p0 = p0-(p0+p1+p2-100);
-					if(p0+p1+p2 <100) p0 = p0+(100-p0-p1-p2);
-					//console.log(p0);
-					var source = new Array(p0,p1,p2);
-					var sourceC = new Array(s01,s11,s21);
-					setSource(source,sourceC);
-					
-					s01 = dayData[0].value;
-					s11 = dayData[1].value;
-					s21 = dayData[2].value;
-					
-					total = s01+s11+s21;
-					s01 = s01+s11;
-				
-					p0 = Math.round(100*s01/total);
-					//var p1 = Math.round(100*s11/total);
-					p1 = 0;
-					p2 = Math.round(100*s21/total);
-					if(p0+p1+p2 >100) p0 = p0-(p0+p1+p2-100);
-					if(p0+p1+p2 <100) p0 = p0+(100-p0-p1-p2);
-					//console.log(p0);
-					source = new Array(p0,p1,p2);
-					sourceC = new Array(s01,s11,s21);
-					setSource2(source,sourceC);
-				}
-			});
-		}
-		
-		var loadEventTypeCount = function() {
-			eventTypeLoader = exporter.Server.countEventByType(cur_cityCode, function(data) {
-				if (data == "404") {
-					loadEventTypeCount();
-					return;
-				}
-				var sourceData = eval(data);
-
-				var map = {
-					"事故" : 0,
-					"施工类" : 0,
-					"管制类" : 0,
-					"路面" : 0,
-					"其他" : 0,
-					"流量" : 0
-				};
-
-				for (var i = 0; i < sourceData.length; i++) {
-					map[sourceData[i].name] = sourceData[i].value;
-				}
-				var all = map["其他"]+map["事故"]+map["流量"]+map["管制类"]+map["施工类"]+map["路面"];
-				$("#widgets #eventType #et2 #count").html("<div class='label0'>"+parseFloat(map["事故"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["事故"]+"</div>");
-				$("#widgets #eventType #et5 #count").html("<div class='label0'>"+parseFloat(map["施工类"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["施工类"]+"</div>");
-				$("#widgets #eventType #et4 #count").html("<div class='label0'>"+parseFloat(map["管制类"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["管制类"]+"</div>");
-				$("#widgets #eventType #et6 #count").html("<div class='label0'>"+parseInt(map["路面"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["路面"]+"</div>");
-				$("#widgets #eventType #et1 #count").html("<div class='label0'>"+parseFloat(map["流量"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["流量"]+"</div>");
-				$("#widgets #eventType #et3 #count").html("<div class='label0'>"+parseFloat(map["其他"]/all*100).toFixed(2)+"%"+"</div>"+"<div class='label1'>"+map["其他"]+"</div>");
-				drawEchart();
-				function drawEchart(){
-					var myChart = echarts.init(document.getElementById('rightEchart'));
-					var option = {
-			             tooltip: {
-					        trigger: 'item',
-					        formatter: "{a} <br/>{b}: {c} ({d}%)"
-					    },
-					    series: [
-					        {
-					            type:'pie',
-					            radius: ['50%', '80%'],
-					            avoidLabelOverlap: false,
-					            label: {
-					                normal: {
-					                    show: false,
-					                    position: 'center'
-					                },
-					                emphasis: {
-					                    show: true,
-					                    textStyle: {
-					                        fontSize: '30',
-					                        fontWeight: 'bold'
-					                    }
-					                }
-					            },
-					            labelLine: {
-					                normal: {
-					                    show: false
-					                }
-					            },
-					            data:[
-					                {value:map["事故"], name:'事故',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#C93F3F'
-							                }
-						            	}
-					                },
-					                {value:map["施工类"], name:'施工类',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#BF721D'
-							                }
-						            	}
-					                },
-					                {value:map["管制类"], name:'管制类',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#2EA09D'
-							                }
-						            	}
-					                },
-					                {value:map["路面"], name:'路面',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#B7AB65'
-							                }
-						            	}
-					                },
-					                {value:map["流量"], name:'流量',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#1F87B5'
-							                }
-						            	}
-					                },
-					                {value:map["其他"], name:'其他',
-					                	itemStyle: {
-							                normal: {
-							                    color: '#084c9f'
-							                }
-						            	}
-					                }
-					            ]
-					        }
-					    ]
-			        };
-			
-			        // 使用刚指定的配置项和数据显示图表。
-			        myChart.setOption(option);
-				}
-				
-			});
-		}
-		
-		
 		var countEntities = [];
 		this.firstTime = true;
 		//获得全国的事件概况
@@ -430,37 +226,37 @@ define("EventVController", function(exporter) {
 			loadEventCitysCount();
 		}
 		var picUrl = {
-				'1':'src/assets/images/dataSource/npt2.png',
-				'2':'src/assets/images/dataSource/npt5.png',
-				'8':'src/assets/images/dataSource/npt4.png',
-				'3':'src/assets/images/dataSource/npt6.png',
-				'5':'src/assets/images/dataSource/npt1.png',
-				'6':'src/assets/images/dataSource/npt0.png'
+				'1':'src/assets/images/dataSource/npt7.png',
+				'2':'src/assets/images/dataSource/npt7.png',
+				'8':'src/assets/images/dataSource/npt7.png',
+				'3':'src/assets/images/dataSource/npt7.png',
+				'5':'src/assets/images/dataSource/npt7.png',
+				'6':'src/assets/images/dataSource/npt7.png'
 		};
 		
 		var picUrlCamera = {
-				'1':'src/assets/images/dataSource/nct2.png',
-				'2':'src/assets/images/dataSource/nct5.png',
-				'8':'src/assets/images/dataSource/nct4.png',
-				'3':'src/assets/images/dataSource/nct6.png',
-				'5':'src/assets/images/dataSource/nct1.png',
-				'6':'src/assets/images/dataSource/nct0.png'
+				'1':'src/assets/images/dataSource/npt7.png',
+				'2':'src/assets/images/dataSource/npt7.png',
+				'8':'src/assets/images/dataSource/npt7.png',
+				'3':'src/assets/images/dataSource/npt7.png',
+				'5':'src/assets/images/dataSource/npt7.png',
+				'6':'src/assets/images/dataSource/npt7.png'
 		};
 		var eventFlagPic = {
-				'1':'../../../../images/dataSource/pt2.png',
-				'2':'../../../../images/dataSource/pt5.png',
-				'8':'../../../../images/dataSource/pt4.png',
-				'3':'../../../../images/dataSource/pt6.png',
-				'5':'../../../../images/dataSource/pt1.png',
-				'6':'../../../../images/dataSource/pt0.png'
+				'1':'../../../../images/dataSource/npt7.png',
+				'2':'../../../../images/dataSource/npt7.png',
+				'8':'../../../../images/dataSource/npt7.png',
+				'3':'../../../../images/dataSource/npt7.png',
+				'5':'../../../../images/dataSource/npt7.png',
+				'6':'../../../../images/dataSource/npt7.png'
 		};
 		var eventFlagPicCamera = {
-				'1':'../../../../images/dataSource/ct2.png',
-				'2':'../../../../images/dataSource/ct5.png',
-				'8':'../../../../images/dataSource/ct4.png',
-				'3':'../../../../images/dataSource/ct6.png',
-				'5':'../../../../images/dataSource/ct1.png',
-				'6':'../../../../images/dataSource/ct0.png'
+				'1':'../../../../images/dataSource/npt7.png',
+				'2':'../../../../images/dataSource/npt7.png',
+				'8':'../../../../images/dataSource/npt7.png',
+				'3':'../../../../images/dataSource/npt7.png',
+				'5':'../../../../images/dataSource/npt7.png',
+				'6':'../../../../images/dataSource/npt7.png'
 		};
 		var eventFlagColor = {
 				'1':Cesium.Color.fromCssColorString('#e15049'),
@@ -656,7 +452,7 @@ define("EventVController", function(exporter) {
 				showHideEntities(2,showes2);
 			});
 		}
-		var infoBoxController = new InfoBoxController($("#infoBox"));
+		var infoBoxController = new InfoBoxController($("#infoBox1"));
 		var lineEntities=[];
 		function removeLine(){
 			for(var i=0; i< lineEntities.length;i++){
