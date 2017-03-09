@@ -109,7 +109,7 @@ define("eventAreaController",function(exporter){
 				$("#addMap div").eq(0).removeClass("mapSelect");
 				self.SpaceTime.clear();
 				if(Floating)contryBar();
-				$("#leftBk").hide()
+				$("#leftBk").hide();
 				codeIndex = false;
 				Induceds.show = false;	
 				InducedBol = false;

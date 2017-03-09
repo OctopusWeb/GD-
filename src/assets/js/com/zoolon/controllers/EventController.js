@@ -822,7 +822,7 @@
 				{
 					var htmlStr = "";
 					//console.log(info);
-					htmlStr+="<div style='font-size:18px;border-top:1px #202020 solid;padding-top:10px;color:#fff'>"+info.eventDesc+"</div>";
+					htmlStr+="<div style='font-size:18px;border-top:1px #202020 solid;padding-top:10px;color:#fff;display:inline-block'>"+info.eventDesc+"</div>";
 					htmlStr+="<div style='font-size:18px;border-bottom:1px #202020 solid;padding-bottom:10px;color:#fff'>"+getTimeDesc(info.timePeriod)+"</div>";
 					htmlStr+="<div style='font-size:18px;margin-bottom:10px;color:#fff'>"+getEventTypeName(info.eventType)+"</div>";
 					htmlStr+="<div style='font-size:18px;margin-bottom:10px;color:#fff'>"+getEventSourceName(info)+"</div>";

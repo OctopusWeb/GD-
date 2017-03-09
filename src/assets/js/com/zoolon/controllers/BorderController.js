@@ -86,7 +86,7 @@ define("BorderController",function(exporter){
 		function Icon(x,y,parent,names){
 			viewer.entities.add({
 				parent : parent,
-			    position : Cesium.Cartesian3.fromDegrees(x,y),
+			    position : Cesium.Cartesian3.fromDegrees(parse[1]),
 			    name : names,
 			    billboard : {
 			        image : "src/assets/images/dataSource/webwxgetmsgimg.png",
