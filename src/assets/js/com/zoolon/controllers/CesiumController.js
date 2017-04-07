@@ -222,7 +222,7 @@ define("CesiumController",function(exporter){
 		{
 			if(self.cityCode == "100000")return;//全国时不请求数据
 			$("#cesiumBk").show();
-			
+//			|| self.cityCode == "440100" || self.cityCode == "440300" ||self.cityCode == "310000"
 			if(self.cityCode == "110000" || self.cityCode == "440100" || self.cityCode == "440300" ||self.cityCode == "310000"){
 				dataLoader = exporter.Server.getTrafficFpData(self.cityCode,self.dsCodes,2,function(data){
 					if(data.data == "404")
@@ -238,6 +238,7 @@ define("CesiumController",function(exporter){
 				});
 			}else{
 				dataLoader = exporter.Server.getTrafficFpData1(self.cityCode,self.dsCodes,2,function(data){
+					
 					if(data.data == "404")
 					{
 						loadSnapshotData();
@@ -493,25 +494,28 @@ define("CesiumController",function(exporter){
 				];
 				for(var i=0;i<list.length;i++)
 				{
+					
 					var item = new ColorItem(list[i],i);
+					
 					if(item.data.rank && item.data.label){
-						datas.push({value:item.data.rank, name:item.data.label,
+						datas.push({value:item.parse, name:item.data.label,
 					                	itemStyle: {
 							                normal: {
-							                    color: item.data.color
+							                    color: list[i].color
 							                }
 						            	}
 					                })
 					}
 					else{
-						var textA = item.data.value;
-						var arr = textA.split(',');
-						var totalSum = 0;
-						for (var i=0;i<arr.length;i++)
-						{
-						totalSum = totalSum + arr[i]*1
-						}
-						datas.push({value:totalSum, name:'其他',
+						console.log(item.parse)
+//						var textA = item.parse;
+//						var arr = textA.split(',');
+//						var totalSum = 0;
+//						for (var i=0;i<arr.length;i++)
+//						{
+//						totalSum = totalSum + arr[i]*1
+//						}
+						datas.push({value:item.parse, name:'其他',
 					                	itemStyle: {
 							                normal: {
 							                    color: "#fff"
@@ -544,6 +548,7 @@ define("CesiumController",function(exporter){
 									'	<div class="label0 label"></div><div class="label1 label"></div>'+
 									'</div>';
 					this.view = $(htmlStr);
+					
 					var colorBox = this.view.find(".colorBox");
 					colorBox.css("background-color",obj.color);
 					var label0 = this.view.find(".label0");
@@ -551,6 +556,7 @@ define("CesiumController",function(exporter){
 					var label = this.view.find(".label2");
 					var pointsLen = _self.getPointsLengthOf(obj.value);
 					label.text(obj.label);
+					this.parse = pointsLen;
 					label.attr({"title":obj.label})
 					label.css("color",obj.type == 0?"#1cc5e1":"#00bf31");
 					label0.text(parseFloat(pointsLen/_self.collection.length*100).toFixed(2)+"%");

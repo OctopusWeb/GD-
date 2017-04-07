@@ -23,6 +23,7 @@ define("eventAreaController",function(exporter){
 		var proArr=[];
 		var proCenter=[];
 		var navNum=10;
+		var soaceUrl;
 		var mapArea,traffiBol,Floating,Floating1,InducedBol,codeIndex,Spacebol,traffiBolV = false;
 		var Induceds = viewer.entities.add(new Cesium.Entity());
 		
@@ -109,7 +110,7 @@ define("eventAreaController",function(exporter){
 				$("#addMap div").eq(0).removeClass("mapSelect");
 				self.SpaceTime.clear();
 				if(Floating)contryBar();
-				$("#leftBk").hide();
+				$("#leftBk").hide()
 				codeIndex = false;
 				Induceds.show = false;	
 				InducedBol = false;
@@ -126,7 +127,7 @@ define("eventAreaController",function(exporter){
 					eventController.active = true;
 					eventController.loadEvent(this.cityCode);
 				}
-				if(traffiBolV && $("#rightSource").css("display") == "block"){
+				if(traffiBolV){
 					eventVController.clear();
 					eventVController.active = true;
 					eventVController.loadEvent(this.cityCode);
@@ -150,14 +151,18 @@ define("eventAreaController",function(exporter){
 				$(".UserPic").fadeOut()
 			})
 			
-			$("#spaceTime").click(function(){
-				$("#spaceTime").hide();
-			})
+			
 			var induced = new Induced(InducedParse,"src/assets/images/dataSource/Induceds.jpg");
 			parseCityInfo();
 			borderController.show(true);
 			Induceds.show = false;
 		}
+		$(".pre").click(function(){
+			spaceBind1(daySelected(todayTime,true));
+		})
+		$(".next").click(function(){
+			spaceBind1(daySelected(todayTime,false));
+		})
 		
 		function screening(search){
 			for(var i=1;i<$(".customCheckBox").length;i++){
@@ -185,13 +190,13 @@ define("eventAreaController",function(exporter){
 //	    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK );
 		
 		function contryBar(vars){
-			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
-//			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
+//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
+			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
 		}
 		function cityBar(cityCode,vars){
 				
-				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
-//				var cityUrl = "src/assets/data/省份-不分源.json";
+//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+				var cityUrl = "src/assets/data/省份-不分源.json";
 				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
@@ -577,13 +582,23 @@ define("eventAreaController",function(exporter){
 		}
 		this.SpaceTime.show = function(){
 			Spacebol=true;
-			$at.get("http://100.81.154.179:8080/spacetimeDiagram/getCityList?city="+cur_cityCode+"&daytime=20161101",undefined,function(datas){
+			$at.get("http://106.11.55.178/getCityList?city="+cur_cityCode,undefined,function(datas){
 				var index="";
 				for(var i=0;i<datas.data.length;i++){
-					index+="<li class="+datas.data[i].id+"><h1>"+datas.data[i].roadName+"</h1><h4>"+datas.data[i].startName+"</h4><h5>至</h5><h4>"+datas.data[i].endName+"</h4></li>"
+					index+="<li class="+datas.data[i].id+"><h1>"+datas.data[i].roadName+"</h1><div class='spanList'>"+
+					'<img src="src/assets/images/dataSource/roadIcon1.png"/><h4>'+datas.data[i].startName+
+					'</h4></div><div class="spanList">'+
+					'<img src="src/assets/images/dataSource/roadIcon3.png"/><h4>'+datas.data[i].endName+
+					'</h4></div><div class="spanList">'+
+					'<img src="src/assets/images/dataSource/roadIcon4.png"/><h4>'+datas.data[i].pubTime+
+					'</h4></div><div class="spanList">'+
+					'<img src="src/assets/images/dataSource/roadIcon2.png"/><h4>'+datas.data[i].length+
+					'</h4></div>'+
+					"</li>"					
 				}
 				$("#spanTime ul").html(index);
-				spaceBind();
+				todayTime = datas.data[0].pubTime
+				spaceBind(daySelected(todayTime,true));
 			})
 			$("#spanTime").fadeIn();
 		}
@@ -622,15 +637,35 @@ define("eventAreaController",function(exporter){
 				}
 			})
 		}
-		function spaceBind(){
+		function spaceBind(time){
 			$("#spanTime ul li").on("click",function(){
 				var id = $(this).attr("class")
-				$at.get("http://100.81.154.179:8080/spacetimeDiagram/getSpaceTimeDiagram?city="+cur_cityCode+"&id="+id+"&daytime=20161101",undefined,function(datas){
-					console.log(datas)
+				spaceId = id;
+				$at.get("http://106.11.55.178/getSpaceTimeDiagram?city="+cur_cityCode+"&id="+id+"&daytime="+time,undefined,function(datas){
+					if (datas.stauts == 0) {
+						var positions = datas.data[0].xys.replace(/\;/g,",");
+						var center = datas.data[0].centerPoint.split(",");
+						spaceRoad(positions,datas.data[0].url,center);
+					}else{
+						$("#spaceTime .spaceTime").attr({"src":"src/assets/images/dataSource/loadings.gif"})
+						$("#spaceTime").fadeIn();
+					}
+					
+				})
+			})
+		}
+		function spaceBind1(time){
+			var id = spaceId;
+			$at.get("http://106.11.55.178/getSpaceTimeDiagram?city="+cur_cityCode+"&id="+id+"&daytime="+todayTime,undefined,function(datas){
+				if (datas.stauts == 0) {
 					var positions = datas.data[0].xys.replace(/\;/g,",");
 					var center = datas.data[0].centerPoint.split(",");
 					spaceRoad(positions,datas.data[0].url,center);
-				})
+				}else{
+					$("#spaceTime .spaceTime").attr({"src":"src/assets/images/dataSource/loadings.gif"})
+					$("#spaceTime").fadeIn();
+				}
+				
 			})
 		}
 		function spaceRoad(positions,url,center){
@@ -642,7 +677,8 @@ define("eventAreaController",function(exporter){
 			viewer.camera.flyTo({
 				destination:Cesium.Cartesian3.fromDegrees(parseFloat(center[0])+0.01,parseFloat(center[1])+0.01,30000)
 			});
-			$("#spaceTime").attr({"src":url})
+			$("#spaceTime .spaceTime").attr({"src":url})
+			soaceUrl = url;
 			$("#spaceTime").fadeIn();
 			spaceTimeRoad = viewer.entities.add({
 				name : "spaceTimeRoad",
@@ -699,6 +735,39 @@ define("eventAreaController",function(exporter){
 				        outlineWidth : 3
 				    }
 			    });
+			}
+			
+		}
+		function daySelected(day,type){
+			day = parseInt(day)
+			var data1 = day%100;
+			var data2 = parseInt(day/100)%100;
+			if(type){
+				if(data1 == 1){
+					if(data2 == 1){
+						todayTime = parseInt(day)-8871
+						return parseInt(day)-8871
+					}else{
+						todayTime = parseInt(day)-71
+						return parseInt(day)-71
+					}
+				}else{
+					todayTime = parseInt(day)-1
+					return parseInt(day)-1
+				}
+			}else{
+				if(data1 == 30){
+					if(data2 == 1){
+						todayTime = parseInt(day)+8871
+						return parseInt(day)+8871
+					}else{
+						todayTime = parseInt(day)+71
+						return parseInt(day)+71
+					}
+				}else{
+					todayTime = parseInt(day)+1
+					return parseInt(day)+1
+				}
 			}
 			
 		}

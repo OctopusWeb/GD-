@@ -101,6 +101,7 @@
 
 #infoBox .header .title
 {
+	width: 90%;
 	color: #bf711c;
 	font-weight: bold;
 	font-size: 20px;
@@ -149,6 +150,7 @@
 
 #infoBox1 .header .title
 {
+	width: 90%;
 	color: #bf711c;
 	font-weight: bold;
 	font-size: 20px;

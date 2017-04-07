@@ -24,4 +24,6 @@
 }
 #topBar #logo{position: absolute;left:40px;font-size: 26px;color: #fff;line-height: 60px;font-family: "微软雅黑";cursor: pointer;}
 .quanguo{position: absolute;right:0px;font-size: 26px;color: #fff;line-height: 60px;
-font-family: "微软雅黑";cursor: pointer;width: 190px;text-align: center;}
+font-family: "微软雅黑";cursor: pointer;width: 190px;text-align: center;overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;}
