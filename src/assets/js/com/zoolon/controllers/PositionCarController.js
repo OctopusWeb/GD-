@@ -35,6 +35,16 @@ define("PositionCarController",function(exporter){
 			});
 	    	
 	    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+	    $("#timeCar").on("click",function(){
+	    	viewer.clock.multiplier = 4;
+			 viewer.camera.flyTo({
+				destination:Cesium.Cartesian3.fromDegrees(116.48878258662583, 39.98892626996776, 2000.0),
+			    complete:function(){self.floatCar2.show()}
+			});
+	    })
+	    $("#timeCar2").on("click",function(){
+	     	self.floatCar2.clear();
+	    });
 	    $("#nav ul li").eq(4).click(function(e){
 //			if($("#nav ul li").eq(4).attr("class") == "selected")$("#nav ul li").eq(4).trigger("click");
 //			$(this).toggleClass("selected");

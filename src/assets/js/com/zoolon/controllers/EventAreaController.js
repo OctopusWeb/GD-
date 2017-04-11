@@ -24,11 +24,28 @@ define("eventAreaController",function(exporter){
 		var navNum=10;
 		var mapArea,traffiBol,Floating,Floating1,InducedBol,codeIndex,Spacebol = false;
 		var Induceds = viewer.entities.add(new Cesium.Entity());
+		initAnimate("c110000北京市-239");
+		function initAnimate(pickID){
+			var type = pickID.substr(0,1);
+			var cityCode = pickID.substr(1,6);
+			var num = pickID.indexOf("-");
+			var cityName = pickID.substring(7,num);
+			var index = pickID.substr(num+1,pickID.length+1);
+			cesiumType=3;
+			barController.CityClear();
+			borderController.show(false);
+			InducedBol = true;
+			$(".quanguo").html(cityName);
+			cur_cityCode = cityCode;
+			var city = CesiumController.getInfoByCityCode(cur_cityCode);
+			viewer.camera.flyTo({
+				destination : Cesium.Cartesian3.fromDegrees(116.405285, 39.90498888888889, 100000.0)
+			});
+		}
 		
 		eventInit();
 		function eventInit(){
 			var nav = $("#nav");
-			
 			var navLi=nav.find("ul li");
 			navLi.eq(0).on("click",function(e){
 				e.stopPropagation();
@@ -174,13 +191,13 @@ define("eventAreaController",function(exporter){
 //	    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK );
 		
 		function contryBar(vars){
-			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
-//			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
+//			barController.drawBars("http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes=100000","pro",cesiumType,dsCodes);
+			barController.drawBars("src/assets/data/全国-分源.json","pro",cesiumType,dsCodes);
 		}
 		function cityBar(cityCode,vars){
 				
-				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
-//				var cityUrl = "src/assets/data/省份-不分源.json";
+//				var cityUrl = "http://140.205.57.130/portal/diagram/fp!getDayKpi.action?params.cityCodes="+cityCode
+				var cityUrl = "src/assets/data/省份-不分源.json";
 				barController.drawBars(cityUrl,"city",cesiumType,dsCodes);
 		}
 		
@@ -210,7 +227,7 @@ define("eventAreaController",function(exporter){
 	    		}
 	    	}
 		}
-		function advanceCity(pickID){
+		function advanceCity(pickID){			
 			var type = pickID.substr(0,1);
 			var cityCode = pickID.substr(1,6);
 			var num = pickID.indexOf("-");
@@ -249,7 +266,8 @@ define("eventAreaController",function(exporter){
 					$("#city").html(city.name)
 					viewer.camera.flyTo({
 						destination : Cesium.Cartesian3.fromDegrees(city.lat, city.lng, 100000.0)
-					});
+					});			
+					console.log(city.lat+"+++"+city.lng)
 				}
 				if(traffiBol){
 					eventController.clear();

@@ -63,11 +63,16 @@
   <script src="src/assets/js/com/zoolon/other/DataSourceExternalCall.js"></script>
   <script src="src/assets/js/com/zoolon/components/DebugTool.js"></script>
   
+  <script src="src/assets/js/demo.js"></script>
+  
 </head>
 <body>
-	
+	<div id="title">
+		<img src="src/1.png" style="position: absolute;top: 50px;left: 0;z-index: 10000;width: 20%;"/>
+	</div>
 	<div id="cesiumContainer"></div>
-	
+	<div id="timeCar"></div>
+	<div id="timeCar2"></div>
 	<div class="app">
 		<div id="cesiumBk"></div>
 		<div class="UserPic">
@@ -173,7 +178,6 @@
 						<div>0%</div>
 					</div>
 				</div>
-				
 				<div id="info"></div>
 				<div id="dsSelector">
 					<div class="header">
@@ -214,7 +218,7 @@
 				
 			</div>
 			<h2>交通事件数据</h2>
-			<div id="eventSource">
+			<div id="eventSource" style="opacity: 0;">
 				<div id="es0">
 					<div class = "eventSource_lable" id="lable">官方</div>
 					<div  class = "eventSource_text" id="text">0%</div>
@@ -365,7 +369,6 @@
 			<div id="spanTime">
 				<h2>道路时空图</h2>
 				<ul>
-					
 				</ul>
 			</div>
 		<div id="infoBox">
